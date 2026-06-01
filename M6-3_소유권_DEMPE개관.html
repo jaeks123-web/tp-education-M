@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M6-3: 무형자산 소유권 & DEMPE 개관</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Chapter VI — Amber 호박색 */
+  --purple:#b45309;--purple-light:#fef3c7;--purple-mid:#d97706;--purple-dark:#78350f;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#fde68a}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #fcd34d;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.num-pill{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;margin:0 .2rem}
+/* ── DEMPE 5단계 시각화 ── */
+.dempe-row{display:flex;gap:.4rem;margin:.8rem 0;align-items:stretch}
+.dempe-card{flex:1;border-radius:10px;padding:.7rem .6rem;text-align:center;background:var(--purple-light);border:1.5px solid var(--purple);min-height:130px;display:flex;flex-direction:column;justify-content:center}
+.dempe-card .letter{font-size:1.8rem;font-weight:900;color:var(--purple);margin-bottom:.2rem;line-height:1}
+.dempe-card h5{font-size:.78rem;font-weight:700;color:var(--purple-dark);margin-bottom:.2rem}
+.dempe-card p{font-size:.68rem;color:var(--text2);margin:0;line-height:1.3}
+/* ── 분석 6단계 타임라인 ── */
+.step-timeline{position:relative;padding-left:2.2rem;margin:.8rem 0}
+.step-timeline::before{content:'';position:absolute;left:.65rem;top:.3rem;bottom:.3rem;width:2px;background:var(--purple-light)}
+.step-item{position:relative;margin-bottom:1rem}
+.step-item::before{content:'';position:absolute;left:-1.55rem;top:.4rem;width:12px;height:12px;border-radius:50%;background:var(--purple);border:2px solid #fff;box-shadow:0 0 0 2px var(--purple)}
+.step-item h4{font-size:.9rem;font-weight:700;color:var(--purple);margin-bottom:.25rem}
+.step-item p{font-size:.85rem;color:var(--text2);margin:0;line-height:1.65}
+/* ── 7대 문제 카드 ── */
+.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.6rem 0}
+.issue-card{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:.6rem .8rem}
+.issue-card .iss-num{display:inline-block;background:var(--red);color:#fff;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:.7rem;font-weight:800;margin-right:.4rem}
+.issue-card h5{font-size:.83rem;font-weight:700;color:var(--red);display:inline}
+.issue-card p{font-size:.78rem;color:var(--text2);margin:.3rem 0 0;line-height:1.5}
+/* ── 사례 박스 ── */
+.case-box{background:#fffbeb;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#78350f;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+/* ── ex-ante vs ex-post 비교 ── */
+.profit-comparison{display:grid;grid-template-columns:1fr auto 1fr;gap:.8rem;align-items:center;margin:.8rem 0}
+.profit-box{border-radius:10px;padding:1rem;border:2px solid var(--purple);background:#fff}
+.profit-box h4{font-size:.95rem;font-weight:700;color:var(--purple);margin-bottom:.4rem;text-align:center}
+.profit-box ul{font-size:.82rem;padding-left:1.2rem;margin:.3rem 0 0}
+.profit-vs{font-size:1.2rem;font-weight:800;color:var(--purple)}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.issue-grid,.profit-comparison{grid-template-columns:1fr}
+  .dempe-row{flex-direction:column}
+  .profit-vs{transform:rotate(90deg);text-align:center}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VI Intangibles › M6-3 (3/8)</div>
+  <h1>M6-3. 무형자산 소유권 & DEMPE 개관</h1>
+  <div class="sub">Section B 도입 + B.1 — 이익 귀속의 7대 문제, OECD 분석 6단계, 법률적 소유자 ≠ 이익 귀속자, Ex-ante vs Ex-post Profit &nbsp;|&nbsp; ¶6.32 – ¶6.46 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 무형자산 이익 귀속의 7대 문제 (Section B)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. OECD 분석 6단계 절차</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 법률적·계약상 권리</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 법률적 소유자 ≠ 이익 귀속자</button>
+      <button class="nav-item" onclick="goTo('s5')">5. Ex-ante vs Ex-post Profit</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>무형자산으로부터 발생하는 이익의 귀속 문제와 ¶6.33의 7대 대표 문제(비교가능거래 부재·공동 소유·수익 분리 어려움 등)를 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>OECD ¶6.34가 제안한 무형자산 분석 6단계 절차 — 식별·계약조건·기능위험·일관성·법률관계 검증·정상가격 산출 — 을 이해하고 DEMPE 프레임워크의 의미를 파악한다</span></li>
+        <li><span class="obj-num">3</span><span>BEPS Action 8-10의 핵심 원칙인 "법률적 소유자가 이전가격상 이익의 귀속자와 항상 일치하지 않는다"(¶6.42)는 점을 이해하고, DEMPE 활동의 실질적 수행자가 누구인지 식별하는 능력을 갖춘다</span></li>
+        <li><span class="obj-num">4</span><span>국가별 무형자산 보호범위 차이, 트레이드 드레스·노하우 등 등록되지 않은 무형자산의 처리, 특허·상표권이 함께 등록된 경우의 분석 방법을 파악한다</span></li>
+        <li><span class="obj-num">5</span><span>Ex-ante(예상) vs Ex-post(실제) 소득의 차이와 이를 정상가격원칙에서 어떻게 다루어야 하는지(White Paper 1988 참조)를 설명할 수 있다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: Section B 개관 -->
+    <section class="card" id="s1">
+      <h2>1. 무형자산 이익 귀속의 7대 문제 (Section B) <span class="tag tag-para">¶6.32–¶6.33</span></h2>
+      <p>Section B는 Chapter VI의 가장 핵심적이고 분쟁이 잦은 영역을 다룹니다 — <strong>무형자산의 소유권과 무형자산의 개발·개선·유지·보호·활용(DEMPE)을 포함하는 거래</strong>의 이전가격 분석입니다. 이는 BEPS Action 8-10(2015)의 핵심 산출물로, 무형자산 분석의 패러다임을 "법률적 소유"에서 "실질적 기여"로 전환시킨 변화입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 이익 귀속의 본질적 문제 <span class="para">¶6.32</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.32는 Section B의 출발점으로, 무형자산 이전가격 분석에서 가장 어려운 문제를 제시합니다.</p>
+          <div class="key-point">💡 <strong>¶6.32의 핵심 문제:</strong> 무형자산은 통상적으로 다국적기업 그룹 내 여러 회사가 협력하여 개발·유지·활용하는 자산입니다. 이때 발생한 <strong>이익(또는 손실)이 누구에게 귀속되어야 하는가</strong>가 가장 어려운 문제입니다. 단순히 "법률적 소유자가 모든 이익을 가져간다"는 접근은 그룹 내 협력의 경제적 실질을 반영하지 못하므로 OECD는 이를 명시적으로 거부합니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 전형적 BEPS 시나리오</div>
+            <strong>구조:</strong> 다국적 그룹이 법률적으로는 저세율국 자회사(예: 케이맨 제도, 버뮤다)에 모든 무형자산을 등록하여 보유하게 함. 실제 R&D·마케팅 활동은 미국·한국·독일 등 고세율국에서 수행됨.<br><br>
+            <strong>문제점:</strong> 저세율국은 단순 법률적 소유만으로 모든 무형자산 수익을 누리지만, 실제 가치 창출 활동은 고세율국에서 이루어짐 → BEPS(Base Erosion and Profit Shifting)의 전형적 패턴<br><br>
+            <strong>BEPS Action 8-10 해결책:</strong> "실질과제(Substance over Form)" 원칙 — 법률적 소유보다 실질적 기능·위험·자산 분석을 통해 이익 귀속 결정 → DEMPE 프레임워크 도입
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 관련 7대 대표 문제 <span class="para">¶6.33</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.33은 무형자산 이전가격 분석에서 자주 마주치는 7가지 대표적 문제를 제시합니다.</p>
+          <div class="issue-grid">
+            <div class="issue-card">
+              <span class="iss-num">i</span>
+              <h5>비교가능거래 부재</h5>
+              <p>독립 기업 간에 식별 가능한 거래의 비교 어려움 + 비교가능거래 자체의 부존재</p>
+            </div>
+            <div class="issue-card">
+              <span class="iss-num">ii</span>
+              <h5>비교가능성 측정 어려움</h5>
+              <p>무형자산 비교가능성 측정 문제 — 무형자산은 본질적으로 고유함</p>
+            </div>
+            <div class="issue-card">
+              <span class="iss-num">iii</span>
+              <h5>공동 소유·사용</h5>
+              <p>그룹 내 관계회사들이 무형자산을 공동으로 소유 또는 사용하는 경우 측정 문제</p>
+            </div>
+            <div class="issue-card">
+              <span class="iss-num">iv</span>
+              <h5>수익 분리 어려움</h5>
+              <p>특정 무형자산이 다국적기업 그룹의 수익에 미치는 영향을 분리하기 어려움</p>
+            </div>
+            <div class="issue-card">
+              <span class="iss-num">v</span>
+              <h5>독립기업과의 차이</h5>
+              <p>그룹 내 관계회사와 독립된 제3자가 서로 다른 방식으로 DEMPE를 수행하는 문제</p>
+            </div>
+            <div class="issue-card">
+              <span class="iss-num">vi</span>
+              <h5>시기 차이 (Time Lag)</h5>
+              <p>관계회사가 무형자산 가치에 기여한 시기와 관련 수익이 실현되는 회계연도 사이의 차이</p>
+            </div>
+            <div class="issue-card" style="grid-column:1/-1">
+              <span class="iss-num">vii</span>
+              <h5>독립기업 간 관찰되지 않는 활동</h5>
+              <p>독립기업 간에는 관찰되지 않는 소유, 위험배분 및 투자에 대한 자금조달 활동과 중요한 기능의 수행, 위험의 통제, 투자 관련 결정을 관계회사 간에 분리하는 문제</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>왜 이 7가지가 중요한가?</strong> 이 7가지 문제는 무형자산 분석을 단순한 가격 비교가 아닌 <strong>다층적·종합적 분석</strong>으로 만드는 근본 원인입니다. 각 문제는 BEPS Action 8-10이 도입한 DEMPE 분석·잔여이익 분할·HTVI 등의 새로운 방법론으로 해결을 시도합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: OECD 분석 6단계 -->
+    <section class="card" id="s2">
+      <h2>2. OECD 무형자산 분석 6단계 절차 <span class="tag tag-para">¶6.34</span></h2>
+      <p>¶6.34는 무형자산 이전가격 분석을 위한 OECD의 체계적 6단계 절차를 제시합니다. 이 절차는 DEMPE 분석의 구조적 기반이며, M6-4·M6-5에서 자세히 다룰 기능·위험·자산 분석의 출발점이 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>OECD 6단계 무형자산 분석 절차 — 핵심 프레임워크 <span class="para">¶6.34</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD가 제안하는 무형자산 분석은 다음 6단계를 순차적으로 수행합니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>① 무형자산의 식별 (Identification of Intangibles)</h4>
+              <p>거래에 관련된 모든 무형자산을 식별합니다. M6-1·M6-2에서 다룬 정의·분류 기준 적용. "명칭"이 아닌 "실질" 기준으로 식별.</p>
+            </div>
+            <div class="step-item">
+              <h4>② 계약조건의 분석 (Analysis of Contractual Terms)</h4>
+              <p>당사자 간 계약에 명시된 무형자산 관련 권리·의무·위험 배분·대가를 분석. 계약은 출발점이지 종착점이 아님.</p>
+            </div>
+            <div class="step-item">
+              <h4>③ 기능·위험 부담 당사자 분석 (DEMPE Functions & Risks)</h4>
+              <p>실제로 누가 무형자산의 개발·개선·유지·보호·활용(DEMPE) 기능을 수행하고 위험을 부담하는지 분석. <strong>이 단계가 DEMPE 분석의 핵심</strong>이며 M6-4에서 자세히 다룸.</p>
+            </div>
+            <div class="step-item">
+              <h4>④ 계약조건의 일관성 및 비교가능성 분석</h4>
+              <p>계약상의 권리·의무가 실질 행위와 일관되는지, 독립기업 간 거래와 비교가능한지 분석.</p>
+            </div>
+            <div class="step-item">
+              <h4>⑤ 법률관계·계약관계가 실제와 동일한지 분석</h4>
+              <p>법률적·계약상 관계가 실제 특수관계거래와 일치하는지 검증. 불일치 시 실질에 따라 거래를 재정의(recharacterization).</p>
+            </div>
+            <div class="step-item">
+              <h4>⑥ 정상가격의 산출 (Arm's Length Pricing)</h4>
+              <p>위 분석을 토대로 적합한 정상가격산출방법(CUP·PSM·DCF 등)을 선정하여 정상가격 도출. M6-7·M6-8에서 자세히 다룸.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>6단계의 핵심 흐름:</strong> ① 식별 → ② 계약 분석 → ③ 실질 행위(DEMPE) 분석 → ④ 일관성 검증 → ⑤ 필요 시 재정의 → ⑥ 가격 산출. 가장 중요한 단계는 <strong>③ DEMPE 분석</strong>이며, 이것이 BEPS Action 8-10의 핵심 패러다임 전환입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>DEMPE 프레임워크 — 5대 핵심 기능 <span class="para">BEPS Action 8-10 핵심</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>DEMPE는 무형자산 관련 기능을 분석하는 핵심 프레임워크로, BEPS Action 8-10(2015)에서 도입되어 OECD 이전가격지침서에 통합되었습니다.</p>
+          <div class="dempe-row">
+            <div class="dempe-card">
+              <div class="letter">D</div>
+              <h5>Development<br>(개발)</h5>
+              <p>R&D 활동, 신기술 창출, 무형자산 형성</p>
+            </div>
+            <div class="dempe-card">
+              <div class="letter">E</div>
+              <h5>Enhancement<br>(개선)</h5>
+              <p>기존 무형자산의 개량·확장·진화</p>
+            </div>
+            <div class="dempe-card">
+              <div class="letter">M</div>
+              <h5>Maintenance<br>(유지)</h5>
+              <p>현재 가치 유지를 위한 활동·비용</p>
+            </div>
+            <div class="dempe-card">
+              <div class="letter">P</div>
+              <h5>Protection<br>(보호)</h5>
+              <p>특허 등록·유지, 침해 방지, 법적 보호</p>
+            </div>
+            <div class="dempe-card">
+              <div class="letter">E</div>
+              <h5>Exploitation<br>(활용)</h5>
+              <p>무형자산을 활용한 수익 창출 활동</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 DEMPE의 실무 적용 — "누가 무엇을 했나"</div>
+            <p><strong>① 의도:</strong> 무형자산으로부터 발생하는 이익은 DEMPE 활동을 <strong>실질적으로 수행한 회사</strong>에 귀속되어야 함</p>
+            <p><strong>② 핵심 질문:</strong> "어느 회사가 D 기능을 했는가?", "어느 회사가 E를 통제했는가?", "어느 회사가 자금을 댔는가?" 등 각 활동별로 누구의 기여인지 식별</p>
+            <p><strong>③ 통제(Control) 강조:</strong> 단순 수행만으로는 부족하며, 그 활동에 대한 <strong>통제 기능(decision-making, risk-bearing)</strong>이 핵심. 외주(outsourcing) 받았더라도 통제하는 회사가 이익 귀속</p>
+            <p><strong>④ 자금조달의 한계:</strong> 자금만 제공했다고 모든 이익을 가져갈 수 없음 — "Cash box" 회사 문제. 자금조달자는 자본 사용에 대한 정상 대가만 받음 (M6-4에서 자세히)</p>
+          </div>
+          <div class="note-point">✅ <strong>본 모듈(M6-3)의 위치:</strong> DEMPE 프레임워크의 개요를 다룬 M6-3은 다음 두 모듈로 이어집니다. <strong>M6-4 기능·자산·위험 분석</strong>(B.2)에서 각 DEMPE 활동의 세부 분석을, <strong>M6-5 DEMPE 사례 적용</strong>(B.3·B.4)에서 마케팅·R&D·그룹 명칭 사용 등의 구체 사례를 다룹니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: 법률적·계약상 권리 -->
+    <section class="card" id="s3">
+      <h2>3. 법률적·계약상 권리의무 관계 (B.1) <span class="tag tag-para">¶6.35–¶6.39</span></h2>
+      <p>B.1은 무형자산 분석의 출발점인 법률적 소유권과 계약상 권리의무 관계를 다룹니다. 계약·법률은 분석의 첫 번째 단계이지만 <strong>그 자체로는 충분하지 않으며</strong>, 실질 행위와 일치하는지 검증되어야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적·계약상 권리의무 분석 + 계약과 실질의 불일치 <span class="para">¶6.35–¶6.36</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.35는 분석의 출발점이 법률적·계약상 관계임을, ¶6.36은 계약이 실제와 다른 경우의 처리를 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📋 ① 계약·법률은 출발점 (¶6.35)</h4>
+              <ul>
+                <li>무형자산 분석은 법률적 소유권·계약상 권리의무 파악에서 시작</li>
+                <li>등록 정보(특허청·상표청 등), 라이선스 계약서, 양도 계약서 등 검토</li>
+                <li>각 당사자의 명시적 권리·의무·위험 배분 파악</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>⚠️ ② 계약 ≠ 실질 (¶6.36)</h4>
+              <ul>
+                <li>계약상 관계가 명시되지 않은 경우 → 실질 행위 분석</li>
+                <li>계약상 권리의무가 실제와 다른 경우 → 실질이 우선</li>
+                <li>이 경우 거래의 재정의(recharacterization) 가능 (Chapter I D.1.2)</li>
+                <li>의도적인 계약 왜곡은 BEPS 조작 위험 신호</li>
+              </ul>
+            </div>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 사례 — 계약과 실질의 불일치</div>
+            <strong>계약상:</strong> 케이맨 제도 자회사 X가 특허 보유, 한국 자회사 K가 단순 제조 후 X로 판매<br>
+            <strong>실질:</strong> 한국 자회사 K가 R&D 활동 70% 수행, 핵심 의사결정 한국에서 이루어짐<br>
+            <strong>결론:</strong> 계약상 X가 모든 이익을 가져가도록 되어 있어도, 실질에 따라 K에 상당 부분 이익 귀속이 정당화됨 → 거래의 재정의 필요
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>여러 무형자산이 함께 등록된 경우 + 트레이드 드레스·노하우 <span class="para">¶6.37–¶6.38</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.37은 특허권·상표권이 함께 등록된 경우의 분석 방법을, ¶6.38은 등록되지 않은 무형자산(트레이드 드레스·노하우 등)의 처리를 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>🔬 ¶6.37 — 특허·상표 동시 등록</h4>
+              <p>특허권과 상표권이 같이 등록된 무형자산의 경우, 각 권리를 <strong>개별적으로 분석</strong>해야 합니다. 통합된 가치만 평가하는 것이 아니라 각 권리의 기여도를 분리하여 정상가격 산출의 기초로 활용.</p>
+              <p style="margin-top:.3rem"><em>예시:</em> 의약품의 경우 특허(기술적 효능)와 상표(브랜드 인지도)가 함께 가치를 형성하므로 분리 평가 필요</p>
+            </div>
+            <div class="col-box orange">
+              <h4>🔐 ¶6.38 — 트레이드 드레스·노하우</h4>
+              <p>등록되지 않은 무형자산도 이전가격 분석 대상입니다. 트레이드 드레스(상품의 외관·이미지), 상업비밀(trade secrets), 노하우는 법률적 보호가 약하더라도 경제적 가치가 있으면 무형자산.</p>
+              <p style="margin-top:.3rem"><em>참고:</em> ITA(International Trademark Association, 2023)에 따르면 트레이드 드레스는 제품의 전반적 상업적 이미지로서 출처를 나타내며, 국가에 따라 상표·디자인·저작권·특허법으로 보호됩니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>국가별 무형자산 보호범위의 차이 <span class="para">¶6.39</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.39는 각국의 무형자산 보호범위가 다양하다는 점을 다룹니다. 이는 다국적 거래에서 매우 중요한 실무 고려사항입니다.</p>
+          <div class="key-point">💡 <strong>국가별 보호범위 차이의 함의:</strong> 무형자산의 가치는 그것이 사용되는 국가의 법률적 보호 수준에 크게 좌우됩니다. 보호 수준이 높은 국가에서는 무형자산 사용 대가(사용료)가 높고, 보호 수준이 낮은 국가에서는 사용료가 낮을 수 있습니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>국가별 차이 영역</th><th>이전가격 분석상 영향</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>특허 보호 기간</strong></td><td>국가별 20년~25년 등 — 사용 가능 기간이 가치에 영향</td></tr>
+              <tr><td><strong>지리적 보호 범위</strong></td><td>국가별 별도 등록 필요 — 미등록 국가에서는 보호 약함</td></tr>
+              <tr><td><strong>침해 구제 수단</strong></td><td>금전적 배상 vs 형사처벌 등 — 보호의 실효성 차이</td></tr>
+              <tr><td><strong>강제실시권</strong></td><td>일부 국가는 공익을 위해 강제실시권 부여 — 무형자산 가치 감소</td></tr>
+              <tr><td><strong>병행수입 정책</strong></td><td>지리적 가격차별화 가능성에 영향</td></tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 시사점 — 비교가능거래 분석 시</div>
+            <p>한국에서 무형자산을 사용하는 거래와 다른 국가의 무형자산 거래를 비교할 때, <strong>각국의 법률적 보호 수준 차이를 고려한 조정</strong>이 필요합니다. 예를 들어 미국에서의 특허 라이선스 사용료율을 한국에 그대로 적용하면, 양국의 특허 보호 강도 차이로 인해 비교가능성이 떨어질 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: 법률적 소유자 vs 이익 귀속자 -->
+    <section class="card" id="s4">
+      <h2>4. 법률적 소유자 ≠ 이익 귀속자 — BEPS의 핵심 원칙 <span class="tag tag-para">¶6.40–¶6.43</span></h2>
+      <p>이 섹션은 Chapter VI에서 가장 중요한 개념적 전환을 다룹니다. <strong>"법률적 소유자가 모든 이익을 가진다"는 전통적 관점을 명시적으로 거부</strong>하고, "DEMPE 활동의 실질적 수행자에게 이익이 귀속된다"는 BEPS의 새 패러다임을 제시합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적 소유자 + 제공자가 다른 경우 <span class="para">¶6.40–¶6.41</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.40은 법률적 소유자의 식별을, ¶6.41은 무형자산을 실제로 제공하는 자가 법률적 소유자와 다른 경우를 다룹니다.</p>
+          <div class="key-point">💡 <strong>¶6.40의 출발점:</strong> 법률적 소유자(legal owner)는 등록·계약상 무형자산의 권리자입니다. 분석의 출발점이지만, 이 자체로 이익 귀속이 결정되지는 않습니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 ¶6.41 사례 — 제공자 ≠ 법률적 소유자</div>
+            <strong>구조:</strong> 그룹 본사 A(미국)가 특허를 법률적으로 소유. 그러나 한국 자회사 K에 특허 사용을 제공하는 것은 싱가포르 자회사 S (라이선싱 허브 역할).<br><br>
+            <strong>분석:</strong> 한국 K는 누구에게 사용료를 지급해야 하는가? — 법률적 소유자 A인가, 실제 제공자 S인가?<br><br>
+            <strong>OECD 입장:</strong> 거래 구조와 실질 분석에 따라 결정. S가 단순 통과(pass-through) 역할만 한다면 실질적으로 A에게 지급되는 것으로 보아야 함. S가 실제 라이선싱 기능을 수행하면 S에 일정 보상.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>¶6.42 — Chapter VI의 핵심 원칙 (BEPS 패러다임 전환) <span class="para">¶6.42</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.42는 Chapter VI 전체를 관통하는 가장 중요한 원칙을 제시합니다. 이는 BEPS Action 8-10의 핵심 메시지이자 무형자산 이전가격의 패러다임 전환을 의미합니다.</p>
+          <div class="warn-point">⚠️ <strong>¶6.42의 핵심 원칙:</strong> <strong>"법률적 소유자가 이전가격상 이익의 귀속자와 항상 일치하지 않는다."</strong> 이는 단순한 권고가 아니라 BEPS 시대의 무형자산 분석 패러다임 전환을 선언하는 명제입니다.</div>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>❌ 전통적 관점 (BEPS 이전)</h4>
+              <ul>
+                <li>법률적 소유자 = 모든 이익 귀속자</li>
+                <li>계약·등록 중심</li>
+                <li>"Cash box" 회사 설립으로 이익 이전 가능</li>
+                <li>저세율국 자회사에 무형자산 등록</li>
+                <li>BEPS 조작의 핵심 도구</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 새 관점 (BEPS 이후)</h4>
+              <ul>
+                <li>법률적 소유 ≠ 이익 귀속 자동 결정</li>
+                <li>DEMPE 실질 분석이 결정적</li>
+                <li>"Cash box" 회사는 자본 사용 대가만</li>
+                <li>실제 기능·위험 수행자에게 귀속</li>
+                <li>경제적 실질 우선 원칙</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 적용:</strong> 다국적 그룹은 더 이상 무형자산을 저세율국에 단순 등록하는 것만으로 이익을 그곳에 귀속시킬 수 없습니다. <strong>실질적 DEMPE 활동을 수행하는 인력·자산·의사결정 기능</strong>이 있는 국가에 이익이 귀속되어야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적·계약상 관계의 분석 종합 <span class="para">¶6.43</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.43은 법률적·계약상 관계 분석이 가지는 의미와 한계를 종합합니다.</p>
+          <div class="key-point">💡 <strong>균형 잡힌 접근:</strong> 법률적·계약상 관계는 <strong>분석의 시작점</strong>이지만 <strong>결론 그 자체는 아닙니다</strong>. ¶6.42의 원칙에 따라 계약·법률을 기반으로 시작하되, DEMPE 실질 분석을 통해 검증하고 필요시 재정의해야 합니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>분석 단계</th><th>다루는 내용</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1단계: 계약·법률 파악</strong></td><td>법률적 소유자, 계약상 권리·의무, 위험 배분</td><td>¶6.35</td></tr>
+              <tr><td><strong>2단계: 실질 행위 분석</strong></td><td>DEMPE 활동의 실질적 수행자, 통제 기능</td><td>¶6.36, ¶6.42</td></tr>
+              <tr><td><strong>3단계: 일관성 검증</strong></td><td>계약과 실질의 일치 여부 평가</td><td>¶6.43</td></tr>
+              <tr><td><strong>4단계: 필요 시 재정의</strong></td><td>실질에 따른 거래 재정의 (Chapter I D.1.2)</td><td>¶6.36</td></tr>
+              <tr><td><strong>5단계: 정상가격 산출</strong></td><td>재정의된 거래에 적합한 방법론 적용</td><td>¶6.46</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: Ex-ante vs Ex-post Profit -->
+    <section class="card" id="s5">
+      <h2>5. Ex-ante (예상) vs Ex-post (실제) Profit <span class="tag tag-para">¶6.44–¶6.46</span></h2>
+      <p>무형자산 이전가격에서 가장 미묘하고 분쟁이 잦은 개념을 다룹니다. <strong>거래 시점의 예상소득과 사후 실현된 실제소득의 차이</strong>를 어떻게 다룰지의 문제이며, HTVI(Hard-to-Value Intangibles) 논의의 출발점이 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Ex-ante vs Ex-post 개념 — 예상과 실제의 차이 <span class="para">¶6.44 (White Paper 1988 참조)</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.44는 무형자산 분석에서 발생하는 핵심 시간적 차이를 다룹니다.</p>
+          <div class="profit-comparison">
+            <div class="profit-box">
+              <h4>📊 Ex-ante (예상) Profit</h4>
+              <ul style="color:var(--text2)">
+                <li><strong>시점:</strong> 거래 당시 예상한 소득</li>
+                <li><strong>기준:</strong> 거래 시점의 합리적 예측</li>
+                <li><strong>성격:</strong> Anticipated, Forecast</li>
+                <li><strong>예시:</strong> 신약 개발 시 예상 매출 100억</li>
+              </ul>
+            </div>
+            <div class="profit-vs">vs</div>
+            <div class="profit-box">
+              <h4>📈 Ex-post (실제) Profit</h4>
+              <ul style="color:var(--text2)">
+                <li><strong>시점:</strong> 사후 실제 실현된 소득</li>
+                <li><strong>기준:</strong> 시장에서 실제 발생한 결과</li>
+                <li><strong>성격:</strong> Actual, Realized</li>
+                <li><strong>예시:</strong> 신약 출시 후 실제 매출 500억 또는 10억</li>
+              </ul>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 White Paper (1988) — 정기적 조정 논의의 기원</div>
+            <p>The White Paper (1988, pp. 63-67; Chapter 8. Periodic Adjustments, A. "Introduction", B. "Periodic Review")가 예상소득과 실제소득 간의 차이 문제를 상세히 다룹니다. 미국이 IRC §482에서 "commensurate with income" 기준을 통해 사후 실제 수익을 반영하도록 한 정책의 기원이 됩니다.</p>
+          </div>
+          <div class="warn-point">⚠️ <strong>핵심 딜레마:</strong> 무형자산은 본질적으로 미래 가치가 불확실합니다. 거래 시점에 예상한 100억과 사후 실제 발생한 500억(또는 10억)의 차이를 어떻게 처리할 것인가? 이는 단순한 가격 책정 문제가 아니라 위험 배분의 본질적 문제입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Ex-ante vs Ex-post 소득 대가의 특성 <span class="para">¶6.45</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.45는 두 가지 소득이 보상하는 활동의 성격이 다르다는 점을 명확히 합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>Ex-ante 소득</th><th>Ex-post 소득</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>보상 대상</strong></td>
+                <td>무형자산 개발·개선·유지·보호·사용 관련 비용과 기능</td>
+                <td>실제로 수행한 기능과 위험에 따른 이익 배분</td>
+              </tr>
+              <tr>
+                <td><strong>위험 처리</strong></td>
+                <td>거래 시점 예상 위험에 따른 위험 프리미엄 포함</td>
+                <td>실현된 위험에 따른 추가 기능·비용 보상 (Chapter VI B.2.4)</td>
+              </tr>
+              <tr>
+                <td><strong>관련 분석</strong></td>
+                <td>Chapter I D.1 — 거래의 정확한 정의</td>
+                <td>Chapter VI B.2.4 — 위험 현실화 시 처리</td>
+              </tr>
+              <tr>
+                <td><strong>실무적 의미</strong></td>
+                <td>일반적 거래에서 적용</td>
+                <td>HTVI에서 사후 조정 정당화의 근거</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>HTVI(Hard-to-Value Intangibles)와의 연결:</strong> Ex-ante와 Ex-post 차이가 큰 무형자산이 바로 HTVI입니다. M6-8에서 자세히 다루지만, OECD는 HTVI의 경우 사후 결과(ex-post)를 거래 당시 예측(ex-ante)의 신뢰성을 검증하는 도구로 사용할 수 있도록 허용합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정상가격원칙의 적용 — Section B 마무리 <span class="para">¶6.46</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.46은 Section B.1을 마무리하며, 위 모든 분석(법률·계약·실질·시기)을 종합한 정상가격원칙 적용의 원칙을 제시합니다.</p>
+          <div class="key-point">💡 <strong>¶6.46의 정상가격원칙 적용:</strong> 무형자산의 정상가격은 ① 식별된 무형자산, ② 분석된 계약·법률 관계, ③ DEMPE 실질 분석, ④ Ex-ante 관점의 합리적 예측을 모두 통합하여 산출되어야 합니다. 어느 하나의 요소만으로 결정되는 것이 아닙니다.</div>
+          <div class="note-point">✅ <strong>다음 모듈 연결:</strong>
+            <ul>
+              <li><strong>M6-4:</strong> B.2 Functions, Assets, and Risks Related to Intangibles — DEMPE 활동의 세부 분석 (수행·통제·자금조달)</li>
+              <li><strong>M6-5:</strong> B.3·B.4 정상가격 결정 + 특정 사실 패턴 적용 (마케팅 무형자산·R&D·그룹 명칭 사용 등)</li>
+              <li><strong>M6-6:</strong> Section C — 무형자산 거래 유형 (이전·라이선싱·사용)</li>
+              <li><strong>M6-7·M6-8:</strong> Section D — 정상가격 산출방법·HTVI</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M6-3 핵심 정리 — Section B 도입 + B.1의 5가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>키워드</th><th>핵심 내용</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>7대 문제</strong></td><td>비교가능거래 부재·공동소유·수익분리·시기차이 등 무형자산 분석의 본질적 어려움</td><td>6.33</td></tr>
+              <tr><td><strong>OECD 6단계 절차</strong></td><td>식별→계약분석→DEMPE→일관성→재정의→정상가격 산출</td><td>6.34</td></tr>
+              <tr><td><strong>DEMPE 프레임워크</strong></td><td>Development·Enhancement·Maintenance·Protection·Exploitation</td><td>6.34 (BEPS 8-10)</td></tr>
+              <tr><td><strong>법률적 소유자 ≠ 이익 귀속자</strong></td><td>BEPS 패러다임 전환 — 실질적 DEMPE 수행자에게 이익 귀속</td><td>6.42</td></tr>
+              <tr><td><strong>Ex-ante vs Ex-post</strong></td><td>예상소득(거래시점 예측)과 실제소득(사후 실현)의 구별 — HTVI 논의의 기초</td><td>6.44–6.45</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. ¶6.34의 <strong>OECD 무형자산 분석 6단계 절차</strong>의 순서로 가장 정확한 것은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) 정상가격 산출 → 무형자산 식별 → 계약분석 → 기능위험 → 일관성 → 재정의</label>
+          <label><input type="radio" name="q1" value="b"> (B) ① 무형자산 식별 → ② 계약조건 분석 → ③ 기능·위험 부담 당사자 분석(DEMPE) → ④ 일관성·비교가능성 분석 → ⑤ 법률관계 실질 일치 검증 → ⑥ 정상가격 산출</label>
+          <label><input type="radio" name="q1" value="c"> (C) 법률적 소유자 식별 → 계약서 검토 → 정상가격 산출 (3단계)</label>
+          <label><input type="radio" name="q1" value="d"> (D) 분석 절차는 임의로 결정 가능</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. <strong>DEMPE 프레임워크</strong>의 5가지 약자가 의미하는 활동은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) Direct·Effective·Material·Profitable·Effective</label>
+          <label><input type="radio" name="q2" value="b"> (B) Development·Enhancement·Maintenance·Protection·Exploitation — 무형자산의 개발·개선·유지·보호·활용 활동, BEPS Action 8-10(2015)에서 도입된 무형자산 기능 분석의 핵심 프레임워크</label>
+          <label><input type="radio" name="q2" value="c"> (C) Define·Estimate·Measure·Pricing·Evaluate</label>
+          <label><input type="radio" name="q2" value="d"> (D) Design·Execute·Monitor·Plan·Examine</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. ¶6.42가 제시하는 <strong>Chapter VI의 핵심 원칙</strong>(BEPS 패러다임 전환)은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) 법률적 소유자가 무형자산의 모든 이익을 자동으로 받는다</label>
+          <label><input type="radio" name="q3" value="b"> (B) "법률적 소유자가 이전가격상 이익의 귀속자와 항상 일치하지 않는다" — DEMPE 활동의 실질적 수행자에게 이익 귀속, BEPS 시대 무형자산 분석의 패러다임 전환 선언</label>
+          <label><input type="radio" name="q3" value="c"> (C) 무형자산은 회계상 인식되어야만 분석 대상이 된다</label>
+          <label><input type="radio" name="q3" value="d"> (D) 계약서가 모든 것을 결정한다</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. <strong>Ex-ante (예상) 소득과 Ex-post (실제) 소득</strong>의 보상 대상 차이로 가장 정확한 것은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 둘은 동일한 개념이다</label>
+          <label><input type="radio" name="q4" value="b"> (B) Ex-ante는 거래 시점 예상한 무형자산 개발·개선·유지·보호·사용 관련 비용과 기능을 보상, Ex-post는 실제로 수행한 기능과 위험에 따른 이익 배분 (위험 현실화 시 추가 보상 포함). HTVI(M6-8)에서 사후 조정 정당화의 근거가 됨</label>
+          <label><input type="radio" name="q4" value="c"> (C) Ex-ante는 사후 결과만 반영한다</label>
+          <label><input type="radio" name="q4" value="d"> (D) Ex-post는 거래 시점 예측만을 의미한다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶6.36의 <strong>계약과 실질이 다른 경우의 처리 원칙</strong>은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 계약이 항상 우선한다 (실질 무시)</label>
+          <label><input type="radio" name="q5" value="b"> (B) 계약상 관계가 명시되지 않거나 권리의무 관계가 실제와 다른 경우 실질이 우선하며, 거래의 재정의(recharacterization)가 가능 (Chapter I D.1.2). 의도적 계약 왜곡은 BEPS 조작 위험 신호</label>
+          <label><input type="radio" name="q5" value="c"> (C) 실질이 다르면 거래 자체를 부정한다</label>
+          <label><input type="radio" name="q5" value="d"> (D) 계약과 실질의 비교는 OECD가 다루지 않는다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사의 무형자산 거래가 ¶6.33의 7대 대표 문제(비교가능거래 부재·공동소유·수익 분리 어려움·시기 차이 등)에 해당하는지 식별하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">무형자산 분석을 OECD 6단계 절차(식별→계약→DEMPE→일관성→실질 검증→정상가격 산출)에 따라 체계적으로 진행하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">자사의 무형자산 관련 DEMPE(Development·Enhancement·Maintenance·Protection·Exploitation) 활동의 실질적 수행자를 그룹 차원에서 식별·문서화하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">¶6.42의 핵심 원칙(법률적 소유자 ≠ 이익 귀속자)을 인식하고, 그룹의 무형자산 보유 구조가 실질 DEMPE 활동과 일치하는지 점검하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">그룹이 저세율국에 무형자산을 등록한 "Cash box" 구조가 있다면, BEPS Action 8-10 위험을 평가하고 실질 분석에 대비하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">특허·상표권이 함께 등록된 무형자산의 경우 각 권리를 개별 분석(¶6.37)하고, 트레이드 드레스·노하우 등 등록되지 않은 무형자산(¶6.38)도 포함하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">국가별 무형자산 보호범위 차이(특허 기간·지리적 범위·침해 구제 등)를 비교가능거래 분석 시 조정 요소로 반영하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">계약상 권리의무 관계가 실제 행위와 일치하는지 검증하고, 불일치 시 거래의 재정의(Chapter I D.1.2) 가능성을 평가하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">Ex-ante(거래시점 예상)와 Ex-post(사후 실제) 소득의 차이가 큰 무형자산에 대해 HTVI 위험을 평가하고 M6-8 대응에 대비하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">무형자산 거래에 적용된 위험 프리미엄·정상가격이 거래 시점의 합리적 예측(ex-ante)을 반영하면서도 사후 실제(ex-post) 결과와 큰 괴리가 없는지 정기적으로 점검하고 있습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M6-2_무형자산_분류_예시.html">← M6-2 분류·예시</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter VI 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M6-4는 다음 단계에서 작성됩니다.');return false;">M6-4 기능·자산·위험 분석 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b'};
+const feedbacks={
+  q1:{
+    a:'❌ 정상가격 산출은 마지막 단계(⑥)이지 첫 단계가 아닙니다.',
+    b:'✅ 정답! ¶6.34에 따른 OECD 무형자산 분석 6단계 절차는 ① 무형자산 식별 → ② 계약조건 분석 → ③ 기능·위험 부담 당사자 분석(DEMPE) → ④ 계약조건 일관성·비교가능성 분석 → ⑤ 법률관계·계약관계가 실제와 동일한지 분석 → ⑥ 정상가격 산출입니다. 가장 중요한 단계는 ③ DEMPE 분석이며, 이것이 BEPS Action 8-10의 핵심 패러다임 전환입니다.',
+    c:'❌ 단순한 3단계가 아닌 체계적 6단계 절차입니다.',
+    d:'❌ OECD는 명확한 순차적 절차를 제시합니다.'
+  },
+  q2:{
+    a:'❌ DEMPE의 의미가 아닙니다.',
+    b:'✅ 정답! DEMPE는 Development(개발)·Enhancement(개선)·Maintenance(유지)·Protection(보호)·Exploitation(활용)의 약자로, BEPS Action 8-10(2015)에서 도입된 무형자산 관련 기능 분석의 핵심 프레임워크입니다. 이는 무형자산의 가치 창출에 기여하는 모든 활동을 체계적으로 분류·분석하기 위한 구조입니다.',
+    c:'❌ DEMPE의 정확한 의미가 아닙니다.',
+    d:'❌ DEMPE의 정확한 의미가 아닙니다.'
+  },
+  q3:{
+    a:'❌ ¶6.42는 이 전통적 관점을 명시적으로 거부합니다.',
+    b:'✅ 정답! ¶6.42는 Chapter VI의 가장 중요한 원칙으로 "법률적 소유자가 이전가격상 이익의 귀속자와 항상 일치하지 않는다"고 선언합니다. 이는 BEPS Action 8-10의 핵심 메시지이자 무형자산 이전가격 분석의 패러다임 전환입니다. 단순히 무형자산을 저세율국에 등록(Cash box 구조)하는 것만으로는 이익을 그곳에 귀속시킬 수 없으며, DEMPE 활동의 실질적 수행자에게 이익이 귀속되어야 합니다.',
+    c:'❌ ¶6.7에 따르면 회계 인식 여부는 무형자산 분석의 필수 요소가 아닙니다.',
+    d:'❌ ¶6.36, ¶6.42에 따르면 계약은 출발점이지 결론이 아니며, 실질이 우선합니다.'
+  },
+  q4:{
+    a:'❌ Ex-ante와 Ex-post는 명확히 구별되는 개념입니다.',
+    b:'✅ 정답! ¶6.45에 따르면 Ex-ante 소득은 거래 시점에서 무형자산 개발·개선·유지·보호·사용 관련 비용과 기능을 일반적으로 보상하고, Ex-post 소득은 실제로 수행한 기능과 위험에 따라 이익을 배분합니다. 위험이 현실화되었을 경우 추가 기능 및 비용에 따른 이익 배분이 발생할 수 있습니다 (Chapter VI B.2.4). 이 구별은 M6-8의 HTVI(Hard-to-Value Intangibles)에서 사후 조정 정당화의 근거가 됩니다.',
+    c:'❌ Ex-ante는 거래 시점 예상이지 사후 결과가 아닙니다.',
+    d:'❌ Ex-post는 사후 실제 실현된 결과이지 거래 시점 예측이 아닙니다.'
+  },
+  q5:{
+    a:'❌ ¶6.36과 ¶6.42에 따라 실질이 계약보다 우선합니다.',
+    b:'✅ 정답! ¶6.36에 따르면 계약상 관계가 명시되지 않거나 계약상 권리의무 관계가 실제와 다른 경우 실질이 우선하며, 거래의 재정의(recharacterization)가 가능합니다 (Chapter I D.1.2). 의도적인 계약 왜곡은 BEPS 조작의 위험 신호로 분석 대상이 됩니다. 이는 "Substance over Form" 원칙의 적용입니다.',
+    c:'❌ 거래의 재정의이지 부정이 아닙니다.',
+    d:'❌ OECD는 계약과 실질의 불일치 문제를 명확히 다룹니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M6-3을 완료하셨습니다. 다음은 M6-4 기능·자산·위험 분석(DEMPE 세부)입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

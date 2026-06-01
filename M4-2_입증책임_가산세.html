@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M4-2: 입증책임 & 가산세</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#3730a3;--purple-light:#eef2ff;--purple-mid:#4f46e5;--purple-dark:#1e1b4b;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e1b4b;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#e0e7ff}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #c7d2fe;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.bop-card{border-radius:10px;padding:1rem 1.1rem;border:1.5px solid}
+.bop-card.t1{border-color:var(--green);background:#f0fdf4}
+.bop-card.t1 h4{color:var(--green)}
+.bop-card.t2{border-color:var(--orange);background:#fff7ed}
+.bop-card.t2 h4{color:var(--orange)}
+.bop-card.t3{border-color:var(--red);background:#fef2f2}
+.bop-card.t3 h4{color:var(--red)}
+.bop-card .bn{display:inline-block;color:#fff;width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;font-size:.78rem;font-weight:800;margin-bottom:.4rem}
+.bop-card.t1 .bn{background:var(--green)}
+.bop-card.t2 .bn{background:var(--orange)}
+.bop-card.t3 .bn{background:var(--red)}
+.bop-card h4{font-size:.92rem;font-weight:700;margin-bottom:.35rem}
+.bop-card p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.6}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--purple);margin:.5rem 0}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col{grid-template-columns:1fr}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter IV 분쟁 회피·해결 행정적 접근 › M4-2 (2/6)</div>
+  <h1>M4-2. 입증책임 & 가산세 (Burden of Proof & Penalties)</h1>
+  <div class="sub">B.2 입증책임 + B.3 가산세 — 입증책임의 3유형, 추정과세, 가산세 종류·성격, 성실한 납세자 보호 &nbsp;|&nbsp; ¶4.11 – ¶4.28 &nbsp;|&nbsp; 예상 학습시간: 50분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 입증책임의 종류 (B.2)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 입증책임 면책과 추정과세</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 국가별 입증책임 & 이중과세</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 가산세 개요 & 종류 (B.3)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 가산세 원칙 & 성실 납세자 보호</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>입증책임(burden of proof)의 3가지 유형 — 과세관청 부담, 조건적 납세자 부담, 전적 납세자 부담 — 을 구별할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>입증책임 면책의 요건과 추정과세(presumptive taxation)의 한계, 입증책임 전가의 OECD 입장을 설명할 수 있다</span></li>
+        <li><span class="obj-num">3</span><span>국가별 입증책임 기준의 차이가 이중과세 위험에 미치는 영향과 OECD 모델협약 제9조 제2항의 의미를 이해한다</span></li>
+        <li><span class="obj-num">4</span><span>이전가격 가산세의 종류(자료 미제출 과태료·과소신고가산세·납부불성실가산세·2차처분)와 형사범죄 한계를 파악한다</span></li>
+        <li><span class="obj-num">5</span><span>"비합리적 가산세 금지" 원칙과 성실한 납세자(good faith taxpayer)에 대한 OECD의 보호 기준을 실무에 적용한다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: 입증책임의 종류 -->
+    <section class="card" id="s1">
+      <h2>1. 입증책임의 종류 (B.2) <span class="tag tag-para">¶4.11</span></h2>
+      <p>입증책임(burden of proof)이란 <strong>특정 사실 또는 주장의 진실성을 입증해야 할 책임</strong>을 의미합니다. 이전가격 분쟁에서 입증책임이 누구에게 있는지는 분쟁의 핵심 쟁점이 됩니다. ¶4.11은 OECD 회원국이 채택하고 있는 입증책임의 3가지 유형을 제시하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>입증책임의 3유형 한눈에 보기 <span class="para">¶4.11</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>각국의 법제도와 행정관행에 따라 입증책임의 분배 방식이 다르며, 다음 3가지 유형으로 분류할 수 있습니다.</p>
+          <div class="three-col">
+            <div class="bop-card t1">
+              <span class="bn">1</span>
+              <h4>과세관청 부담형</h4>
+              <p>입증책임이 <strong>전적으로 과세관청</strong>에 있는 경우입니다. 과세관청이 이전가격이 정상가격과 다르다는 점을 입증해야 합니다.</p>
+            </div>
+            <div class="bop-card t2">
+              <span class="bn">2</span>
+              <h4>조건부 전환형</h4>
+              <p>원칙적으로는 과세관청이 부담하지만, <strong>납세자가 조사에 협조하지 않는 경우</strong> 입증책임이 납세자에게 조건부로 전환되는 유형입니다.</p>
+            </div>
+            <div class="bop-card t3">
+              <span class="bn">3</span>
+              <h4>전적 납세자 부담형</h4>
+              <p>입증책임이 <strong>처음부터 전적으로 납세자</strong>에게 있는 경우입니다. 납세자가 자신의 이전가격이 정상가격임을 입증해야 합니다.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>중요:</strong> 입증책임이 누구에게 있는가는 분쟁에서 누가 "패소 위험(risk of non-persuasion)"을 부담하는가의 문제입니다. 입증되지 않은 사실은 입증책임을 부담하는 측의 불이익으로 처리됩니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국의 입장</div>
+            <p>한국 세법은 원칙적으로 <strong>과세관청 부담형</strong>에 가깝지만(국세기본법상 과세요건 입증책임은 과세관청), 이전가격 분야에서는 납세자의 자료제출 의무(국조법 제16조)가 강화되어 있어 실무상 납세자의 입증부담이 상당히 큽니다. 자료 미제출 시에는 정상가격을 추정할 수 있는 규정(국조법 제7조 등)이 있어 사실상 조건부 전환에 가깝게 운영됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: 입증책임 면책과 추정과세 -->
+    <section class="card" id="s2">
+      <h2>2. 입증책임 면책과 추정과세 <span class="tag tag-para">¶4.12–¶4.13</span></h2>
+      <p>¶4.12와 ¶4.13은 <strong>납세자의 비협조 시 과세관청의 권한</strong>과 그 한계를 다루고 있습니다. 추정과세는 강력한 수단인 만큼 남용 가능성도 크므로 OECD는 엄격한 한계를 설정하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>입증책임 면책의 요건 <span class="para">¶4.12</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>납세자가 자료요구에 응하지 않는 경우, 과세관청에게 다음 두 가지 권한이 인정될 수 있다고 설명하고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>✓ 인정되는 권한</h4>
+              <ul>
+                <li><strong>입증책임 면제:</strong> 과세관청이 정상가격을 입증해야 할 책임에서 벗어날 수 있습니다</li>
+                <li><strong>추정 소득 산출:</strong> 합리적 추정에 따라 소득금액을 결정할 수 있는 권한이 부여됩니다</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>✗ 인정되지 않는 권한</h4>
+              <ul>
+                <li><strong>과도한 자료요구:</strong> 입증책임을 면하기 위해 비현실적으로 광범위한 자료를 요구하는 행위는 금지됩니다</li>
+                <li><strong>자료요구의 남용:</strong> 자료 미제출을 의도적으로 유발하기 위한 과도한 요구는 부당합니다</li>
+              </ul>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>핵심:</strong> 과세관청은 "납세자가 자료를 제출하지 않았다"는 이유만으로 자동적으로 입증책임에서 면제되는 것이 아닙니다. 자료요구 자체의 합리성이 함께 평가되어야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>추정과세에 대한 OECD의 원칙적 입장 <span class="para">¶4.13</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD는 정상가격원칙을 배제한 추정과세 방식을 원칙적으로 부정하면서도, 일정한 상황에서 입증책임 전가는 인정한다는 입장을 제시하고 있습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>OECD 입장</th><th>이유</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>정상가격원칙 배제 + 추정과세</strong></td>
+                <td>❌ 원칙적 부정</td>
+                <td>정상가격원칙이 국제적 합의이므로 이를 우회하는 추정과세는 허용되지 않음</td>
+              </tr>
+              <tr>
+                <td><strong>모든 입증책임을 납세자에게 부과</strong></td>
+                <td>❌ 원칙적 부정</td>
+                <td>입증의 형평성에 반하고 자의적 과세 위험</td>
+              </tr>
+              <tr>
+                <td><strong>특정 상황에서 입증책임 전가</strong></td>
+                <td>✅ 제한적 인정</td>
+                <td>납세자 비협조, 자료 미제출 등 합리적 사유가 있는 경우</td>
+              </tr>
+              <tr>
+                <td><strong>정상가격원칙 내에서 합리적 추정</strong></td>
+                <td>✅ 인정</td>
+                <td>비교가능거래·자료 부재 시 합리적 추정은 정상가격 적용의 일부</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>실무 의미:</strong> "정상가격원칙에 따른 추정"과 "정상가격원칙을 배제한 추정"은 다릅니다. 전자는 비교가능거래나 합리적 비교지표를 활용한 추정으로 허용되지만, 후자는 OECD가 부정하는 자의적 과세에 해당합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: 국가별 입증책임 차이 -->
+    <section class="card" id="s3">
+      <h2>3. 국가별 입증책임의 차이와 이중과세 위험 <span class="tag tag-para">¶4.14–¶4.17</span></h2>
+      <p>입증책임은 각국의 헌법·세법·행정관행에 깊이 뿌리내린 제도이기 때문에 국가별 차이가 큽니다. 이러한 차이가 이중과세를 유발할 수 있으며, OECD는 협약을 통해 이를 조정하려 하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>각국의 개별 입장과 분쟁의 복잡성 <span class="para">¶4.14–¶4.15</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.14는 입증책임이 각국의 법률 전통(대륙법·영미법), 헌법적 보장, 개별사건의 사실관계 등에 따라 크게 달라진다고 설명하고 있습니다. ¶4.15는 이러한 차이가 만들어내는 "입증책임의 불균형(asymmetry)" 문제를 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box orange">
+              <h4>🌐 국가별 차이의 원인</h4>
+              <ul>
+                <li>법률 전통의 차이 (대륙법 vs. 영미법)</li>
+                <li>헌법적 조세법률주의 해석 차이</li>
+                <li>행정절차법·증거법 차이</li>
+                <li>이전가격 세법의 성숙도 차이</li>
+                <li>법원 판례의 누적 정도</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>⚠️ 이중과세로 이어지는 시나리오</h4>
+              <p>A국(과세관청 부담형)에서는 과세관청이 정상가격 위반을 입증하지 못해 납세자가 승소했지만, B국(납세자 부담형)에서는 납세자가 정상가격임을 입증하지 못해 추가과세가 확정되는 경우, 동일 거래에 대한 양국의 결론이 달라져 이중과세가 발생합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국·미국·OECD 판례 경향</div>
+            <p>한국 대법원은 이전가격 사건에서 입증책임의 분배를 사안별로 판단하며, 과세요건 사실은 원칙적으로 과세관청이 입증하되 납세자의 자료제출 의무 위반이 있는 경우 입증부담을 일부 전환하는 경향이 있습니다. 미국은 IRC §482와 관련 규정에서 일반적으로 납세자가 IRS의 조정에 대해 "임의적·자의적(arbitrary, capricious)"임을 입증해야 하는 부담을 지는 경향이 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>MAP 신뢰성 확보와 국가간 입증책임 <span class="para">¶4.16–¶4.17</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.16과 ¶4.17은 입증책임의 국제적 측면을 다룹니다. OECD는 이중과세를 방지하고 상호합의절차(MAP)의 신뢰성을 확보하기 위해 입증책임에 관한 국제적 조율이 필요하다고 봅니다.</p>
+          <div class="key-point">💡 <strong>핵심 원칙:</strong> ¶4.17은 OECD 모델협약 제9조 제2항에 따라 <strong>최초 이전가격 조정을 제시한 국가의 과세관청이 입증책임을 부담</strong>한다는 점을 명확히 합니다. 이는 MAP과 대응조정 절차에서 일관성을 확보하기 위한 원칙입니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>상황</th><th>입증책임 부담자</th><th>근거</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>A국이 자국 자회사에 1차 조정 부과</td>
+                <td>A국 과세관청</td>
+                <td>최초 조정 제시 국가</td>
+              </tr>
+              <tr>
+                <td>B국이 대응조정 검토</td>
+                <td>A국 과세관청 (1차 조정의 정당성)</td>
+                <td>OECD 모델 제9조 제2항</td>
+              </tr>
+              <tr>
+                <td>MAP 협의 과정</td>
+                <td>1차 조정 국가가 정당성 입증</td>
+                <td>MAP 절차의 효율성</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-point">✅ <strong>실무 적용:</strong> 한국 기업이 해외 자회사 소재국에서 1차 이전가격 조정을 받은 경우, 해당 국가의 과세관청이 조정의 정당성을 입증해야 합니다. 한국 기업은 MAP 신청 시 자국 과세관청(국세청)에 1차 조정의 부당성을 적극 입증할 자료를 제출해야 효과적인 MAP 진행이 가능합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: 가산세 개요 -->
+    <section class="card" id="s4">
+      <h2>4. 가산세 개요와 종류 (B.3) <span class="tag tag-para">¶4.18–¶4.23</span></h2>
+      <p>Section B.3은 이전가격 관련 가산세(penalties) 제도를 다루고 있습니다. 가산세는 납세협력을 장려하는 수단이지만, 잘못 운영되면 정상가격원칙의 효과적 적용을 저해할 수 있으므로 OECD는 신중한 접근을 권고하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>가산세의 재정학적 기초와 자료 미제출 과태료 <span class="para">¶4.18–¶4.19</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.18은 가산세 제도가 <strong>납세협력(tax compliance)을 유도하기 위한 재정적 인센티브 메커니즘</strong>이라는 점을 강조합니다. ¶4.19는 이전가격 자료 미제출에 대한 과태료를 다루며, 각국이 이러한 제도를 운영하는 방식이 다양함을 보여줍니다.</p>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국의 이전가격 관련 과태료·가산세 체계</div>
+            <p><strong>① 자료 미제출 과태료:</strong> 국조법 제16조에 따른 이전가격자료(Local file), 통합기업보고서(Master file), 국가별보고서(CbCR) 미제출 시 과태료가 부과됩니다.</p>
+            <p><strong>② 과소신고가산세:</strong> 이전가격 조정으로 인한 과소신고분에 대해 국세기본법상 과소신고가산세(10%, 부정행위 시 40%)가 부과됩니다.</p>
+            <p><strong>③ 납부불성실가산세:</strong> 과세표준 조정에 따른 미납세액에 일일 이자 성격의 가산세가 부과됩니다.</p>
+            <p><strong>④ 2차처분(소득처분):</strong> 이전가격 조정에 따라 사외유출된 것으로 의제되는 금액에 대해 배당·기타소득 등의 소득처분과 추가 원천징수 부담이 발생합니다.</p>
+            <p><strong>미국 비교:</strong> IRC §6662(e)·(h)는 이전가격 관련 과소신고에 대해 20%–40%의 가산세를 부과하며, 동기 문서화(contemporaneous documentation)를 통한 면제 규정을 두고 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>형사범죄 vs. 민사처벌의 경계 <span class="para">¶4.20, ¶4.23</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.20과 ¶4.23은 이전가격 위반에 대한 <strong>형사범죄(criminal offence)와 민사처벌(civil penalty)의 구별</strong>을 다루며, OECD는 순수한 이전가격 문제에 형사범죄를 적용하는 것에 부정적 입장을 보이고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box green">
+              <h4>✅ OECD 권고 — 민사처벌 원칙</h4>
+              <ul>
+                <li>대부분의 OECD 회원국은 <strong>과실·고의 모두 민사처벌</strong>만 부과합니다</li>
+                <li>이전가격은 본질적으로 추정·해석의 영역이므로 형사범죄로 다루기에 부적합합니다</li>
+                <li>가산세·과태료를 통한 행정적 제재가 적절합니다</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>⚠️ 예외 — 형사범죄 적용 가능</h4>
+              <ul>
+                <li><strong>고의적·계획적 조세회피</strong>가 명백한 경우</li>
+                <li>허위 문서 작성, 자료 조작, 은닉 등 적극적 부정행위</li>
+                <li>한국에서도 단순한 정상가격 차이만으로는 형사범죄로 다루지 않으나, 고의성이 입증되면 조세범처벌법 적용 가능</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>핵심 분기점:</strong> "정상가격과 다르다" ≠ "조세범죄". 단순한 방법론 차이·해석 차이는 행정적 조정 사안이지 형사 처벌 사안이 아니라고 봅니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>과태료의 종류와 가산세의 성격 <span class="para">¶4.21–¶4.22</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>과태료를 크게 세 가지 종류로 구분합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>성격</th><th>한국 대응 제도</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>과소신고형 가산세</strong></td>
+                <td>세금을 정확히 신고하지 않은 데 대한 제재</td>
+                <td>과소신고가산세 (국기법 §47-3)</td>
+              </tr>
+              <tr>
+                <td><strong>이자 성격 가산세</strong></td>
+                <td>납부 지연에 따른 이자성 부담</td>
+                <td>납부불성실가산세 (국기법 §47-4)</td>
+              </tr>
+              <tr>
+                <td><strong>자료 미제출 과태료</strong></td>
+                <td>협력의무 위반에 대한 행정 제재</td>
+                <td>이전가격자료·CbCR 미제출 과태료 (국조법)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-point">✅ <strong>가산세의 본질(¶4.22):</strong> 가산세는 손해의 회복이 아니라 <strong>장래 위반행위 억제와 납세협력 유도</strong>를 위한 제도입니다. 따라서 가산세의 수준은 위반행위의 정도와 비례해야 하며, 단순한 세수확보 수단으로 사용되어서는 안 됩니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: 가산세 원칙 & 성실 납세자 보호 -->
+    <section class="card" id="s5">
+      <h2>5. 가산세 적용 원칙 & 성실 납세자 보호 <span class="tag tag-para">¶4.24–¶4.28</span></h2>
+      <p>가산세 제도에 적용해야 할 <strong>비례성(proportionality), 합리성(reasonableness), 선의 보호(good faith protection)</strong>의 3대 원칙을 다룹니다. 특히 ¶4.28의 "성실한 납세자 보호" 규정은 실무에서 매우 중요한 보호장치입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>비합리적 가산세 금지 원칙 <span class="para">¶4.24–¶4.26</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.25는 "가산세는 납세협력 장려를 위한 것이므로 이전가격 가산세도 비합리적 방법으로 적용되어서는 안 된다"는 원칙을 명시합니다. ¶4.26은 한 걸음 더 나아가 비합리적 가산세가 OECD 모델협약 제9조(관계기업) 규정에 반한다고 선언하고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>🚫 금지되는 "비합리적 가산세"의 예</h4>
+              <ul>
+                <li>위반행위 정도에 비해 <strong>과도한 금액</strong>의 가산세</li>
+                <li>선의의 착오에 대한 <strong>고의범 수준</strong>의 가산세</li>
+                <li>합리적 노력을 한 납세자에 대한 <strong>일률적 부과</strong></li>
+                <li>방법론 차이만으로 <strong>형사적 수준</strong>의 가산세</li>
+                <li>자료가 객관적으로 부재한 상황에 대한 <strong>책임 전가식</strong> 가산세</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 합리적 가산세의 기준 (¶4.27)</h4>
+              <ul>
+                <li><strong>위반행위의 정도</strong>에 따라 차등 부과 (비례성)</li>
+                <li>고의·과실·선의의 착오를 <strong>구분</strong>하여 적용</li>
+                <li>납세자의 협력 정도를 <strong>참작</strong></li>
+                <li>자료의 객관적 부재 등 <strong>불가항력적 상황</strong> 고려</li>
+                <li>국제적 표준과의 <strong>일관성</strong> 확보</li>
+              </ul>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>OECD 모델협약 제9조 위반 의미:</strong> 비합리적 가산세는 정상가격원칙의 효과적 적용을 저해함으로써 사실상 협약상의 의무를 회피하는 결과를 낳습니다. 따라서 단순한 행정 문제가 아니라 <strong>국제법(조세조약)상의 위반</strong>이 될 수 있다는 점을 강조하고 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>성실한 납세자(Good Faith Taxpayer) 보호 — ¶4.28의 핵심 <span class="para">¶4.28</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.28은 본 모듈에서 가장 실무적으로 중요한 원칙을 제시합니다. OECD는 <strong>두 가지 상황에서 상당한 가산세를 부과하는 것은 부당하다</strong>고 명시합니다.</p>
+          <div class="three-col">
+            <div class="bop-card t1">
+              <span class="bn">1</span>
+              <h4>선의의 착오 (Innocent Mistake)</h4>
+              <p>납세자에게 <strong>과실이나 고의가 없고</strong> 선의로 행한 착오가 있는 경우, 상당한 수준의 가산세를 부과하는 것은 부당합니다.</p>
+            </div>
+            <div class="bop-card t1">
+              <span class="bn">2</span>
+              <h4>선의의 합리적 노력 (Good Faith Reasonable Effort)</h4>
+              <p>납세자가 <strong>선의로 합리적인 노력</strong>을 다한 경우에도 결과적 차이를 이유로 상당한 가산세를 부과하는 것은 부당합니다.</p>
+            </div>
+            <div class="bop-card t2">
+              <span class="bn">3</span>
+              <h4>적용 영역 (특히 강조)</h4>
+              <p>① <strong>데이터의 객관적 부재</strong>로 인한 착오, ② <strong>정상가격방법의 적용상 오류</strong> 등이 발생한 경우 위 보호 원칙이 특히 강하게 작동합니다.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 보호장치로서의 의미:</strong> ¶4.28은 납세자가 "최선의 노력을 다한 경우" 가산세 부담에서 보호받을 수 있다는 원칙을 제시합니다. 이를 입증하기 위해서는 사전적 의사결정 자료, 시장조사 결과, 합리적 방법론 선정 근거, 비교가능회사 검색 노력 등의 <strong>문서화(contemporaneous documentation)</strong>가 핵심 증거가 됩니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국·미국의 선의 보호 규정 비교</div>
+            <p><strong>한국:</strong> 국조법 제17조(가산세 적용의 특례) — 정상가격산출방법 적용에 정당한 사유가 있는 경우 과소신고가산세를 면제할 수 있는 규정을 두고 있습니다. 또한 국세기본법 제48조의 가산세 감면 사유(천재지변, 정당한 사유 등)가 함께 적용될 수 있습니다.</p>
+            <p><strong>미국:</strong> IRC §6664(c) — "합리적 사유(reasonable cause)와 선의(good faith)"가 있는 경우 가산세 면제. 이전가격 영역에서는 <strong>"동기 문서화(contemporaneous documentation)"</strong>가 선의 입증의 핵심 수단으로 활용됩니다.</p>
+            <p><strong>실무 시사점:</strong> 가산세 방어의 출발점은 결과(수치)가 아니라 절차(분석·문서화 노력)에 대한 입증입니다. M4-1에서 다룬 "절차 중심 조사"와 일관된 메시지입니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M4-2 핵심 정리 — Section B.2·B.3 5가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>키워드</th><th>의미</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>입증책임 3유형</strong></td><td>과세관청 부담 / 조건부 전환 / 전적 납세자 부담</td><td>4.11</td></tr>
+              <tr><td><strong>추정과세 제한</strong></td><td>정상가격원칙을 배제한 추정과세는 부정, 정상가격 내 추정은 허용</td><td>4.12–4.13</td></tr>
+              <tr><td><strong>제9조 제2항 원칙</strong></td><td>최초 이전가격 조정 제시 국가가 입증책임 부담</td><td>4.17</td></tr>
+              <tr><td><strong>비합리적 가산세 금지</strong></td><td>위반행위 정도에 비례하지 않는 가산세는 협약 위반</td><td>4.25–4.26</td></tr>
+              <tr><td><strong>성실한 납세자 보호</strong></td><td>선의의 착오·합리적 노력에 대한 가산세 부과 부당</td><td>4.28</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. ¶4.11이 제시하는 <strong>입증책임의 3가지 유형</strong>이 아닌 것은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) 과세관청에게 입증책임이 있는 경우</label>
+          <label><input type="radio" name="q1" value="b"> (B) 납세자의 비협조 시 조건부로 납세자에게 전환되는 경우</label>
+          <label><input type="radio" name="q1" value="c"> (C) 전적으로 납세자에게 입증책임이 있는 경우</label>
+          <label><input type="radio" name="q1" value="d"> (D) 입증책임이 법원에게 전적으로 위임되는 경우</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. ¶4.13의 <strong>추정과세에 대한 OECD의 입장</strong>으로 가장 적절한 것은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) 정상가격원칙을 배제한 추정과세도 효율성을 위해 허용된다</label>
+          <label><input type="radio" name="q2" value="b"> (B) 정상가격원칙을 배제한 추정과세는 원칙적으로 부정되나, 정상가격원칙 내에서의 합리적 추정 및 상황에 따른 입증책임 전가는 인정된다</label>
+          <label><input type="radio" name="q2" value="c"> (C) 모든 형태의 추정과세는 무조건 금지된다</label>
+          <label><input type="radio" name="q2" value="d"> (D) 입증책임은 항상 납세자에게 있다</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. OECD 모델협약 <strong>제9조 제2항</strong>에 따른 입증책임 분배 원칙은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) 항상 자국 거주자가 입증책임을 부담한다</label>
+          <label><input type="radio" name="q3" value="b"> (B) 최초 이전가격 조정을 제시한 국가의 과세관청이 입증책임을 부담한다</label>
+          <label><input type="radio" name="q3" value="c"> (C) 모회사 소재국이 입증책임을 부담한다</label>
+          <label><input type="radio" name="q3" value="d"> (D) MAP 신청 국가가 입증책임을 부담한다</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. ¶4.20에 따른 <strong>이전가격 위반에 대한 OECD의 형사처벌 입장</strong>으로 가장 적절한 것은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 모든 이전가격 위반에 형사처벌을 적용해야 한다</label>
+          <label><input type="radio" name="q4" value="b"> (B) 순수한 이전가격 문제(방법론 차이 등)에 형사범죄를 적용하는 것은 부정적이며, 대부분 민사처벌이 적절하다 (다만 고의적·계획적 조세회피는 예외)</label>
+          <label><input type="radio" name="q4" value="c"> (C) 이전가격 위반에는 어떠한 제재도 부과할 수 없다</label>
+          <label><input type="radio" name="q4" value="d"> (D) 가산세는 부과할 수 없으며 형사처벌만 가능하다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶4.28이 제시하는 <strong>성실한 납세자에 대한 가산세 보호 원칙</strong>이 가장 강하게 작동하는 상황은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 납세자가 의도적으로 자료를 은닉한 경우</label>
+          <label><input type="radio" name="q5" value="b"> (B) 납세자가 허위 비교가능거래를 조작한 경우</label>
+          <label><input type="radio" name="q5" value="c"> (C) 데이터의 객관적 부재로 인한 착오, 또는 정상가격방법 적용상의 오류가 있는 경우 (납세자가 선의로 합리적 노력을 한 경우)</label>
+          <label><input type="radio" name="q5" value="d"> (D) 납세자가 세무조사에 협조하지 않은 경우</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사의 이전가격 거래에 적용되는 각 국가의 입증책임 유형(과세관청 부담형 / 조건부 전환형 / 전적 납세자 부담형)을 파악하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">한국 국조법상 자료제출 의무(Local file, Master file, CbCR)를 이해하고, 미제출 시 입증책임 전환 위험을 인식하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">과세관청의 자료요구가 "입증책임 면제를 위한 과도한 자료요구"에 해당하는지 평가하고, 합리적 범위 내 대응 전략을 수립하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">해외 자회사 소재국에서 이전가격 조정이 부과된 경우, 제9조 제2항 원칙에 따라 해당 국가의 입증책임을 활용하여 MAP 또는 행정쟁송 전략을 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">국가별 입증책임 차이로 인한 이중과세 위험을 사전에 평가하고, APA 또는 사전 컨설팅을 통해 위험을 완화하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">자사의 이전가격 거래에 부과될 수 있는 가산세 종류(자료미제출 과태료, 과소신고가산세, 납부불성실가산세, 2차처분)를 모두 파악하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">이전가격 조정이 발생할 경우 2차처분(소득처분)과 추가 원천징수 부담을 시뮬레이션하여 정량적으로 평가하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">의도적·계획적 조세회피로 인한 형사범죄 위험을 회피하기 위해, 모든 이전가격 의사결정의 합리적 근거와 선의를 입증할 자료를 보관하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">¶4.28의 선의 보호 원칙을 활용할 수 있도록, 정상가격산출방법 선정 근거·시장조사·비교가능회사 검색 노력 등을 "동기 문서화(contemporaneous documentation)" 형태로 보존하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">가산세 부과 통지를 받은 경우, ¶4.25–4.26의 비합리성·비례성 원칙과 ¶4.28의 선의 보호 원칙을 근거로 한 행정쟁송·MAP 활용 방안을 검토하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M4-1_Introduction_세무조사.html">← M4-1 Introduction</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter IV 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M4-3은 다음 단계에서 작성됩니다.');return false;">M4-3 MAP 절차 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'d',q2:'b',q3:'b',q4:'b',q5:'c'};
+const feedbacks={
+  q1:{
+    a:'❌ 과세관청 부담형은 ¶4.11의 3유형 중 첫 번째입니다.',
+    b:'❌ 조건부 전환형(납세자 비협조 시)은 ¶4.11의 3유형 중 두 번째입니다.',
+    c:'❌ 전적 납세자 부담형은 ¶4.11의 3유형 중 세 번째입니다.',
+    d:'✅ 정답! 입증책임이 법원에 위임된다는 유형은 ¶4.11에 존재하지 않습니다. 법원은 입증책임의 분배에 따라 판단할 뿐, 입증책임 자체를 부담하지 않습니다.'
+  },
+  q2:{
+    a:'❌ OECD는 정상가격원칙을 배제한 추정과세를 원칙적으로 부정합니다.',
+    b:'✅ 정답! ¶4.13은 정상가격원칙을 배제한 추정과세는 원칙적으로 부정하지만, 정상가격원칙 적용 내에서의 합리적 추정과 일정한 상황에서의 입증책임 전가는 인정한다고 명시합니다.',
+    c:'❌ 정상가격원칙 내에서의 합리적 추정은 인정됩니다. 모든 추정과세를 무조건 금지하는 것은 아닙니다.',
+    d:'❌ 입증책임이 항상 납세자에게 있다는 것은 OECD가 부정하는 입장입니다 (¶4.13).'
+  },
+  q3:{
+    a:'❌ "자국 거주자 부담"이라는 일률적 원칙은 협약상 존재하지 않습니다.',
+    b:'✅ 정답! ¶4.17과 OECD 모델협약 제9조 제2항에 따르면, 최초 이전가격 조정을 제시한 국가의 과세관청이 그 조정의 정당성을 입증할 책임을 부담합니다. 이는 MAP·대응조정 절차의 일관성을 위한 원칙입니다.',
+    c:'❌ 모회사 소재국이 자동적으로 입증책임을 지는 것은 아닙니다. 1차 조정을 제시한 국가가 부담합니다.',
+    d:'❌ MAP 신청자가 자동적으로 입증책임을 부담하는 것은 아닙니다.'
+  },
+  q4:{
+    a:'❌ OECD는 순수 이전가격 문제에 형사처벌을 일률적으로 적용하는 것에 부정적입니다.',
+    b:'✅ 정답! ¶4.20·¶4.23에 따르면 대부분 OECD 회원국은 과실·고의 모두 민사처벌만 부과하며, 순수 이전가격 문제(방법론 차이 등)에 형사범죄를 적용하는 것은 부정됩니다. 다만 고의적·계획적 조세회피는 예외로 형사처벌 대상이 될 수 있습니다.',
+    c:'❌ 이전가격 위반에 가산세·과태료 등 민사처벌은 가능합니다.',
+    d:'❌ 가산세 부과가 금지된 것이 아닙니다. 오히려 행정적 가산세가 OECD가 권장하는 제재 방식입니다.'
+  },
+  q5:{
+    a:'❌ 의도적 자료 은닉은 선의 보호의 범위에 해당하지 않으며, 오히려 가중 가산세 또는 형사범죄 대상이 됩니다.',
+    b:'❌ 허위 비교가능거래 조작은 적극적 부정행위로 선의 보호의 대상이 아닙니다.',
+    c:'✅ 정답! ¶4.28은 (1) 납세자에게 과실·고의가 없는 선의의 착오, (2) 선의로 합리적 노력을 한 경우에 상당한 가산세를 부과하는 것은 부당하다고 명시하며, 특히 데이터 부재로 인한 착오와 정상가격방법 적용상 오류가 있는 경우에 이 보호가 강하게 작동합니다.',
+    d:'❌ 세무조사 비협조는 ¶4.12에 따라 입증책임 전환의 사유가 될 수 있으며, 선의 보호 대상이 아닙니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M4-2를 완료하셨습니다. 다음은 M4-3 대응조정 & MAP 절차입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

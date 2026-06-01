@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M7-4: 저부가가치 그룹내 서비스(LVA)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#15803d;--purple-light:#dcfce7;--purple-mid:#16a34a;--purple-dark:#14532d;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --blue:#1d4ed8;--blue-light:#eff6ff;
+  --teal:#0f766e;--teal-light:#f0fdfa;
+  --amber:#b45309;--amber-light:#fef3c7;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#14532d;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.blue-point{background:var(--blue-light);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e3a8a;line-height:1.75}
+.amber-point{background:var(--amber-light);border-left:4px solid var(--amber);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.practice-note{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#15803d;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#14532d;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#bbf7d0}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #86efac;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.blue{border-color:#93c5fd;background:#eff6ff}
+.col-box.blue h4{color:var(--blue)}
+.col-box.amber{border-color:#fcd34d;background:var(--amber-light)}
+.col-box.amber h4{color:var(--amber)}
+/* ── 5% 마진 하이라이트 ── */
+.markup-badge{display:inline-block;background:var(--purple);color:#fff;font-size:1.8rem;font-weight:800;padding:.4rem 1.2rem;border-radius:12px;margin:.5rem 0}
+.markup-box{text-align:center;background:var(--purple-light);border:2px solid var(--purple);border-radius:12px;padding:1.2rem;margin:.8rem 0}
+.markup-box p{font-size:.88rem;color:#14532d;margin-top:.5rem}
+/* ── 판단 체크리스트 ── */
+.criterion-list{list-style:none;padding:0;margin:.8rem 0}
+.criterion-list li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem .75rem;border-radius:6px;margin-bottom:.4rem;font-size:.9rem;color:var(--text2);line-height:1.65}
+.criterion-list li.ok{background:#f0fdf4;border-left:3px solid var(--purple)}
+.criterion-list li.no{background:#fef2f2;border-left:3px solid var(--red)}
+.criterion-list .cl-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+/* ── 사례 그리드 ── */
+.lva-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.8rem 0}
+.lva-card{border-radius:8px;padding:.85rem 1rem;border:1.5px solid #86efac;background:var(--purple-light)}
+.lva-card .lc-label{font-size:.72rem;font-weight:700;color:var(--purple-dark);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.03em}
+.lva-card h5{font-size:.9rem;font-weight:700;color:var(--purple-dark);margin-bottom:.25rem}
+.lva-card p{font-size:.83rem;color:var(--text2);margin:0;line-height:1.5}
+.lva-card.excl{border-color:#fca5a5;background:#fef2f2}
+.lva-card.excl h5{color:var(--red)}
+.lva-card.excl .lc-label{color:var(--red)}
+/* ── 계산 예시 ── */
+.calc-box{background:#f8fafc;border:1.5px solid var(--gray-border);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;font-size:.9rem}
+.calc-box .calc-title{font-weight:700;color:var(--purple-dark);margin-bottom:.6rem;font-size:.92rem}
+.calc-row{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--gray-border);color:var(--text2)}
+.calc-row:last-child{border:none;font-weight:700;color:var(--purple-dark)}
+.calc-row .cr-label{flex:1}
+.calc-row .cr-val{font-weight:600;color:var(--purple)}
+/* ── 흐름도 ── */
+.flow-box{border:1.5px solid var(--purple-mid);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;background:var(--purple-light)}
+.flow-box .flow-title{font-size:.88rem;font-weight:700;color:var(--purple-dark);margin-bottom:.6rem}
+.flow-step{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.5rem;font-size:.87rem;color:var(--text2)}
+.flow-step .fs-num{background:var(--purple);color:#fff;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0}
+.flow-step p{margin:0;line-height:1.55}
+/* ── 한국 국조법 ── */
+.kr-law{background:#eff6ff;border:1.5px solid #93c5fd;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.kr-law .kl-label{font-size:.75rem;font-weight:700;color:#1d4ed8;margin-bottom:.4rem}
+.kr-law p{font-size:.85rem;color:#1e3a8a;margin-bottom:.3rem;line-height:1.65}
+.kr-law p:last-child{margin:0}
+/* ── 요약 박스 ── */
+.summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.summary-box h4{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--purple-dark)}
+.summary-box ul{padding-left:1.3rem;font-size:.9rem;line-height:1.75;color:var(--text2)}
+.summary-box li{margin-bottom:.3rem}
+.summary-box li strong{color:var(--purple-dark)}
+/* ── 퀴즈 ── */
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+/* ── 체크리스트 ── */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--purple)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--purple);text-decoration:line-through;opacity:.7}
+/* ── 하단 네비 ── */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.lva-grid{grid-template-columns:1fr}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VII Intra-Group Services › M7-4 (4/4)</div>
+  <h1>M7-4. 저부가가치 그룹내 서비스(LVA)</h1>
+  <div class="sub">LVA 정의·판단 기준, 5% 마진 간소화 방법, 제외 서비스, 문서화, 사례 &nbsp;|&nbsp; ¶7.43 – ¶7.65 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. LVA 서비스 정의 & 도입 배경 (B.3)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 5가지 판단 요건</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 제외 서비스 (¶7.52)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 간소화 수수료 산정 (¶7.49–7.51)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 문서화 & 보고 요건 (¶7.53–7.54)</button>
+      <button class="nav-item" onclick="goTo('s6')">6. LVA 서비스 사례 & 한국 국조법</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.75rem;color:var(--gray)">완료율</div>
+      </div>
+      <div class="prog-detail">
+        아코디언 열람: <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+        퀴즈 완료: <span id="quizDone">아직</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>저부가가치 서비스(LVA)의 정의와 BEPS Action 10 도입 배경을 설명할 수 있다.</span></li>
+        <li><span class="obj-num">2</span><span>LVA 서비스로 인정받기 위한 5가지 판단 요건을 적용하여 서비스를 분류할 수 있다.</span></li>
+        <li><span class="obj-num">3</span><span>간소화 수수료 산정 방법(원가 + 5% 마진)과 배분 기준의 적용 절차를 설명할 수 있다.</span></li>
+        <li><span class="obj-num">4</span><span>LVA 제외 서비스 목록을 파악하고, 일반 서비스와의 차이를 구분할 수 있다.</span></li>
+        <li><span class="obj-num">5</span><span>LVA 문서화 요건(간소화 증빙)과 한국 국조법 시행 내용을 실무에 적용할 수 있다.</span></li>
+      </ul>
+    </section>
+
+    <!-- S1: LVA 정의 & 도입 배경 -->
+    <section class="card" id="s1">
+      <h2>1. LVA 서비스 정의 &amp; 도입 배경 (B.3) <span class="tag tag-para">¶7.43–7.48</span></h2>
+      <p>저부가가치 그룹내 서비스(Low Value-Adding Intra-Group Services, LVA)는 BEPS Action 10 프로젝트의 핵심 성과물 중 하나로, 다국적기업의 행정 부담을 줄이면서 과세당국의 세원 침식 우려도 해소하기 위해 도입된 간소화 제도입니다.</p>
+
+      <div class="key-point">
+        📌 <strong>핵심 아이디어:</strong> 가치 창출에 직접적으로 기여하지 않는 지원 성격의 서비스에 대해, 복잡한 비교가능성 분석 없이 <strong>원가 + 5% 마진</strong>을 정상가격으로 인정하는 간소화(safe harbour) 방법입니다.
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>LVA 제도 도입 배경 — BEPS Action 10</span>
+          <span class="para">¶7.43–7.44</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>LVA 규정 도입 이전에는 그룹 내 지원 서비스에 대해서도 전면적인 비교가능성 분석이 요구되었습니다. 이로 인해 다음과 같은 문제가 발생했습니다.</p>
+          <ul>
+            <li>IT 지원, HR, 회계 등 단순 지원 서비스에도 광범위한 벤치마크 분석 필요 → 납세자의 과도한 비용·시간 부담</li>
+            <li>과세당국이 이를 이용해 단순 서비스에 과도한 조세를 부과하거나, 반대로 세원 침식에 악용되는 양면의 위험</li>
+            <li>국가마다 상이한 기준 적용 → 이중과세 위험 증가</li>
+          </ul>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>🎯 납세자 관점</h4>
+              <p>단순 지원 서비스에 대한 문서화 부담 경감. 사전에 정해진 5% 마진으로 분쟁 위험 최소화</p>
+            </div>
+            <div class="col-box blue">
+              <h4>🏛️ 과세당국 관점</h4>
+              <p>고가 서비스로 위장한 세원 침식을 차단. 단순 지원 서비스는 5% 초과 마진이 인정되지 않음으로써 이익 이전 방지</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>LVA 서비스의 기본 정의</span>
+          <span class="para">¶7.45</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD 지침서는 LVA 서비스를 다음과 같이 정의합니다. 아래 요소 모두를 충족해야 LVA 서비스로 인정됩니다.</p>
+          <ul>
+            <li>지원 성격(supportive nature)으로서 다국적기업 그룹의 <strong>핵심 사업(core business)의 일부를 구성하지 않는</strong> 서비스</li>
+            <li>고유하고 가치 있는 <strong>무형자산의 창출·사용·이전에 활용되지 않는</strong> 서비스</li>
+            <li>서비스 제공자가 <strong>중요한 위험(significant risks)을 부담하거나 인수하지 않는</strong> 서비스</li>
+          </ul>
+          <div class="note-point">
+            💡 <strong>핵심 개념 — "지원 성격":</strong> LVA 서비스는 그룹의 비즈니스를 가능하게 하는 배경 기능(back-office function)입니다. 핵심 가치 창출 활동이 아닌 보조·지원 활동이어야 합니다.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S2: 5가지 판단 요건 -->
+    <section class="card" id="s2">
+      <h2>2. LVA 서비스 — 5가지 판단 요건 <span class="tag tag-para">¶7.45–7.48</span></h2>
+      <p>서비스가 LVA 간소화 방법의 적용 대상이 되려면, 아래 5가지 요건을 모두 충족해야 합니다. 하나라도 미충족하면 LVA가 아닌 일반 서비스로 분석해야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>요건 1 — 핵심사업 비해당 & 지원 성격</span>
+          <span class="para">¶7.45</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스가 그룹의 주된 사업 활동(core business activities)이 아닌 지원 기능이어야 합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>✅ 요건 충족 (지원 서비스)</h4>
+              <ul>
+                <li>HR 정책 수립 지원</li>
+                <li>IT 인프라 유지보수</li>
+                <li>회계·세무 지원 서비스</li>
+                <li>법무 행정 지원</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>❌ 요건 불충족 (핵심 사업)</h4>
+              <ul>
+                <li>제조업 그룹의 핵심 제조 서비스</li>
+                <li>금융그룹의 핵심 금융·투자 활동</li>
+                <li>그룹의 주력 제품·서비스 R&D</li>
+                <li>수익 창출에 직결되는 마케팅</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>요건 2 — 고유 무형자산 비활용</span>
+          <span class="para">¶7.46</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스 제공 과정에서 고유하고 가치 있는 무형자산이 사용·창출·이전되지 않아야 합니다.</p>
+          <ul>
+            <li><strong>허용:</strong> 일반적으로 사용되는 표준 소프트웨어, 범용 방법론을 사용하는 경우</li>
+            <li><strong>불허:</strong> 그룹 고유의 특허 기술·독점 소프트웨어·영업 비밀을 핵심 수단으로 사용하는 경우</li>
+            <li><strong>불허:</strong> 서비스 수행 결과 새로운 독점 방법론이나 노하우가 창출되는 경우</li>
+          </ul>
+          <div class="blue-point">
+            📌 <strong>판단 기준:</strong> "해당 서비스를 시장 외부에서 유사하게 제공하는 독립 기업이 동일한 전문 지식·기술을 보유할 수 있는가?" — YES라면 LVA 요건을 충족할 가능성이 높습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>요건 3 — 중요한 위험 비부담</span>
+          <span class="para">¶7.46</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스 제공자가 서비스 수행과 관련하여 중요한 위험을 부담하거나 인수하지 않아야 합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>위험 유형</th><th>LVA 허용 수준</th><th>LVA 초과 수준</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>운영 위험</td>
+                <td>서비스 품질에 대한 통상적 수준의 책임</td>
+                <td>주요 프로젝트 실패에 따른 대규모 손실 부담</td>
+              </tr>
+              <tr>
+                <td>신용 위험</td>
+                <td>내부 청구 미회수 위험 없음</td>
+                <td>외부 채권의 신용 위험 실질 부담</td>
+              </tr>
+              <tr>
+                <td>시장 위험</td>
+                <td>해당 없음 (지원 서비스)</td>
+                <td>시장 변동에 따른 손익 직접 영향</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>요건 4 — 다수 관계회사에 동일하게 제공</span>
+          <span class="para">¶7.47</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>LVA 간소화 방법은 특정한 법인이 아닌 복수의 그룹 관계회사에 동일한(또는 유사한) 서비스가 제공될 때 더 적합합니다. 서비스의 공통·반복 성격이 LVA의 핵심 특성이기 때문입니다.</p>
+          <div class="note-point">
+            💡 <strong>실무 포인트:</strong> 그룹 내 여러 법인에게 동시 배분되는 서비스일수록 LVA 적합성이 높습니다. 특정 법인만을 위해 설계된 맞춤형 서비스는 LVA보다 일반 서비스 분석이 더 적합할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>요건 5 — 제공자가 주된 활동으로 하지 않는 서비스</span>
+          <span class="para">¶7.48</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스 제공 법인의 입장에서 해당 서비스가 그 법인의 주된 사업이 아니어야 합니다. 즉, 그 법인이 시장에서 제3자에게도 동일한 서비스를 판매하여 매출을 올리는 경우라면 LVA로 보기 어렵습니다.</p>
+          <div class="cmp-wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:.8rem 0">
+            <div class="col-box">
+              <h4>✅ LVA 적합</h4>
+              <p>그룹 내 지원 목적으로만 IT 헬프데스크를 운영하는 법인이 관계회사들에게 IT 지원을 제공하는 경우</p>
+            </div>
+            <div class="col-box red">
+              <h4>❌ LVA 부적합</h4>
+              <p>외부 IT 서비스 기업이 주로 제3자 고객에게 IT 서비스를 판매하면서 동시에 관계회사에도 제공하는 경우</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S3: 제외 서비스 -->
+    <section class="card" id="s3">
+      <h2>3. LVA 간소화 방법 제외 서비스 <span class="tag tag-para">¶7.52</span></h2>
+      <p>다음의 서비스 유형은 LVA 간소화 방법 적용 대상에서 명시적으로 제외됩니다. 이 서비스들은 부가가치가 높거나 특수한 이전가격 분석이 필요하기 때문입니다.</p>
+
+      <div class="lva-grid">
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>R&D 서비스</h5>
+          <p>연구개발 활동은 고유 무형자산 창출과 직결되어 LVA 요건(무형자산 비활용)을 충족하지 못합니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>원자재·제품 구매</h5>
+          <p>물품·원자재 매매 활동은 서비스가 아닌 상품 거래로, 별도의 정상가격 분석이 필요합니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>판매·마케팅·유통</h5>
+          <p>그룹의 핵심 수익 창출 활동인 판매·마케팅·유통은 핵심사업 요건에 해당되어 제외됩니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>금융 거래</h5>
+          <p>그룹 내 대여, 보증, 헤징 등 금융 서비스는 Chapter X의 금융 거래 규정이 우선 적용됩니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>CEO·이사급 경영 서비스</h5>
+          <p>최고경영진이 직접 제공하는 경영 관리 서비스는 중요한 의사결정과 연계되어 제외됩니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>천연자원 추출·탐사</h5>
+          <p>자원 개발 활동은 지역·위험·기술이 고도로 특수화되어 LVA 간소화 방법 적용이 부적절합니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>보험·재보험</h5>
+          <p>위험 인수를 본질로 하는 보험 서비스는 중요한 위험 부담 요건에 해당되어 제외됩니다.</p>
+        </div>
+        <div class="lva-card excl">
+          <div class="lc-label">🚫 제외</div>
+          <h5>은행업·기타 금융업</h5>
+          <p>은행 및 금융기관의 핵심 업무 서비스는 금융 거래 규정이 우선 적용됩니다.</p>
+        </div>
+      </div>
+
+      <div class="warn-point">
+        ⚠️ <strong>실무 유의:</strong> 위 제외 서비스와 LVA 서비스가 혼재되어 청구되는 경우(예: IT 지원 + IT 시스템 개발), 반드시 두 성격의 서비스를 분리하여 각각에 적합한 방법을 적용해야 합니다. 일괄 LVA 적용은 과세당국의 부인 위험이 있습니다.
+      </div>
+    </section>
+
+    <!-- S4: 간소화 수수료 산정 -->
+    <section class="card" id="s4">
+      <h2>4. 간소화 수수료 산정 방법 <span class="tag tag-para">¶7.49–7.51</span></h2>
+      <p>LVA 서비스로 인정되면, 복잡한 벤치마크 없이 아래의 간소화 방법으로 정상가격을 결정할 수 있습니다.</p>
+
+      <div class="markup-box">
+        <div style="font-size:.95rem;font-weight:700;color:var(--purple-dark);margin-bottom:.5rem">LVA 간소화 정상가격 공식</div>
+        <div class="markup-badge">원가(Cost) + 5% 마진</div>
+        <p>전 세계 OECD 회원국이 이를 정상가격으로 수용해야 합니다.</p>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>원가(Cost Base) 산정 방법</span>
+          <span class="para">¶7.49</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>5% 마진의 기준이 되는 원가는 해당 서비스와 직·간접적으로 관련된 비용을 포함합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>비용 유형</th><th>포함 여부</th><th>예시</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>직접 비용</strong></td>
+                <td>✅ 포함</td>
+                <td>서비스 수행 인력의 인건비, 직접 소모품</td>
+              </tr>
+              <tr>
+                <td><strong>간접 비용(배분)</strong></td>
+                <td>✅ 포함</td>
+                <td>사무실 임차료, 공통 IT 비용 배분액</td>
+              </tr>
+              <tr>
+                <td><strong>패스-스루 비용</strong></td>
+                <td>⚠️ 제외 가능</td>
+                <td>제3자에게 지급 후 그대로 전달되는 외부 비용 (에이전트 역할 시)</td>
+              </tr>
+              <tr>
+                <td><strong>자본 비용</strong></td>
+                <td>⚠️ 경우에 따라</td>
+                <td>서비스 전용 자산의 감가상각 — 기능 분석 후 포함 여부 결정</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-point">
+            💡 <strong>중요:</strong> 원가 산정에서 가장 중요한 것은 서비스 제공과 관련된 비용만을 포함하고, 무관한 비용은 제외하는 것입니다. 비용 풀(cost pool) 구성의 적정성이 LVA 문서화의 핵심 요소입니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>원가 배분 기준 (Allocation Keys)</span>
+          <span class="para">¶7.50</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>복수의 관계회사에 배분할 때는 각 수혜 법인이 받는 편익을 합리적으로 반영하는 배분 기준을 선택해야 합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>서비스 유형</th><th>권장 배분 기준</th><th>이유</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>HR 서비스</td>
+                <td>직원 수</td>
+                <td>HR 서비스 사용량이 인력 규모에 비례</td>
+              </tr>
+              <tr>
+                <td>IT 인프라</td>
+                <td>사용자 수 또는 서버 용량</td>
+                <td>실제 IT 자원 소비를 반영</td>
+              </tr>
+              <tr>
+                <td>회계·재무 지원</td>
+                <td>거래 건수 또는 매출액</td>
+                <td>거래 복잡도와 연관</td>
+              </tr>
+              <tr>
+                <td>법무 지원</td>
+                <td>직원 수 또는 매출액</td>
+                <td>법적 리스크의 규모 반영</td>
+              </tr>
+              <tr>
+                <td>안전·환경 관리</td>
+                <td>직원 수 또는 시설 면적</td>
+                <td>노출 인원 및 물리적 규모 반영</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="warn-point">
+            ⚠️ <strong>배분 기준 선택 원칙:</strong> 배분 기준은 단순히 계산하기 편한 기준이 아니라, 실제 편익 배분을 가장 잘 반영하는 기준이어야 합니다. 과세당국은 배분 기준의 합리성을 중점 검토합니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>5% 마진의 성격 — Safe Harbour</span>
+          <span class="para">¶7.51</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>5% 마진은 Safe Harbour(세이프 하버)로 작동합니다. 이는 다음을 의미합니다.</p>
+          <ul>
+            <li><strong>납세자 보호:</strong> 원가 + 5%를 적용하면 과세당국은 이를 정상가격으로 수용해야 합니다. 과세당국이 다른 가격을 주장하려면 LVA 요건 불충족을 입증해야 합니다.</li>
+            <li><strong>납세자 선택권:</strong> 납세자는 5% 미적용을 선택하고 일반 이전가격 방법으로 더 높은(또는 더 낮은) 마진을 정당화할 수 있습니다. 그러나 이 경우 일반 비교가능성 분석이 요구됩니다.</li>
+            <li><strong>수혜자 측 공제:</strong> 원가 + 5%를 지급한 수혜 법인은 상대국에서 이 금액을 세무상 비용으로 공제받을 수 있습니다.</li>
+          </ul>
+          <div class="calc-box">
+            <div class="calc-title">💡 계산 예시 — IT 지원 서비스 (3개 자회사 배분)</div>
+            <div class="calc-row"><span class="cr-label">IT 지원 서비스 총 발생 원가</span><span class="cr-val">$1,000,000</span></div>
+            <div class="calc-row"><span class="cr-label">5% 마진 가산</span><span class="cr-val">$50,000</span></div>
+            <div class="calc-row"><span class="cr-label">총 청구 금액</span><span class="cr-val">$1,050,000</span></div>
+            <div class="calc-row" style="border-top:2px solid var(--gray-border);margin-top:.3rem;padding-top:.4rem"><span class="cr-label">A 자회사 배분 (직원 50%)</span><span class="cr-val">$525,000</span></div>
+            <div class="calc-row"><span class="cr-label">B 자회사 배분 (직원 30%)</span><span class="cr-val">$315,000</span></div>
+            <div class="calc-row"><span class="cr-label">C 자회사 배분 (직원 20%)</span><span class="cr-val">$210,000</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S5: 문서화 & 보고 요건 -->
+    <section class="card" id="s5">
+      <h2>5. 문서화 &amp; 보고 요건 <span class="tag tag-para">¶7.53–7.54</span></h2>
+      <p>LVA 간소화 방법을 적용하기 위해서는 일반 이전가격 문서화보다 간소한 증빙이 허용되지만, 핵심 요소는 반드시 갖추어야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>LVA 간소화 문서화 요건</span>
+          <span class="para">¶7.53</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD 지침서는 LVA 적용 시 다음의 문서화를 요구합니다.</p>
+          <ul>
+            <li><strong>서비스 기술(Description of services):</strong> 제공한 서비스의 성격과 범위에 대한 설명 — LVA 5가지 요건 각각을 충족함을 설명하는 분석 포함</li>
+            <li><strong>계약 또는 서면 합의:</strong> 서비스 제공 관계를 규율하는 내부 계약서 또는 그룹 정책 문서</li>
+            <li><strong>원가 산정 근거:</strong> 원가 풀(cost pool) 구성 방법, 포함·제외된 비용 항목 및 근거</li>
+            <li><strong>배분 기준의 합리성:</strong> 선택한 배분 키(allocation key)와 그 선택 이유에 대한 설명</li>
+            <li><strong>5% 마진 계산 내역:</strong> 원가 합계와 5% 마진 적용 계산 내역서</li>
+          </ul>
+          <div class="key-point">
+            📌 <strong>간소화 포인트:</strong> 일반 이전가격 방법과 달리 비교가능 제3자 거래 분석(벤치마크)은 불필요합니다. 단, LVA 5가지 요건 충족에 대한 분석은 필수입니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>수혜국 보고 & 이중과세 방지</span>
+          <span class="para">¶7.54</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>LVA 서비스를 지급받는 수혜 법인의 국가(수혜국)도 해당 서비스 수수료의 세무 처리를 위한 정보를 받아야 합니다.</p>
+          <div class="flow-box">
+            <div class="flow-title">📋 LVA 보고 흐름</div>
+            <div class="flow-step">
+              <div class="fs-num">1</div>
+              <p><strong>서비스 제공자 → 수혜자:</strong> 원가 내역서, 배분 기준, 5% 마진 계산서를 청구서와 함께 제공</p>
+            </div>
+            <div class="flow-step">
+              <div class="fs-num">2</div>
+              <p><strong>수혜자 → 수혜국 세무당국:</strong> Local File에 LVA 서비스 내용, 지급 금액, 원가 구성 근거를 기재</p>
+            </div>
+            <div class="flow-step">
+              <div class="fs-num">3</div>
+              <p><strong>수혜국 수용 의무:</strong> OECD 지침서 채택국은 원가 + 5% 방식을 정상가격으로 수용해야 하므로 이중과세 위험이 감소</p>
+            </div>
+          </div>
+          <div class="amber-point">
+            🔎 <strong>실무 유의:</strong> 수혜국이 OECD 지침서를 채택하지 않거나, 자국 내 LVA 규정이 별도로 있는 경우 OECD 방식과 다르게 처리할 수 있습니다. 한국의 경우 국조법 시행령에 별도 규정이 있습니다(S6 참조).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S6: LVA 사례 & 한국 국조법 -->
+    <section class="card" id="s6">
+      <h2>6. LVA 서비스 사례 &amp; 한국 국조법 <span class="tag tag-para">¶7.55–7.65</span></h2>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>OECD 인정 LVA 서비스 사례 목록</span>
+          <span class="para">¶7.55–7.59</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD 지침서는 LVA로 인정될 수 있는 서비스의 예시를 제시합니다. 아래 서비스들이 5가지 요건을 충족한다면 간소화 방법을 적용할 수 있습니다.</p>
+          <div class="lva-grid">
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>회계 & 감사 지원</h5>
+              <p>회계 정책 수립, 결산 지원, 내부 감사 지원 — 그룹 재무보고 일관성 유지 목적</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>세무 지원</h5>
+              <p>세무신고 준비 지원, 그룹 세무정책 수립·배포 — 단, 실질적 세무 구조 설계는 제외</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>HR 지원</h5>
+              <p>채용 정책, 급여·복리후생 관리, 인력 교육 프로그램 운영 — 핵심 인재 유치 제외</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>IT 지원</h5>
+              <p>IT 헬프데스크, 표준 소프트웨어 라이선스 관리, 사이버보안 기본 관리 — 고유 시스템 개발 제외</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>법무 지원</h5>
+              <p>표준 계약서 검토, 일반 법규 준수 지원, 지식재산 행정 — 소송·중재 전략 수립 제외</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>커뮤니케이션 지원</h5>
+              <p>그룹 내부 커뮤니케이션 채널 운영, 표준화된 대외 홍보 자료 관리</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>안전·환경 지원</h5>
+              <p>그룹 안전·환경 정책 수립 및 교육, 규정 준수 모니터링 — 고위험 환경 특수 관리 제외</p>
+            </div>
+            <div class="lva-card">
+              <div class="lc-label">✅ LVA 사례</div>
+              <h5>정부 관계 지원</h5>
+              <p>일반적인 규제 모니터링, 표준화된 정부 보고 지원 — 특수 이해관계 로비 활동 제외</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>시행 지침 — 각국 조세조약과의 관계</span>
+          <span class="para">¶7.60–7.62</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>LVA 간소화 방법은 OECD 지침서의 권고사항으로, 각국이 자국 이전가격 규정에 이를 반영할 때 다음 사항을 고려합니다.</p>
+          <ul>
+            <li><strong>채택의 임의성:</strong> 각국은 LVA 제도 채택 여부를 스스로 결정할 수 있습니다. 일부 국가는 5% 이외의 마진을 채택하거나, 요건을 다르게 규정할 수 있습니다.</li>
+            <li><strong>과세당국 간 정보 교환:</strong> LVA 서비스의 적정성 검토를 위해 과세당국 간 정보 교환이 이루어질 수 있습니다.</li>
+            <li><strong>MAP 접근:</strong> LVA 요건 충족 여부에 대해 분쟁이 발생하면 MAP(상호합의절차)을 활용할 수 있습니다.</li>
+          </ul>
+          <div class="blue-point">
+            📌 <strong>BEPS Inclusive Framework:</strong> OECD/G20 BEPS Inclusive Framework 참여국들은 LVA 제도를 자국 법령에 반영하도록 권고받고 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>시행 지침 — 납세자의 선택과 일관성</span>
+          <span class="para">¶7.63–7.65</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>LVA 간소화 방법을 선택하는 납세자는 다음을 준수해야 합니다.</p>
+          <ul>
+            <li><strong>일관성 있는 적용:</strong> 특정 서비스 유형에 LVA를 적용하기로 했다면, 해당 서비스를 받는 모든 관계회사에 동일하게 적용해야 합니다. 일부에만 선택적으로 적용할 수 없습니다.</li>
+            <li><strong>연도별 일관성:</strong> 연도마다 LVA 적용 여부를 바꾸는 것은 허용되지 않으며, 변경 시에는 합리적 사유를 제시해야 합니다.</li>
+            <li><strong>LVA 비적용 선택:</strong> 납세자는 LVA 서비스에 대해서도 일반 이전가격 방법을 적용하여 5% 초과 마진을 주장할 수 있습니다. 다만 이 경우 전면적인 비교가능성 분석이 요구됩니다.</li>
+          </ul>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 포인트 — LVA vs. 일반 방법 선택</div>
+            <p>서비스 원가 + 5%가 시장 수준보다 낮다면 LVA가 유리하고, 시장 수준이 5% 미만이라면 일반 방법(원가 + 낮은 마진)이 수혜자 측에 유리할 수 있습니다. 서비스 제공자와 수혜자의 과세 입장을 함께 고려하여 선택해야 합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국 국조법 — LVA 규정 시행</span>
+          <span class="para">¶7.43–7.65 (한국 적용)</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="kr-law">
+            <div class="kl-label">한국 국제조세조정법 시행령</div>
+            <p>한국은 BEPS Action 10 권고에 따라 국조법 시행령에 저부가가치 용역의 간소화 방법을 도입하였습니다.</p>
+            <p><strong>5% 마진 적용:</strong> OECD와 동일하게 원가 + 5%를 정상가격으로 인정합니다. 다만, 납세자는 LVA 요건 충족을 증명하는 문서를 사전에 갖추어야 합니다.</p>
+            <p><strong>비교가능성 분석 면제:</strong> 5가지 요건을 모두 충족하는 LVA 서비스에 대해서는 비교가능 제3자 분석(벤치마크)이 면제됩니다.</p>
+            <p><strong>가산세 혜택:</strong> LVA 간소화 방법을 적용하고 적절한 문서화를 갖춘 경우, 이전가격 미달 관련 가산세가 경감될 수 있습니다.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="summary-box">
+        <h4>📋 Chapter VII 전체 요약 — M7-1 ~ M7-4</h4>
+        <ul>
+          <li><strong>M7-1 (¶7.1–7.18):</strong> 서비스 식별 — 혜택 테스트, 주주활동 구분, 중앙화 서비스, 온콜 서비스</li>
+          <li><strong>M7-2 (¶7.19–7.34):</strong> 정상가격 대가 결정 — 청구방법(직접·간접), 대가 형태, 정상가격 계산·에이전트 역할</li>
+          <li><strong>M7-3 (¶7.35–7.42):</strong> 마진 적용 사례 — 이익 요소 포함 원칙, 채무 팩토링·계약제조·계약연구·무형자산 행정서비스 사례</li>
+          <li><strong>M7-4 (¶7.43–7.65):</strong> 저부가가치 서비스 — LVA 정의·5가지 요건, 5% 마진 간소화 방법, 제외 서비스, 문서화, 한국 국조법</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+
+      <div class="q-block">
+        <div class="q-text">Q1. 저부가가치 그룹내 서비스(LVA)에서 간소화 방법 적용 시 정상가격은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q1" value="a" onchange="showFeedback(1,'a')"> a) 원가(Cost) + 3% 마진</label>
+          <label><input type="radio" name="q1" value="b" onchange="showFeedback(1,'b')"> b) 원가(Cost) + 5% 마진</label>
+          <label><input type="radio" name="q1" value="c" onchange="showFeedback(1,'c')"> c) 원가(Cost) + 10% 마진</label>
+          <label><input type="radio" name="q1" value="d" onchange="showFeedback(1,'d')"> d) 시장 비교가능 거래 가격의 중간값</label>
+        </div>
+        <div class="q-feedback" id="f1a" data-type="wrong">❌ LVA 간소화 방법의 마진은 3%가 아닙니다. OECD 지침서는 5%를 Safe Harbour 마진으로 규정합니다.</div>
+        <div class="q-feedback" id="f1b" data-type="correct">✅ 정답! OECD 지침서는 LVA 서비스에 대해 <strong>원가 + 5% 마진</strong>을 Safe Harbour 정상가격으로 인정합니다. OECD 회원국은 이 방식을 정상가격으로 수용해야 합니다.</div>
+        <div class="q-feedback" id="f1c" data-type="wrong">❌ 10%는 LVA 간소화 방법의 마진이 아닙니다. LVA는 원가 + 5%가 Safe Harbour 마진입니다.</div>
+        <div class="q-feedback" id="f1d" data-type="wrong">❌ LVA 간소화 방법의 핵심은 복잡한 비교가능 거래 분석 없이 원가 + 5%를 적용하는 것입니다. 시장 가격 비교는 일반 이전가격 방법에 해당합니다.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q2. 다음 중 LVA 서비스 5가지 판단 요건에 해당하지 <u>않는</u> 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q2" value="a" onchange="showFeedback(2,'a')"> a) 그룹의 핵심 사업(core business)이 아닌 지원 성격일 것</label>
+          <label><input type="radio" name="q2" value="b" onchange="showFeedback(2,'b')"> b) 고유 무형자산의 창출·사용에 활용되지 않을 것</label>
+          <label><input type="radio" name="q2" value="c" onchange="showFeedback(2,'c')"> c) 서비스 제공 법인의 매출이 $1,000,000 미만일 것</label>
+          <label><input type="radio" name="q2" value="d" onchange="showFeedback(2,'d')"> d) 서비스 제공자가 중요한 위험을 부담하지 않을 것</label>
+        </div>
+        <div class="q-feedback" id="f2a" data-type="wrong">❌ 핵심 사업 비해당 및 지원 성격은 LVA 5가지 요건 중 첫 번째 요건에 해당합니다.</div>
+        <div class="q-feedback" id="f2b" data-type="wrong">❌ 고유 무형자산 비활용은 LVA 5가지 요건 중 두 번째 요건에 해당합니다.</div>
+        <div class="q-feedback" id="f2c" data-type="correct">✅ 정답! 매출 규모($1,000,000 미만 등)는 LVA 판단 요건이 아닙니다. LVA 요건은 서비스의 성격(핵심사업 여부, 무형자산 활용, 위험 부담, 다수 제공 여부, 제공자 주된 사업 여부)에 관한 것이지, 금액 기준이 아닙니다.</div>
+        <div class="q-feedback" id="f2d" data-type="wrong">❌ 중요한 위험 비부담은 LVA 5가지 요건 중 세 번째 요건에 해당합니다.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q3. 다음 중 LVA 간소화 방법 적용이 가능한 서비스는?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q3" value="a" onchange="showFeedback(3,'a')"> a) 그룹 신약 연구개발(R&D) 서비스</label>
+          <label><input type="radio" name="q3" value="b" onchange="showFeedback(3,'b')"> b) 그룹 내 금융투자 및 대여 서비스</label>
+          <label><input type="radio" name="q3" value="c" onchange="showFeedback(3,'c')"> c) 그룹 IT 헬프데스크 및 표준 소프트웨어 라이선스 관리</label>
+          <label><input type="radio" name="q3" value="d" onchange="showFeedback(3,'d')"> d) 제약그룹 핵심 제품의 글로벌 마케팅 서비스</label>
+        </div>
+        <div class="q-feedback" id="f3a" data-type="wrong">❌ R&D 서비스는 LVA 명시 제외 서비스입니다. 연구개발은 고유 무형자산 창출과 직결되어 LVA 요건을 충족하지 못합니다.</div>
+        <div class="q-feedback" id="f3b" data-type="wrong">❌ 금융 대여 및 투자 서비스는 LVA 명시 제외 서비스입니다. Chapter X 금융 거래 규정이 우선 적용됩니다.</div>
+        <div class="q-feedback" id="f3c" data-type="correct">✅ 정답! IT 헬프데스크와 표준 소프트웨어 라이선스 관리는 그룹의 지원 성격 서비스로, 고유 무형자산 활용이 없고 중요한 위험을 부담하지 않으므로 LVA 요건을 충족할 가능성이 높습니다.</div>
+        <div class="q-feedback" id="f3d" data-type="wrong">❌ 판매·마케팅·유통 서비스는 LVA 명시 제외 서비스입니다. 그룹의 핵심 수익 창출 활동으로 LVA 첫 번째 요건(핵심사업 비해당)을 충족하지 못합니다.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q4. LVA 간소화 방법 적용 시 원가 배분 기준(allocation key)으로 HR 서비스에 가장 적합한 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q4" value="a" onchange="showFeedback(4,'a')"> a) 각 자회사의 매출액</label>
+          <label><input type="radio" name="q4" value="b" onchange="showFeedback(4,'b')"> b) 각 자회사의 직원 수</label>
+          <label><input type="radio" name="q4" value="c" onchange="showFeedback(4,'c')"> c) 각 자회사의 자산 장부가액</label>
+          <label><input type="radio" name="q4" value="d" onchange="showFeedback(4,'d')"> d) 각 자회사가 위치한 국가 수</label>
+        </div>
+        <div class="q-feedback" id="f4a" data-type="wrong">❌ 매출액은 IT 인프라, 회계·재무 지원 등에는 적합할 수 있지만, HR 서비스의 사용량은 직원 규모에 더 직접적으로 비례합니다.</div>
+        <div class="q-feedback" id="f4b" data-type="correct">✅ 정답! HR 서비스(채용, 급여·복리후생, 교육 등)는 직원 수에 비례하여 발생합니다. 따라서 직원 수가 HR 서비스의 편익을 가장 잘 반영하는 배분 기준입니다.</div>
+        <div class="q-feedback" id="f4c" data-type="wrong">❌ 자산 장부가액은 자산 집약적 서비스(시설 유지보수 등)에는 적합하지만, HR 서비스의 편익과는 직접적 관련이 없습니다.</div>
+        <div class="q-feedback" id="f4d" data-type="wrong">❌ 위치한 국가 수는 HR 서비스의 실제 사용량이나 편익을 반영하지 못합니다. 배분 기준은 실제 편익의 크기를 합리적으로 반영해야 합니다.</div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q5. LVA 간소화 방법에 관한 설명으로 옳지 <u>않은</u> 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q5" value="a" onchange="showFeedback(5,'a')"> a) 납세자는 LVA 요건 충족 서비스에도 일반 이전가격 방법을 선택할 수 있다.</label>
+          <label><input type="radio" name="q5" value="b" onchange="showFeedback(5,'b')"> b) 5% 마진은 비교가능 제3자 벤치마크 없이 Safe Harbour로 인정된다.</label>
+          <label><input type="radio" name="q5" value="c" onchange="showFeedback(5,'c')"> c) LVA 방법을 적용해도 LVA 5가지 요건 충족에 대한 문서화는 불필요하다.</label>
+          <label><input type="radio" name="q5" value="d" onchange="showFeedback(5,'d')"> d) LVA 서비스 청구 시 원가 배분 기준의 합리성을 문서로 입증해야 한다.</label>
+        </div>
+        <div class="q-feedback" id="f5a" data-type="wrong">❌ 이것은 옳은 설명입니다. 납세자는 LVA 요건 충족 서비스에도 5%가 아닌 다른 마진을 주장하고자 한다면 일반 이전가격 방법을 적용할 수 있습니다(단, 비교가능성 분석 필요).</div>
+        <div class="q-feedback" id="f5b" data-type="wrong">❌ 이것은 옳은 설명입니다. LVA 간소화 방법의 핵심은 5% 마진이 비교가능 제3자 벤치마크 없이도 Safe Harbour로 인정된다는 점입니다.</div>
+        <div class="q-feedback" id="f5c" data-type="correct">✅ 정답(틀린 설명)! LVA 방법을 적용하더라도 <strong>LVA 5가지 요건 충족에 대한 분석과 문서화는 필수</strong>입니다. 비교가능 벤치마크가 면제될 뿐, 요건 충족 증명을 위한 서비스 기술서, 원가 산정 근거, 배분 기준 합리성 문서는 반드시 갖추어야 합니다.</div>
+        <div class="q-feedback" id="f5d" data-type="wrong">❌ 이것은 옳은 설명입니다. 배분 기준의 선택과 그 합리성에 대한 문서화는 LVA 적용을 위한 필수 문서화 요건입니다.</div>
+      </div>
+
+      <button class="quiz-btn" onclick="calcScore()">제출 및 채점</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum">–</div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트 — LVA 서비스 적용</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">서비스가 그룹의 핵심 사업(core business)에 해당하지 않고 지원 성격임을 확인했는가?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">서비스 제공 과정에서 고유하고 가치 있는 무형자산이 활용·창출되지 않음을 확인했는가?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">서비스 제공자가 중요한 위험을 실질적으로 부담하지 않음을 FAR 분석으로 확인했는가?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">서비스가 복수의 관계회사에 제공되며, 제공자의 주된 사업이 아님을 확인했는가?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">R&D, 금융, 판매·마케팅, 경영진 서비스 등 LVA 제외 서비스와 혼합된 부분이 없는지 검토했는가?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">원가 풀(cost pool) 구성 — 포함·제외 비용 항목과 근거를 문서화했는가?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">배분 기준(allocation key)이 수혜 법인별 편익을 합리적으로 반영함을 설명했는가?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">원가 + 5% 계산 내역서를 작성하고 수혜 법인 별 청구 금액을 계산했는가?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">LVA 서비스 내용 기술서(description of services)를 Local File에 포함했는가?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">수혜국 과세당국이 LVA 방식을 수용하는지 확인하고, 필요 시 수혜국 요건을 별도 검토했는가?</label></li>
+        <li><input type="checkbox" id="c11"><label for="c11">LVA 방법 적용 여부를 연도별로 일관성 있게 유지하고 있는가?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M7-3_마진적용_사례.html">← M7-3. 마진 적용 &amp; 사례</a>
+      <a class="btn-nav secondary" href="../index.html">📋 목차로</a>
+      <span class="btn-nav" style="background:#aaa;cursor:default">✅ Chapter VII 완료</span>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// 아코디언 토글
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  btn.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
+  if(!isOpen) btn.classList.add('viewed');
+  updatePct();
+}
+
+// 섹션 이동
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// 퀴즈 피드백
+function showFeedback(qNum, val){
+  const allFb = document.querySelectorAll(`[id^="f${qNum}"]`);
+  allFb.forEach(fb => {
+    fb.style.display = 'none';
+    fb.className = 'q-feedback';
+  });
+  const target = document.getElementById(`f${qNum}${val}`);
+  if(target){
+    target.style.display = 'block';
+    target.classList.add(target.dataset.type === 'correct' ? 'correct' : 'wrong');
+  }
+}
+
+// 채점
+function calcScore(){
+  const answers = {q1:'b', q2:'c', q3:'c', q4:'b', q5:'c'};
+  let score = 0;
+  let total = Object.keys(answers).length;
+  for(let q in answers){
+    const sel = document.querySelector(`input[name="${q}"]:checked`);
+    if(sel && sel.value === answers[q]) score++;
+  }
+  const box = document.getElementById('scoreBox');
+  box.style.display = 'block';
+  document.getElementById('scoreNum').textContent = `${score} / ${total}`;
+  const pct = Math.round(score/total*100);
+  const msg = pct === 100 ? '완벽합니다! Chapter VII를 완전히 마스터하셨습니다! 🎉' :
+               pct >= 80  ? '훌륭합니다! LVA의 핵심 개념을 잘 이해하셨습니다.' :
+               pct >= 60  ? '잘 하셨습니다. 틀린 문항의 해설을 다시 확인해보세요.' :
+                            '핵심 내용을 다시 학습한 후 재시도해 보세요.';
+  document.getElementById('scoreMsg').textContent = msg;
+  document.querySelector('.quiz-btn').disabled = true;
+  document.getElementById('quizDone').textContent = `${score}/${total}`;
+  updatePct();
+}
+
+// 진도 업데이트
+function updatePct(){
+  const accBtns = document.querySelectorAll('.acc-header');
+  const viewed  = document.querySelectorAll('.acc-header.viewed');
+  document.getElementById('accTotal').textContent = accBtns.length;
+  document.getElementById('accDone').textContent  = viewed.length;
+  const qDone = document.querySelector('.quiz-btn').disabled ? 1 : 0;
+  const pct = Math.round((viewed.length + qDone) / (accBtns.length + 1) * 100);
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('topBar').style.width  = pct + '%';
+}
+
+// 스크롤 사이드바 활성화
+const sections = ['obj','s1','s2','s3','s4','s5','s6','quiz','check'];
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 180) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach((btn, i) => {
+    btn.classList.toggle('active', sections[i] === cur);
+  });
+});
+
+updatePct();
+</script>
+</body>
+</html>

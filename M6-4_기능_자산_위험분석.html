@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M6-4: 기능·자산·위험 분석 (FAR Analysis)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Chapter VI — Amber 호박색 */
+  --purple:#b45309;--purple-light:#fef3c7;--purple-mid:#d97706;--purple-dark:#78350f;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --blue:#1d4ed8;--blue-light:#eff6ff;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.blue-point{background:var(--blue-light);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e3a8a;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#fde68a}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #fcd34d;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.col-box.blue{border-color:#93c5fd;background:#eff6ff}
+.col-box.blue h4{color:var(--blue)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+/* ── FAR 3대 축 시각화 ── */
+.far-row{display:flex;gap:.6rem;margin:.8rem 0;align-items:stretch}
+.far-card{flex:1;border-radius:10px;padding:.9rem .8rem;text-align:center;border:2px solid var(--purple);background:var(--purple-light);display:flex;flex-direction:column;justify-content:center;min-height:120px}
+.far-card .letter{font-size:2rem;font-weight:900;color:var(--purple);line-height:1;margin-bottom:.3rem}
+.far-card h5{font-size:.82rem;font-weight:700;color:var(--purple-dark);margin-bottom:.3rem}
+.far-card p{font-size:.72rem;color:var(--text2);margin:0;line-height:1.4}
+/* ── 시나리오 카드 ── */
+.scenario-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.8rem 0}
+.scenario-card{border-radius:8px;padding:.75rem .9rem;border:1.5px solid var(--gray-border)}
+.scenario-card.ok{border-color:#86efac;background:#f0fdf4}
+.scenario-card.warn{border-color:#fdba74;background:#fff7ed}
+.scenario-card.err{border-color:#fca5a5;background:#fef2f2}
+.scenario-card .sc-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px;margin-bottom:.35rem}
+.scenario-card.ok .sc-badge{background:#bbf7d0;color:#166534}
+.scenario-card.warn .sc-badge{background:#fed7aa;color:#9a3412}
+.scenario-card.err .sc-badge{background:#fecaca;color:#991b1b}
+.scenario-card h5{font-size:.85rem;font-weight:700;margin-bottom:.3rem;color:var(--text)}
+.scenario-card p{font-size:.8rem;color:var(--text2);margin:0;line-height:1.5}
+/* ── 위험 유형 카드 ── */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.8rem 0}
+.risk-card{background:#fff;border:1.5px solid var(--gray-border);border-radius:8px;padding:.7rem .9rem}
+.risk-card .risk-num{display:inline-block;background:var(--red);color:#fff;width:22px;height:22px;border-radius:50%;text-align:center;line-height:22px;font-size:.7rem;font-weight:800;margin-right:.4rem}
+.risk-card h5{display:inline;font-size:.85rem;font-weight:700;color:var(--red)}
+.risk-card p{font-size:.8rem;color:var(--text2);margin:.3rem 0 0;line-height:1.5}
+/* ── Step 분석 타임라인 ── */
+.step-timeline{position:relative;padding-left:2.2rem;margin:.8rem 0}
+.step-timeline::before{content:'';position:absolute;left:.65rem;top:.3rem;bottom:.3rem;width:2px;background:var(--purple-light)}
+.step-item{position:relative;margin-bottom:1rem}
+.step-item::before{content:'';position:absolute;left:-1.55rem;top:.4rem;width:12px;height:12px;border-radius:50%;background:var(--purple);border:2px solid #fff;box-shadow:0 0 0 2px var(--purple)}
+.step-item h4{font-size:.9rem;font-weight:700;color:var(--purple);margin-bottom:.25rem}
+.step-item p{font-size:.85rem;color:var(--text2);margin:0;line-height:1.65}
+/* ── 사례 박스 ── */
+.case-box{background:#fffbeb;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#78350f;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+/* ── 결론 요약 박스 ── */
+.summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.summary-box h4{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--purple-dark)}
+.summary-box ul{padding-left:1.3rem;font-size:.9rem;line-height:1.75;color:var(--text2)}
+.summary-box li{margin-bottom:.3rem;color:var(--text2)}
+.summary-box li strong{color:var(--purple-dark)}
+/* ── 퀴즈 ── */
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+/* ── 체크리스트 ── */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+/* ── 하단 네비게이션 ── */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.scenario-grid,.risk-grid{grid-template-columns:1fr}
+  .far-row{flex-direction:column}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VI Intangibles › M6-4 (4/8)</div>
+  <h1>M6-4. 기능·자산·위험 분석 (FAR Analysis)</h1>
+  <div class="sub">Section B.2 — 기능 수행과 통제, 자산 사용, 위험 부담, 실제 실현이익, B.1·B.2 종합 함의 &nbsp;|&nbsp; ¶6.47 – ¶6.72 &nbsp;|&nbsp; 예상 학습시간: 60분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s0')">1. FAR 분석 개관 (B.2)</button>
+      <button class="nav-item" onclick="goTo('s1')">2. 기능 수행과 통제 (B.2.1)</button>
+      <button class="nav-item" onclick="goTo('s2')">3. 자산 사용 (B.2.2)</button>
+      <button class="nav-item" onclick="goTo('s3')">4. 위험 부담 (B.2.3)</button>
+      <button class="nav-item" onclick="goTo('s4')">5. 실제 실현이익 (B.2.4)</button>
+      <button class="nav-item" onclick="goTo('s5')">6. 종합 함의 (B.2.5)</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>FAR 분석(기능·자산·위험 분석)의 3대 축(Functions · Assets · Risks)이 무형자산 이전가격 분석에서 어떤 역할을 하는지 이해하고, ¶6.48의 3가지 분석 관점을 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>B.2.1의 기능 수행·통제 분석에서 "외주(Outsourcing) + 통제(Control)"의 논리를 이해하고, 법률적 소유자가 기능도 위험도 부담하지 않는 경우(¶6.54)의 이전가격 처리를 설명할 수 있다</span></li>
+        <li><span class="obj-num">3</span><span>B.2.2의 자산 사용 분석에서 재무위험과 영업위험의 구분, 자금공급자의 보상 기준을 이해하고 실질적 통제(control) 여부가 보상에 미치는 영향을 파악한다</span></li>
+        <li><span class="obj-num">4</span><span>B.2.3의 위험 부담 분석에서 무형자산 관련 4대 위험 유형과 Chapter I D.1.2 5단계 분석절차를 적용하여 실제 위험부담 주체를 결정하는 방법을 이해한다</span></li>
+        <li><span class="obj-num">5</span><span>B.2.4의 실제 실현이익(Ex-post Returns)과 기대수익(Ex-ante)의 차이 처리 원칙, 그리고 B.2.5의 종합 함의 — 법률적 소유자가 무형자산 이익을 향유하기 위한 3가지 조건(¶6.71) — 을 설명할 수 있다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 0: FAR 분석 개관 -->
+    <section class="card" id="s0">
+      <h2>1. FAR 분석 개관 (B.2) <span class="tag tag-para">¶6.47–6.49</span></h2>
+      <p>Section B.2는 무형자산의 소유권과 이익 귀속 분석의 핵심 도구인 <strong>FAR 분석(기능·자산·위험 분석)</strong>을 다룹니다. ¶6.47은 법률적 소유자와 실제 이익 귀속자의 관계를 다시 한번 상기시키며, ¶6.48·6.49는 분석의 3대 축과 기여도 분석의 어려움을 제시합니다.</p>
+
+      <div class="far-row">
+        <div class="far-card">
+          <div class="letter">F</div>
+          <h5>Functions<br>(기능 수행과 통제)</h5>
+          <p>DEMPE 기능을 누가 실질적으로 수행하고 통제하는가?</p>
+        </div>
+        <div class="far-card">
+          <div class="letter">A</div>
+          <h5>Assets<br>(자산 사용)</h5>
+          <p>무형자산·유형자산·자본을 누가 제공하고 통제하는가?</p>
+        </div>
+        <div class="far-card">
+          <div class="letter">R</div>
+          <h5>Risks<br>(위험 부담)</h5>
+          <p>개발·기술·침해·제조물책임 등 위험을 실질적으로 누가 부담하는가?</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적 소유자와 이익 귀속의 관계 재확인</span>
+          <span class="para">¶6.47</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.47은 M6-3의 핵심 원칙(법률적 소유자 ≠ 자동 이익 귀속자)을 B.2의 출발점으로 재확인합니다.</p>
+          <div class="key-point">💡 <strong>핵심 원칙:</strong> 무형자산을 법률적으로 소유한다고 해서 자동적으로 해당 무형자산으로부터 발생하는 모든 수익을 향유할 수 있는 것은 아닙니다. 이익의 귀속은 <strong>실질적으로 어떤 기능을 수행하고, 어떤 자산을 사용하며, 어떤 위험을 부담하는가</strong>에 따라 결정됩니다.</div>
+          <p>이는 BEPS Action 8-10의 핵심 원칙이며, "Substance over Form"의 구체적 실현입니다. 이 원칙이 B.2 전체를 관통합니다.</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>기능·위험 분석의 3가지 관점</span>
+          <span class="para">¶6.48</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.48은 관계회사 간 기능·위험 파악을 위한 3가지 핵심 분석 관점을 제시합니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>① 기능 통제 분석</h4>
+              <p>다국적기업 그룹 내 어떤 기업이 무형자산의 <strong>개발·개선·유지·보호·사용</strong>에 관련된 기능을 실질적으로 <strong>통제</strong>하는지 분석</p>
+            </div>
+            <div class="col-box">
+              <h4>② 자금공급 분석</h4>
+              <p>다국적기업 그룹 내 어떤 기업이 무형자산 또는 다른 자산과 관련된 <strong>자금공급 활동</strong>을 수행하는지 분석</p>
+            </div>
+            <div class="col-box">
+              <h4>③ 위험 부담 분석</h4>
+              <p>다국적기업 그룹 내 어떤 기업이 무형자산과 관련된 <strong>위험</strong>을 실질적으로 부담하는지 분석</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>통제(Control)의 의미:</strong> 단순히 기능을 수행하는 것보다 <strong>통제하는 것</strong>이 더 중요합니다. 외주(outsourcing)를 통해 기능을 수행하더라도, 그 기능을 <em>지시·감독·통제</em>하는 법인이 이전가격상 보상을 받아야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>기여도 분석이 어려운 3가지 상황</span>
+          <span class="para">¶6.49</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.49는 기능 분석을 통한 기여도 파악이 특히 어려운 3가지 상황을 제시합니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>① 개발 중 이전</h4>
+              <p>그룹이 무형자산을 직접 개발하는 도중에 아직 완성되지 않은 무형자산을 관계회사 간에 이전하는 경우 — 가치 평가 자체가 매우 불확실함</p>
+            </div>
+            <div class="step-item">
+              <h4>② 기초 무형자산으로의 활용</h4>
+              <p>매수하거나 자체 개발한 무형자산을 추가적인 개발의 기초(base)로 사용하는 경우 — 기존 기여와 신규 기여의 구분이 어려움</p>
+            </div>
+            <div class="step-item">
+              <h4>③ 다른 사업활동과의 결합</h4>
+              <p>마케팅이나 제조 등 다른 사업활동이 가치 창출에 특히 중요하게 기여하는 경우 — 무형자산 자체의 기여와 다른 기능의 기여를 분리하기 어려움</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 포인트</div>
+            <p>이 3가지 상황은 모두 DEMPE 분석을 단순 비교에서 <strong>복합적 가치평가</strong> 문제로 만드는 요인입니다. 따라서 이익분할법(PSM) 또는 사전적 가치평가방법의 적용 필요성이 높아집니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 1: B.2.1 기능 수행과 통제 -->
+    <section class="card" id="s1">
+      <h2>2. 기능 수행과 통제 (B.2.1) <span class="tag tag-para">¶6.50–6.58</span></h2>
+      <p>B.2.1은 FAR 분석의 첫 번째 축인 <strong>기능 분석</strong>을 다룹니다. 핵심 질문은 "누가 DEMPE 기능을 실질적으로 수행하고 통제하는가"입니다. 여기서 <strong>통제(Control)</strong>의 개념이 중심입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 거래에서 DEMPE 기능의 중요성</span>
+          <span class="para">¶6.50</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산이 거래에 포함되어 있는 경우, 무형자산의 <strong>개발·개선·유지·관리·보호·사용</strong>에 관련한 기능이 정상가격을 산출하는 데 핵심적인 요소가 됩니다.</p>
+          <div class="key-point">💡 <strong>¶6.50의 핵심:</strong> 단순히 어떤 법인이 무형자산을 "보유"하고 있는지가 아니라, 해당 법인이 DEMPE 기능의 어떤 부분을 실질적으로 수행하는지가 이전가격 보상의 결정 요소입니다. 기능의 수행 여부와 그 중요도에 따라 보상이 달라집니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>최종 모회사가 무형자산 소득 전부를 향유하는 조건</span>
+          <span class="para">¶6.51</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산을 법률적으로 소유하는 최종 모회사가 무형자산 관련 소득을 <strong>모두 실현</strong>하기 위한 조건을 제시합니다.</p>
+          <div class="note-point">✅ <strong>모회사가 무형자산 소득 전부를 향유할 수 있는 조건:</strong>
+            <ul style="margin-top:.5rem;padding-left:1.2rem">
+              <li>무형자산을 <strong>법률적으로 소유</strong>하고</li>
+              <li>관련 DEMPE <strong>기능을 실질적으로 수행</strong>하거나 통제하며</li>
+              <li>관련 <strong>위험을 실질적으로 부담</strong>하는 경우</li>
+            </ul>
+          </div>
+          <div class="note-point">✅ <strong>외주(Outsourcing) 허용:</strong> 기능이나 위험의 일부를 외주하는 것도 허용됩니다. 단, 외주한 기능·위험에 대해서는 외주 수행자에게 <strong>정상가격 대가</strong>를 지급해야 하며, 외주를 통제·감독하는 역할은 여전히 모회사가 수행해야 합니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 사례</div>
+            A모회사(미국)는 특허를 보유하고 R&D 전략을 결정·감독합니다. 실제 연구는 B자회사(한국)에 외주합니다. → A모회사는 B자회사에게 외주 연구에 대한 정상가격 대가(cost-plus 방식 등)를 지급하고, A모회사는 특허수익 대부분을 향유할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>관계회사가 DEMPE 기능을 수행하는 경우 & 외주+통제 분리</span>
+          <span class="para">¶6.52–6.53</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>최종 모회사가 아닌 <strong>다른 관계회사</strong>가 DEMPE 기능을 수행하거나 통제하는 경우의 처리입니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>¶6.52 — 관계회사가 기능 수행</h4>
+              <p>다른 관계회사가 DEMPE 기능을 수행하는 경우, ¶6.53~6.58에서 정한 정상가격 산출 원칙을 적용합니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>¶6.53 — 외주 기능에 추가 보상</h4>
+              <p>무형자산 관련 기능을 외주하고 <strong>다른 법인이 통제기능을 수행</strong>하는 경우, 그 통제 기능에 대해 추가적인 보상을 고려해야 합니다 (Chapter I D.1.2.1 참조).</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>핵심 원리:</strong> 외주를 "지시·감독·통제"하는 것 자체가 가치 창출 기능입니다. 단순히 자금을 대고 외주를 발주하는 법인과, 외주를 실질적으로 통제·관리하는 법인은 서로 다른 수준의 보상을 받아야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적 소유자가 기능도 위험도 부담하지 않는 경우</span>
+          <span class="para">¶6.54</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>이 문단은 BEPS 남용 구조의 핵심 패턴을 다룹니다 — 법률적 소유자가 <strong>아무런 기능도 수행하지 않고 위험도 부담하지 않는 경우</strong>입니다.</p>
+          <div class="warn-point">⚠️ <strong>¶6.54의 결론:</strong> 무형자산의 법률적 소유자가 해당 무형자산과 관련하여 <strong>어떠한 기능도 수행하지 않고, 어떠한 위험도 실질적으로 부담하지 않는다면</strong>, 그 법률적 소유자는 무형자산 개발·활용으로부터 발생하는 이익을 향유할 권한이 없습니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 전형적 BEPS 구조 사례</div>
+            <strong>구조:</strong> C지주회사(버뮤다)가 특허를 보유하지만, 실제 R&D는 D자회사(독일)가 100% 수행하고, 위험도 D가 부담합니다.<br><br>
+            <strong>¶6.54 적용:</strong> C지주회사는 단순 법률적 소유자일 뿐이므로, 특허 수익의 대부분은 D자회사에 귀속되어야 합니다. C지주회사는 자금 제공에 대한 무위험 수익(risk-free return)만 향유할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>기능수행 정도와 보상, 중요도 평가, 비교가능거래 검색</span>
+          <span class="para">¶6.55–6.58</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>기능 수행의 정도와 질에 따라 보상이 달라지며, 외주 상황에서는 비교가능거래 검색에 특별한 주의가 필요합니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>¶6.55 — 기능수행 정도와 정상가격 보상의 비례 관계</h4>
+              <p>단순히 <strong>자금만 제공하는 법인</strong>과 <strong>자금공급 + 통제기능을 모두 수행하는 법인</strong> 간에는 보상 수준이 달라야 합니다. 통제기능을 수행할수록 더 높은 보상이 인정됩니다 (Chapter I D.1.2 참조).</p>
+            </div>
+            <div class="step-item">
+              <h4>¶6.56 — 기능의 중요도 평가</h4>
+              <p>자체 개발 무형자산의 경우, 각 기능의 중요도는 <strong>개별 사안마다 다릅니다</strong>. 특히 기존 무형자산을 추가 개발하기 위한 추가적 기능이 있는 경우, 그 기능에 대한 별도 분석이 필요합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>¶6.57 — 외주 시 비교가능거래 검색의 어려움</h4>
+              <p>독립 기업 간에는 일반적으로 중요한 기능·위험을 외부에 공유하지 않으므로, 무형자산 개발의 핵심 기능을 외주하는 거래의 비교가능거래를 찾기 어렵습니다. 이때 이익분할법이나 사전적 가치평가방법 적용 시 신중해야 합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>¶6.58 — 중요한 기능 수행 시 일방적 방법의 신뢰성 문제</h4>
+              <p>거래 당사자가 <strong>중요한 기능을 수행</strong>하는 경우, 일방적 이전가격산출방법(CUP·RPM·CPM·TNMM)의 적용 결과는 신뢰성에 문제가 발생할 수 있습니다. Example 6 참조.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 요약</div>
+            <p>DEMPE 기능 중 하나라도 중요한 기능을 수행하는 당사자가 있다면, 일방적 방법보다 이익분할법(PSM)이 더 신뢰성 있는 방법이 될 수 있습니다. 이는 BEPS Action 8-10의 핵심 방향성과 일치합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: B.2.2 자산 사용 -->
+    <section class="card" id="s2">
+      <h2>3. 자산 사용 (B.2.2) <span class="tag tag-para">¶6.59–6.64</span></h2>
+      <p>FAR 분석의 두 번째 축인 <strong>자산(Assets) 분석</strong>입니다. 자산에는 무형자산뿐 아니라 유형자산, 그리고 자본(Capital)이 포함됩니다. 특히 자금공급자(Capital Provider)의 보상 수준을 결정하는 기준이 핵심입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>자산·자본 제공과 위험 부담의 관계</span>
+          <span class="para">¶6.59–6.60</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>자산 또는 자본을 제공하는 것은 무형자산 개발의 중요한 기여 요소입니다. 그러나 자산 제공이 곧 이익 향유권을 보장하지는 않습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>Chapter I D.1.2.1.6 Example 3 원칙</h4>
+              <p>자본만 제공하고 의사결정·통제는 하지 않는 법인은 무위험 수익(risk-free return)만 받습니다. 실질적 통제가 보상의 크기를 결정합니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>자산·위험 부담의 결합</h4>
+              <p>자산을 제공하면서 동시에 해당 자산과 관련된 위험도 실질적으로 부담하는 경우, 위험 프리미엄을 포함한 보상을 받습니다 (¶1.85, 1.103 참조).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>재무위험과 영업위험의 구분</span>
+          <span class="para">¶6.61</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.61은 자산·위험 분석에서 위험을 두 가지로 구분하여 분석하도록 지시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>재무위험 (Financial Risks)</h4>
+              <p>자금조달, 환율변동, 금리변동, 투자 실패 등 자산의 재무적 가치 변동에 관련된 위험</p>
+              <ul>
+                <li>자본 손실 위험</li>
+                <li>투자 수익의 불확실성</li>
+                <li>유동성 위험</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>영업위험 (Operational Risks)</h4>
+              <p>R&D 실패, 제품 노후화, 마케팅 실패 등 사업 운영에 관련된 위험</p>
+              <ul>
+                <li>기술 개발 실패 위험</li>
+                <li>시장 수요 변화 위험</li>
+                <li>경쟁사 대응 위험</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>분석 방법:</strong> Chapter I D.1.2의 위험 분석 절차를 적용하여 어떤 법인이 어떤 종류의 위험을 실질적으로 부담하는지 파악합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>재무적 옵션, 일상적 위험관리, 자산·자본 제공의 구체적 업무</span>
+          <span class="para">¶6.62–6.64</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>자산·자본을 제공하는 경우의 보다 구체적인 분석 기준들입니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>¶6.62 — 현실적으로 선택가능한 재무적 옵션</h4>
+              <p>계약상 권리·의무가 정해져 있더라도, 독립 기업이 현실적으로 선택할 수 있는 재무적 옵션("financing options realistically available")과 비교하여 거래 조건의 적정성을 판단해야 합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>¶6.63 — 정기적 위험감소 활동</h4>
+              <p>일상적인 위험관리(day-to-day risk mitigation) 활동을 수행하는 것이 곧 위험을 "부담"하는 것을 의미하지는 않습니다. 위험을 <em>실질적으로 통제</em>하고 <em>경제적 결과를 감수</em>하는 주체가 위험부담자입니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>¶6.64 — 자산·자본 제공 시 수행 업무의 종류와 적용</h4>
+              <p>자산 및 자본을 제공하는 경우 수행하는 업무의 종류와 그 중요도에 따라 보상이 달라집니다. 단순 자금 제공과 운영·통제를 함께 수행하는 경우를 구분해야 합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 포인트 — 자금공급자 보상의 기준</div>
+            <p><strong>단순 자금공급자</strong>: 무위험 수익률(risk-free rate) 수준의 보상만 받음</p>
+            <p><strong>자금공급 + 의사결정 통제</strong>: 위험 프리미엄을 포함한 보다 높은 보상 받음</p>
+            <p><strong>자금공급 + 통제 + DEMPE 기능 수행</strong>: 무형자산 이익의 상당 부분 향유 가능</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: B.2.3 위험 부담 -->
+    <section class="card" id="s3">
+      <h2>4. 위험 부담 (B.2.3) <span class="tag tag-para">¶6.65–6.68</span></h2>
+      <p>FAR 분석의 세 번째 축인 <strong>위험(Risks) 분석</strong>입니다. 무형자산에 특유한 4대 위험 유형과, Chapter I D.1.2의 5단계 절차를 통한 실제 위험부담 주체 결정 방법을 다룹니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 관련 4대 위험 유형</span>
+          <span class="para">¶6.65</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.65는 무형자산 이전가격 분석에서 특히 중요한 4가지 위험 유형을 제시합니다.</p>
+          <div class="risk-grid">
+            <div class="risk-card">
+              <span class="risk-num">i</span>
+              <h5>무형자산 개발 위험</h5>
+              <p>R&D 투자가 성공하지 못할 위험, 개발 비용 초과 위험, 개발 기간 지연 위험 등 — 가장 핵심적인 위험</p>
+            </div>
+            <div class="risk-card">
+              <span class="risk-num">ii</span>
+              <h5>제품·기술 노후화 위험</h5>
+              <p>시간 경과에 따른 제품 및 기술의 노후화(obsolescence) 위험 — 특히 기술 분야에서 중요</p>
+            </div>
+            <div class="risk-card">
+              <span class="risk-num">iii</span>
+              <h5>기술 유출·특허 침해 위험</h5>
+              <p>핵심 기술이 경쟁사에 유출되거나, 제3자가 특허를 침해하는 경우의 위험 — 보호·법적 대응 비용 포함</p>
+            </div>
+            <div class="risk-card">
+              <span class="risk-num">iv</span>
+              <h5>제조물 책임 위험</h5>
+              <p>제품 결함으로 인한 소비자 피해 발생 시 법적 책임(Product Liability) — 특히 제약·식품·소비재 분야에서 중요</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>왜 위험의 유형이 중요한가?</strong> 위험의 종류에 따라 위험을 통제·부담하는 주체가 달라지며, 이는 이익 귀속과 보상 수준을 결정합니다. 예: 기술 유출 위험을 관리하는 IP 보호 팀이 있는 법인 vs. 단순 사용권자</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>기능·위험 수행 법인 파악 방법 (Chapter I D.1.2 5단계)</span>
+          <span class="para">¶6.66–6.67</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.66·6.67은 무형자산 관련 기능·위험을 실질적으로 수행하는 법인을 파악하기 위해 <strong>Chapter I D.1.2의 5단계 분석절차</strong>를 적용하도록 지시합니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>Step 1 — 경제적으로 중요한 위험의 식별</h4>
+              <p>거래에 관련된 특수관계거래에서 어떤 위험이 경제적으로 중요한지 식별합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>Step 2 — 계약조건 파악</h4>
+              <p>계약에서 위험이 어떻게 배분되어 있는지 파악합니다. 단, 계약은 출발점일 뿐 종착점이 아닙니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>Step 3 — 실질 행동 분석</h4>
+              <p>당사자들의 실질 행동(conduct)이 계약과 일치하는지 분석합니다. 위험 통제 결정을 실제로 누가 내리는지 파악합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>Step 4 — 계약·행동의 불일치 확인 및 조정</h4>
+              <p>계약과 실질 행동이 불일치하는 경우, 실질 행동에 기반하여 위험의 귀속을 재결정합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>Step 5 — 위험의 정상가격 배분</h4>
+              <p>최종적으로 확인된 위험 배분에 따라 각 당사자에게 적정 보상을 결정합니다.</p>
+            </div>
+          </div>
+          <div class="blue-point">🔷 <strong>핵심:</strong> 5단계 절차의 핵심은 Step 3 — <em>실질 행동 분석</em>입니다. 계약서에 무슨 내용이 적혀 있더라도, 실제로 위험 관련 의사결정을 누가 내리고 그 경제적 결과를 누가 감수하는지가 위험부담 주체를 결정합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>실제 위험부담 (비용과 의무의 부담)</span>
+          <span class="para">¶6.68</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.68은 실제로 위험을 부담하는 것의 의미를 명확히 합니다. Chapter VI Annex I Example 7을 참조합니다.</p>
+          <div class="key-point">💡 <strong>실제 위험부담의 3요소:</strong>
+            <ul style="margin-top:.5rem;padding-left:1.2rem">
+              <li><strong>비용의 부담</strong> — 위험이 실현되었을 때 발생하는 손실이나 비용을 실제로 부담하는가?</li>
+              <li><strong>의사결정 권한</strong> — 위험에 관련된 중요한 의사결정을 실질적으로 내리는가?</li>
+              <li><strong>결과에 대한 책임</strong> — 위험이 실현된 경우 그 경제적 결과(손실)를 감수하는가?</li>
+            </ul>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 Example 7 원리 적용</div>
+            E법인이 계약서상 "R&D 위험 부담자"로 명시되어 있습니다. 그러나 실제 R&D 의사결정은 모두 F법인이 내리고, E법인은 단지 비용을 정기적으로 송금할 뿐입니다. → <strong>실질적 위험부담자는 F법인</strong>이므로, E법인은 자금제공에 대한 무위험 수익만 받고, F법인이 R&D 위험에 상응하는 보상을 받아야 합니다.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: B.2.4 실제 실현이익 -->
+    <section class="card" id="s4">
+      <h2>5. 실제 실현이익 (B.2.4) <span class="tag tag-para">¶6.69–6.70</span></h2>
+      <p>B.2.4는 무형자산 이전가격에서 자주 발생하는 <strong>기대수익(Ex-ante)과 실제 실현이익(Ex-post)의 차이</strong> 문제를 다룹니다. 이는 M6-3에서 다룬 Ex-ante vs Ex-post 원칙의 B.2 맥락에서의 구체적 적용입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>실제 실현이익과 기대수익의 차이 문제</span>
+          <span class="para">¶6.69</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산 거래 시점에서 예상했던 수익(Ex-ante)과 실제로 나중에 실현된 수익(Ex-post)이 다를 수 있습니다. 이는 특히 다음과 같은 상황에서 문제가 됩니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>과소 실현 (Under-performance)</h4>
+              <p>무형자산의 가치가 예상보다 훨씬 낮게 실현된 경우 — 개발 실패, 시장 변화, 기술 노후화 등</p>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--orange)">→ 위험 부담자가 손실을 감수해야 함</p>
+            </div>
+            <div class="col-box">
+              <h4>초과 실현 (Over-performance)</h4>
+              <p>무형자산의 가치가 예상보다 훨씬 높게 실현된 경우 — HTVI(고도수익 무형자산) 상황의 전형</p>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--red)">→ 사후 조정(Periodic Adjustments) 문제 발생</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>The White Paper (1988) 참조:</strong> ¶6.69는 예상소득과 실제소득 간 차이 문제에 대해 The White Paper(1988, pp. 63-67, Chapter 8)를 참조합니다. 이 문서는 정기 조정(Periodic Adjustments)의 원칙적 근거를 제시합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>실제 실현이익 차이의 해결방법</span>
+          <span class="para">¶6.70</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.70은 Ex-ante와 Ex-post 이익의 차이를 처리하는 방법론을 제시합니다.</p>
+          <div class="step-timeline">
+            <div class="step-item">
+              <h4>원칙 1 — 거래 시점 기준</h4>
+              <p>정상가격 원칙은 기본적으로 <strong>거래 시점(Ex-ante)</strong>에서 독립 기업이 합의했을 조건을 기준으로 합니다. 사후에 결과가 좋았거나 나빴다는 사실만으로 거래 조건을 소급 변경하는 것은 원칙에 반합니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>원칙 2 — HTVI 예외: 사후 정보 활용</h4>
+              <p>단, <strong>고도수익 무형자산(HTVI)</strong>의 경우에는 예외적으로 사후 실현이익이 정상가격 평가의 증거로 사용될 수 있습니다 (M6-8에서 상세 다룸). 이는 HTVI의 특수성을 반영한 것입니다.</p>
+            </div>
+            <div class="step-item">
+              <h4>원칙 3 — 실질적 위험부담자에게 결과 귀속</h4>
+              <p>Ex-post 수익의 귀속은 결국 <strong>실질적으로 위험을 부담한 주체</strong>에게 귀속되어야 합니다. 위험 없이 높은 수익만 실현하는 것은 정상가격 원칙에 위배됩니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 HTVI와의 연결</div>
+            <p>¶6.69-6.70의 원칙은 M6-8(HTVI)에서 더 발전됩니다. HTVI의 경우 세무당국이 사후 수익 정보를 이용하여 거래 시점의 가격 적정성을 다시 평가할 수 있도록 허용합니다 — 납세자 입장에서 매우 중요한 위험 요소입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: B.2.5 종합 함의 -->
+    <section class="card" id="s5">
+      <h2>6. 종합 함의 (B.2.5) <span class="tag tag-para">¶6.71–6.72</span></h2>
+      <p>B.2.5는 Section B.1(소유권·계약조건)과 Section B.2(FAR 분석)를 적용하여 도달한 <strong>핵심 결론</strong>을 정리합니다. 법률적 소유자가 무형자산 이익을 향유하는 조건과 손익 귀속의 원칙을 명확히 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>법률적 소유자가 이익 대부분을 향유하는 3가지 조건</span>
+          <span class="para">¶6.71</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.71은 B.1과 B.2의 분석을 통합하여, 법률적 소유자가 무형자산으로부터 발생하는 이익 대부분을 향유할 수 있는 <strong>3가지 누적 조건</strong>을 제시합니다.</p>
+          <div class="summary-box">
+            <h4>⚡ ¶6.71 — 이익 향유의 3가지 조건 (누적 충족 필요)</h4>
+            <ul>
+              <li>① <strong>중요한 기능 및 통제기능을 모두 수행</strong>한다 — DEMPE 관련 핵심 의사결정을 주도한다</li>
+              <li>② <strong>필요한 자산 및 자본을 제공</strong>한다 — 단순 명의 보유가 아닌 실질적 투자를 한다</li>
+              <li>③ <strong>관련 위험을 모두 실질적으로 부담</strong>한다 — 개발 실패, 노후화, 침해 등의 위험을 감수한다</li>
+            </ul>
+          </div>
+          <div class="scenario-grid">
+            <div class="scenario-card ok">
+              <span class="sc-badge">✅ 이익 향유 가능</span>
+              <h5>3가지 조건 모두 충족</h5>
+              <p>법률적 소유 + 기능·통제 수행 + 자산·자본 제공 + 위험 부담 → 무형자산 이익 대부분 향유 가능</p>
+            </div>
+            <div class="scenario-card warn">
+              <span class="sc-badge">⚠️ 일부만 향유</span>
+              <h5>일부 조건만 충족</h5>
+              <p>일부 기능만 수행하거나 자금만 제공하는 경우 → 해당 기능·위험에 비례하는 보상만 받음</p>
+            </div>
+            <div class="scenario-card err">
+              <span class="sc-badge">❌ 이익 향유 불가</span>
+              <h5>법률적 소유만 있는 경우 (¶6.54)</h5>
+              <p>기능 수행도 위험 부담도 없는 법률적 소유자 → 무위험 수익(risk-free return)만 받음</p>
+            </div>
+            <div class="scenario-card warn">
+              <span class="sc-badge">⚠️ 자금공급만</span>
+              <h5>자금 제공 + 통제 없음</h5>
+              <p>단순 자금공급 법인 → 무위험 수익률 수준의 보상. 통제가 없으면 위험 프리미엄 없음</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>¶6.71의 중요성:</strong> 이 3가지 조건은 누적적으로 충족되어야 합니다. 하나라도 결여된 경우, 결여된 요소만큼 이익 귀속이 제한됩니다. 이는 조세 최소화를 위한 법률적 구조 설계만으로는 이익 귀속을 조작할 수 없음을 의미합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>손익과 결손의 귀속 원칙</span>
+          <span class="para">¶6.72</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.72는 이익뿐 아니라 <strong>손실(결손)</strong>의 귀속에 대한 원칙도 동일하게 적용됨을 명확히 합니다.</p>
+          <div class="key-point">💡 <strong>대칭성 원칙:</strong> 이익(수익)을 향유하는 법인은 동시에 손실(결손)도 부담해야 합니다. 이익은 관계회사에 귀속시키면서 손실은 고세율국에 남기려는 구조는 정상가격 원칙에 위배됩니다.</div>
+          <div class="note-point">✅ <strong>실무 의미:</strong> 위험을 실질적으로 부담하는 법인은 그 위험이 실현되어 손실이 발생했을 때 그 손실도 감수해야 합니다. "이익은 가져가고 손실은 다른 법인에" 구조는 정상가격 원칙에 정면으로 위배됩니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 사례 — 대칭성 원칙의 적용</div>
+            G법인(저세율국)이 계약상 무형자산 "이익"의 95%를 가져가도록 구조를 설계했습니다. 그러나 R&D가 실패하여 큰 손실이 발생했을 때, 실제 R&D 기능을 수행한 H법인(고세율국)이 모든 손실을 부담했습니다. → G법인이 실질적 위험부담자가 아님이 드러납니다. 따라서 G법인이 이익의 95%를 가져가는 것도 정상가격 원칙에 위배됩니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- B.2.5 종합 정리 -->
+      <div class="summary-box" style="margin-top:1.2rem">
+        <h4>📋 M6-4 핵심 정리 — FAR 분석 3축의 결론</h4>
+        <ul>
+          <li><strong>기능(F)</strong>: DEMPE 기능을 실질적으로 수행·통제하는 법인이 핵심 보상을 받는다</li>
+          <li><strong>자산(A)</strong>: 자산·자본 제공만으로는 부족 — 통제와 결합되어야 적절한 보상이 인정된다</li>
+          <li><strong>위험(R)</strong>: 계약서가 아닌 실질 행동(conduct)과 의사결정 권한이 위험부담 주체를 결정한다</li>
+          <li><strong>이익·손실 대칭</strong>: 이익 귀속과 손실 귀속은 동일한 원칙으로 결정되어야 한다</li>
+          <li><strong>법률적 소유의 한계</strong>: 법률적 소유는 이익 귀속의 출발점이지, 자동적 근거가 아니다</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 확인 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="margin-bottom:1.2rem;font-size:.93rem;color:var(--text2)">M6-4의 핵심 개념을 확인합니다. 5문항, 80점(4문항) 이상이면 합격입니다.</p>
+
+      <!-- Q1 -->
+      <div class="q-block" id="qb1">
+        <div class="q-text">Q1. ¶6.48에 따르면, 관계회사 간 기능·위험을 파악하기 위한 3가지 분석 관점에 해당하지 않는 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q1" value="a"> a) 어떤 기업이 DEMPE 기능을 통제하는지 분석</label>
+          <label><input type="radio" name="q1" value="b"> b) 어떤 기업이 자금공급 활동을 수행하는지 분석</label>
+          <label><input type="radio" name="q1" value="c"> c) 어떤 기업이 무형자산을 법률적으로 등록했는지 분석</label>
+          <label><input type="radio" name="q1" value="d"> d) 어떤 기업이 무형자산과 관련된 위험을 부담하는지 분석</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block" id="qb2">
+        <div class="q-text">Q2. ¶6.54에 따르면, 무형자산의 법률적 소유자가 어떠한 기능도 수행하지 않고 위험도 부담하지 않는 경우, 해당 소유자가 받을 수 있는 보상은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q2" value="a"> a) 무형자산 수익의 50%</label>
+          <label><input type="radio" name="q2" value="b"> b) 무형자산 수익의 전부</label>
+          <label><input type="radio" name="q2" value="c"> c) 무위험 수익률(risk-free return) 수준의 자금제공 보상만</label>
+          <label><input type="radio" name="q2" value="d"> d) 아무런 보상도 받지 못함</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block" id="qb3">
+        <div class="q-text">Q3. ¶6.65에서 제시한 무형자산 관련 4대 위험 유형에 해당하지 않는 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q3" value="a"> a) 무형자산 개발 위험</label>
+          <label><input type="radio" name="q3" value="b"> b) 제품·기술 노후화 위험</label>
+          <label><input type="radio" name="q3" value="c"> c) 기술 유출·특허 침해 위험</label>
+          <label><input type="radio" name="q3" value="d"> d) 환율 변동 위험</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block" id="qb4">
+        <div class="q-text">Q4. ¶6.71에 따르면, 법률적 소유자가 무형자산으로부터 발생하는 이익 대부분을 향유하기 위해 충족해야 하는 3가지 조건이 아닌 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q4" value="a"> a) 중요한 기능 및 통제기능을 모두 수행한다</label>
+          <label><input type="radio" name="q4" value="b"> b) 필요한 자산 및 자본을 제공한다</label>
+          <label><input type="radio" name="q4" value="c"> c) 무형자산을 OECD 회원국에 등록한다</label>
+          <label><input type="radio" name="q4" value="d"> d) 관련 위험을 모두 실질적으로 부담한다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-block" id="qb5">
+        <div class="q-text">Q5. ¶6.72의 대칭성 원칙에 관한 설명으로 가장 올바른 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q5" value="a"> a) 이익은 법률적 소유자에게, 손실은 실제 기능 수행자에게 귀속시킬 수 있다</label>
+          <label><input type="radio" name="q5" value="b"> b) 이익을 향유하는 법인은 동시에 손실도 부담해야 하며, 이익·손실은 동일한 원칙으로 귀속된다</label>
+          <label><input type="radio" name="q5" value="c"> c) 손실이 발생하면 항상 최종 모회사가 부담한다</label>
+          <label><input type="radio" name="q5" value="d"> d) HTVI의 경우 이익은 관계회사가, 손실은 개발자가 부담한다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="qBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreVal"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <p style="margin-bottom:1rem;font-size:.92rem;color:var(--text2)">무형자산 FAR 분석 시 확인해야 할 실무 항목입니다.</p>
+      <ul class="checklist">
+        <li>
+          <input type="checkbox" id="c1">
+          <label for="c1">무형자산 거래에서 DEMPE 기능(개발·개선·유지·보호·사용)을 실질적으로 수행·통제하는 법인을 식별하였습니까? (¶6.48①)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c2">
+          <label for="c2">무형자산 관련 자금공급 활동을 어떤 법인이 수행하는지, 그 법인이 자금공급에 대한 통제권도 행사하는지 확인하였습니까? (¶6.48②, ¶6.55)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c3">
+          <label for="c3">무형자산과 관련된 위험(개발 위험·노후화·침해·제조물 책임)을 실질적으로 부담하는 법인을 Chapter I D.1.2의 5단계 절차를 통해 파악하였습니까? (¶6.65–6.67)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c4">
+          <label for="c4">법률적 소유자가 기능도 위험도 부담하지 않는 경우(¶6.54), 해당 소유자의 보상을 무위험 수익 수준으로 제한하는 처리가 적절히 이루어졌습니까?</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c5">
+          <label for="c5">재무위험과 영업위험을 구분하고 각각의 부담 주체를 별도로 분석하였습니까? (¶6.61)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c6">
+          <label for="c6">계약상 위험배분과 당사자들의 실질 행동(conduct)이 일치하는지 검토하였습니까? 불일치 시 실질 행동을 기준으로 재결정하였습니까? (¶6.67 Step 3–4)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c7">
+          <label for="c7">법률적 소유자가 무형자산 이익 향유를 위한 3가지 조건(기능·자산·위험)을 모두 충족하는지 확인하였습니까? (¶6.71)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c8">
+          <label for="c8">이익 귀속과 손실 귀속이 대칭적으로 결정되어 있는지, 이익만 특정 법인에게 귀속시키는 비대칭 구조가 없는지 검토하였습니까? (¶6.72)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c9">
+          <label for="c9">무형자산의 기대수익(Ex-ante)과 실제 실현이익(Ex-post) 간 중요한 차이가 있는 경우, 그 원인이 예측 불가능한 사정 변경인지, 아니면 당초 가격 설정의 문제인지 분석하였습니까? (¶6.69–6.70)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c10">
+          <label for="c10">중요한 DEMPE 기능을 수행하는 당사자가 있어 일방적 이전가격 방법(TNMM 등)의 신뢰성이 낮은 경우, 이익분할법(PSM) 적용을 검토하였습니까? (¶6.58)</label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a href="M6-3_소유권_DEMPE개관.html" class="btn-nav">← M6-3 소유권 &amp; DEMPE 개관</a>
+      <a href="#" class="btn-nav secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">📋 목차로</a>
+      <a href="M6-5_DEMPE_사례적용.html" class="btn-nav">M6-5 DEMPE 사례 적용 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 아코디언 ── */
+const accHeaders = [];
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.classList.contains('open');
+  btn.classList.toggle('open',!isOpen);
+  body.classList.toggle('open',!isOpen);
+  if(!isOpen && !btn.classList.contains('viewed')){
+    btn.classList.add('viewed');
+    updateProgress();
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const headers=document.querySelectorAll('.acc-header');
+  document.getElementById('accTotal').textContent=headers.length;
+  updateProgress();
+});
+
+/* ── 진도 계산 ── */
+let quizCorrect=0;
+function updateProgress(){
+  const total=parseInt(document.getElementById('accTotal').textContent)||1;
+  const done=document.querySelectorAll('.acc-header.viewed').length;
+  document.getElementById('accDone').textContent=done;
+  const pct=Math.round((done/total*0.6 + quizCorrect/5*0.4)*100);
+  document.getElementById('pctDisp').textContent=pct+'%';
+  document.getElementById('topBar').style.width=pct+'%';
+}
+
+/* ── 스크롤 ── */
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+/* ── 퀴즈 채점 ── */
+const answers={q1:'c',q2:'c',q3:'d',q4:'c',q5:'b'};
+const feedbacks={
+  q1:{
+    a:'❌ 기능 통제 분석은 ¶6.48의 첫 번째 관점에 해당합니다.',
+    b:'❌ 자금공급 분석은 ¶6.48의 두 번째 관점에 해당합니다.',
+    c:'✅ 정답입니다! ¶6.48의 3가지 관점은 ①기능 통제, ②자금공급, ③위험 부담 분석입니다. "법률적 등록" 분석은 포함되지 않습니다. OECD는 법률적 형식보다 실질을 중시합니다.',
+    d:'❌ 위험 부담 분석은 ¶6.48의 세 번째 관점에 해당합니다.'
+  },
+  q2:{
+    a:'❌ 기능도 위험도 부담하지 않는 법률적 소유자는 수익의 50%를 향유할 수 없습니다.',
+    b:'❌ 법률적 소유자는 자동으로 모든 수익을 향유하지 못합니다. 이것이 BEPS Action 8-10의 핵심 변화입니다.',
+    c:'✅ 정답입니다! ¶6.54에 따르면, 기능도 위험도 부담하지 않는 법률적 소유자는 자금 제공에 대한 무위험 수익률(risk-free return) 수준의 보상만 받을 수 있습니다.',
+    d:'❌ 자금을 제공했다면 무위험 수익 수준의 보상은 받을 수 있습니다. 단, 그 이상은 인정되지 않습니다.'
+  },
+  q3:{
+    a:'❌ 무형자산 개발 위험은 ¶6.65의 4대 위험 유형 중 하나입니다(①번).',
+    b:'❌ 제품·기술 노후화 위험은 ¶6.65의 4대 위험 유형 중 하나입니다(②번).',
+    c:'❌ 기술 유출·특허 침해 위험은 ¶6.65의 4대 위험 유형 중 하나입니다(③번).',
+    d:'✅ 정답입니다! ¶6.65의 4대 위험은 ①개발 위험, ②노후화 위험, ③기술 유출·침해 위험, ④제조물 책임입니다. 환율 변동 위험은 포함되지 않습니다(이는 재무위험의 일반적 범주에 해당).'
+  },
+  q4:{
+    a:'❌ 중요한 기능 및 통제기능 수행은 ¶6.71의 첫 번째 조건입니다.',
+    b:'❌ 자산 및 자본 제공은 ¶6.71의 두 번째 조건입니다.',
+    c:'✅ 정답입니다! ¶6.71의 3가지 조건은 ①기능·통제 수행, ②자산·자본 제공, ③위험 부담입니다. "OECD 회원국에 등록"은 이전가격 분석과 무관한 형식적 요건입니다.',
+    d:'❌ 위험 부담은 ¶6.71의 세 번째 조건입니다.'
+  },
+  q5:{
+    a:'❌ 이익과 손실은 동일한 주체에게 귀속되어야 합니다. 이익은 A에, 손실은 B에 귀속시키는 비대칭 구조는 ¶6.72 위반입니다.',
+    b:'✅ 정답입니다! ¶6.72의 대칭성 원칙에 따르면, 이익을 향유하는 법인은 동시에 손실도 부담해야 합니다. 이익과 손실의 귀속은 동일한 FAR 분석 원칙에 따라 결정됩니다.',
+    c:'❌ 손실이 항상 모회사에 귀속되는 것은 아닙니다. 실질적 위험부담 주체에게 귀속됩니다.',
+    d:'❌ HTVI에도 동일한 대칭성 원칙이 적용됩니다. 이익·손실의 귀속은 실질적 기능·위험 부담자를 기준으로 결정됩니다.'
+  }
+};
+
+function gradeQuiz(){
+  let correct=0;
+  ['q1','q2','q3','q4','q5'].forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    const fb=document.getElementById(`fb${i+1}`);
+    if(!sel){fb.style.display='block';fb.className='q-feedback wrong';fb.textContent='선택하지 않았습니다.';return;}
+    const v=sel.value;
+    const isC=(v===answers[q]);
+    if(isC) correct++;
+    fb.style.display='block';
+    fb.className='q-feedback '+(isC?'correct':'wrong');
+    fb.textContent=feedbacks[q][v]||'';
+  });
+  quizCorrect=correct;
+  document.getElementById('quizDone').textContent=correct;
+  const sb=document.getElementById('scoreBox');
+  sb.style.display='block';
+  document.getElementById('scoreVal').textContent=correct*20+'점';
+  document.getElementById('scoreMsg').textContent=correct>=4
+    ?'🎉 합격! FAR 분석의 핵심 원칙을 잘 이해하고 있습니다.'
+    :`아코디언을 다시 검토하고 재도전해 보세요. (${correct}/5 정답)`;
+  document.getElementById('qBtn').disabled=true;
+  updateProgress();
+}
+</script>
+</body>
+</html>

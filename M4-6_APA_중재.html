@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M4-6: APA & 중재 (Chapter IV 완주)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#3730a3;--purple-light:#eef2ff;--purple-mid:#4f46e5;--purple-dark:#1e1b4b;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e1b4b;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#e0e7ff}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #c7d2fe;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.num-pill{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;margin:0 .2rem}
+/* ── APA 흐름 ── */
+.apa-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.4rem;margin:.8rem 0}
+.apa-step{flex:1;min-width:130px;padding:.7rem .8rem;border-radius:8px;background:var(--purple-light);border:1.5px solid var(--purple);text-align:center}
+.apa-step .as-num{display:inline-block;background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;line-height:22px;font-size:.7rem;font-weight:800;margin-bottom:.3rem}
+.apa-step h5{font-size:.78rem;font-weight:700;color:var(--purple-dark);margin-bottom:.2rem}
+.apa-step p{font-size:.72rem;color:var(--text2);margin:0;line-height:1.4}
+.apa-arr{align-self:center;color:var(--purple);font-size:1.1rem;font-weight:700}
+/* ── 장단점 카드 ── */
+.benefit-card{border-radius:10px;padding:.9rem 1rem;border:1.5px solid var(--green);background:var(--green-light)}
+.benefit-card h4{font-size:.88rem;font-weight:700;color:var(--green);margin-bottom:.3rem}
+.benefit-card p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.6}
+.concern-card{border-radius:10px;padding:.9rem 1rem;border:1.5px solid var(--red);background:#fef2f2}
+.concern-card h4{font-size:.88rem;font-weight:700;color:var(--red);margin-bottom:.3rem}
+.concern-card p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.6}
+.badge{display:inline-block;background:var(--purple);color:#fff;padding:1px 8px;border-radius:99px;font-size:.7rem;font-weight:700;margin-bottom:.3rem}
+/* ── 완료 배너 ── */
+.completion-banner{background:linear-gradient(135deg,var(--purple-dark),var(--purple-mid));color:#fff;border-radius:var(--radius);padding:1.5rem 2rem;text-align:center;margin:1.5rem 0}
+.completion-banner h3{font-size:1.3rem;margin-bottom:.5rem}
+.completion-banner p{font-size:.92rem;opacity:.95;margin:0;line-height:1.6}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+.btn-nav.success{background:var(--green);border-color:var(--green)}
+.btn-nav.success:hover{background:#15693e}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col{grid-template-columns:1fr}
+  .apa-flow{flex-direction:column}
+  .apa-arr{transform:rotate(90deg)}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter IV 분쟁 회피·해결 행정적 접근 › M4-6 (6/6 — 최종 모듈)</div>
+  <h1>M4-6. APA & 중재 (Advance Pricing Arrangements & Arbitration)</h1>
+  <div class="sub">F. APA + G. Arbitration — 사전가격승인 개념·핵심가정요소·법적 체계·장단점, 중재 절차 + Chapter IV 종합 정리 &nbsp;|&nbsp; ¶4.134 – ¶4.179 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. APA 개요·핵심가정 (F.1)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 일방 vs 쌍방 APA + 결정·관리</button>
+      <button class="nav-item" onclick="goTo('s3')">3. APA의 법적 체계 (F.2)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. APA의 장점 (F.3)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. APA의 단점 (F.4)</button>
+      <button class="nav-item" onclick="goTo('s6')">6. 중재 (Section G)</button>
+      <button class="nav-item" onclick="goTo('s7')">7. Chapter IV 종합 정리</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>사전가격승인제도(APA)의 개념·법적 기초(BEPS Action 14)와 핵심가정요소(critical assumption)의 의미를 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>일방적 APA의 한계와 쌍방·다자간 APA의 장점을 구별하고, APA 결정·관리·취소 메커니즘(한국 국조법 §14~§15, 미국 Eaton 판례)을 이해한다</span></li>
+        <li><span class="obj-num">3</span><span>APA가 가져다주는 5대 장점(법적 확실성·비대립 환경·소송 비용 절감·이중과세 해결·전문성 제고)을 사례와 함께 설명할 수 있다</span></li>
+        <li><span class="obj-num">4</span><span>APA의 단점(과세당국 불일치·대응조정 보장 문제·시장 변화·세무자원 소모·경제적 실질 간과 등)을 인식하고 실무에 반영한다</span></li>
+        <li><span class="obj-num">5</span><span>국제중재(제25조 5항, 2008년 신설)의 메커니즘·MAP과의 관계·한국 국조법 제43조를 파악하고, Chapter IV 6개 모듈 전체를 종합한다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: APA 개요와 핵심가정요소 -->
+    <section class="card" id="s1">
+      <h2>1. APA 개요와 핵심가정요소 (F.1) <span class="tag tag-para">¶4.134–¶4.139</span></h2>
+      <p>Section F는 사전적 분쟁 회피 메커니즘인 <strong>사전가격승인제도(Advance Pricing Arrangement, APA)</strong>를 다룹니다. APA는 납세자와 과세관청이 <strong>거래가 발생하기 전에</strong> 정상가격산출방법을 합의함으로써 사후 분쟁의 가능성을 사실상 제거하는 제도입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA란 무엇이며 왜 중요한가요? <span class="para">¶4.134</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>APA의 정의 및 BEPS Action 14가 APA 도입을 권고하는 정책적 배경은 다음과 같습니다.</p>
+          <div class="key-point">💡 <strong>APA의 정의:</strong> 사전가격승인제도(APA)는 납세자와 과세관청이 <strong>일정 기간 동안 적용될 정상가격산출방법(transfer pricing methodology)을 사전에 합의</strong>하는 절차입니다. 합의된 방법론에 따라 거래가 이루어지면 사후에 이전가격 조정·분쟁이 발생하지 않습니다.</div>
+          <div class="apa-flow">
+            <div class="apa-step">
+              <span class="as-num">1</span>
+              <h5>사전 신청</h5>
+              <p>납세자가 거래 발생 전 신청</p>
+            </div>
+            <div class="apa-arr">→</div>
+            <div class="apa-step">
+              <span class="as-num">2</span>
+              <h5>방법론 합의</h5>
+              <p>과세관청과 정상가격산출방법 협의</p>
+            </div>
+            <div class="apa-arr">→</div>
+            <div class="apa-step">
+              <span class="as-num">3</span>
+              <h5>승인·계약</h5>
+              <p>합의 사항 확정</p>
+            </div>
+            <div class="apa-arr">→</div>
+            <div class="apa-step">
+              <span class="as-num">4</span>
+              <h5>거래 실행</h5>
+              <p>합의된 방법에 따라 거래 수행</p>
+            </div>
+            <div class="apa-arr">→</div>
+            <div class="apa-step">
+              <span class="as-num">5</span>
+              <h5>사후 관리</h5>
+              <p>연례 보고·준수 여부 점검</p>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>BEPS Action 14의 권고:</strong> Action 14는 시기상 적절하고(timely) 효과적이며(effective) 효율적인(efficient) 조세협약상 분쟁해결 방법을 강조하며, 파트너 국가에 APA 제도 도입을 권고합니다. APA는 사후 MAP의 부담을 사전에 해소하는 가장 효과적인 도구로 인식됩니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>핵심가정요소(Critical Assumption)와 미래 예측의 신뢰성 <span class="para">¶4.135–¶4.139</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>APA의 가장 어려운 문제인 <strong>미래에 대한 예측</strong>을 어떻게 합리적으로 다룰 것인지를 설명합니다.</p>
+          <div class="warn-point">⚠️ <strong>APA의 핵심과제:</strong> APA는 <strong>아직 발생하지 않은 미래 거래</strong>에 대해 정상가격을 합의하는 절차입니다. 미래의 시장 조건·경기·환율·금리 등은 불확실하므로, 단순히 "5%의 마진"으로 결정하는 방식은 비현실적입니다. 따라서 <strong>핵심가정요소(critical assumption)</strong>를 정교하게 설정하는 것이 APA의 핵심과제 입니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 예시 — 이자율 결정</div>
+            <p><strong>❌ 부적절한 가정:</strong> "이 기업의 단기대출이자가 향후 3년간 6%에서 변하지 않을 것이다" → 시장 금리 변동을 무시한 비현실적 가정</p>
+            <p><strong>✅ 더 합리적인 가정:</strong> "단기대출이자 = LIBOR + 고정 가산금리" → 시장 변동을 반영하는 변동 기준</p>
+            <p><strong>✅ 가장 합리적인 가정:</strong> "단기대출이자 = LIBOR + 신용도 기반 가산금리" → 기업의 신용도까지 반영한 동적 기준</p>
+          </div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>조항</th><th>핵심 가이드라인</th><th>실무 의미</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>¶4.135</strong></td>
+                <td>APA가 결정방법을 넘어 미래 예측을 다룰 경우 핵심가정요소가 중요</td>
+                <td>고정 수치보다 변수·범위 기반의 합의가 우선적으로 적용됨</td>
+              </tr>
+              <tr>
+                <td><strong>¶4.136</strong></td>
+                <td>이자율 등 측정요소는 합리적 변수 구조로 설계</td>
+                <td>LIBOR·기준금리 등 객관적 지표 활용</td>
+              </tr>
+              <tr>
+                <td><strong>¶4.137</strong></td>
+                <td>기능 분담이 확정되지 않은 경우 고정 이익분할비율 적용은 부적절함</td>
+                <td>실제 기능 분담을 반영하는 동적 분할 기준</td>
+              </tr>
+              <tr>
+                <td><strong>¶4.138</strong></td>
+                <td>핵심가정요소 + 범위(range) + 시장 역사적 자료 활용</td>
+                <td>단일 수치가 아닌 허용 범위를 합의</td>
+              </tr>
+              <tr>
+                <td><strong>¶4.139</strong></td>
+                <td>측정의 신뢰도를 고려하여 APA 범위 결정</td>
+                <td>불확실성이 높은 영역은 APA에서 제외 또는 별도 조건</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>실무 요약:</strong> APA의 핵심가정요소 설계는 단순히 미래 수치를 정하는 것이 아니라 <strong>"미래 변화에 적응 가능한 방법"</strong>을 합의하는 것입니다. 시장 변화 시 자동 조정 조항, 일정 변동 범위 내 허용, 기준 지표 활용 등이 모범적 접근입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: 일방 vs 쌍방 + 결정·관리·취소 -->
+    <section class="card" id="s2">
+      <h2>2. 일방적 vs 쌍방적 APA + 결정·관리·취소 <span class="tag tag-para">¶4.140–¶4.149</span></h2>
+      <p>APA는 참여 국가 수에 따라 일방적(unilateral)·쌍방적(bilateral)·다자적(multilateral)으로 나뉘며, 각각의 효력과 위험이 다릅니다. 또한 APA의 결정·관리·취소 메커니즘은 제도의 실효성을 좌우합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>일방적 APA의 한계 (¶4.140) + 쌍방적 APA로 해결 (¶4.141) <span class="para">¶4.140–¶4.141</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.140은 일방적 APA의 구조적 한계를 명확히 합니다.</p>
+          <div class="warn-point">⚠️ <strong>일방적 APA의 위험:</strong> 한 국가만 APA를 부여하면, 그 결과를 타방국이 인정해야 할 의무가 없으므로 타방국이 다른 결론에 도달하면 이중과세가 발생합니다. ¶4.140은 이 위험을 줄이기 위한 의무를 다음과 같이 제시합니다.</div>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📌 일방적 APA 운영 시 의무 (¶4.140)</h4>
+              <ul>
+                <li>거래당사국은 상호합의 의사 여부를 <strong>타방국에 신속히 통지</strong>해야 함</li>
+                <li>분쟁 발생 시 납세자를 상호합의에서 <strong>배제하는 규정을 두면 안 됨</strong></li>
+                <li>일방적 APA 거래에 타방국이 과세하는 경우 <strong>대응조정 의무 부담</strong></li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 쌍방·다자적 APA의 장점 (¶4.141)</h4>
+              <ul>
+                <li>양국 과세관청이 사전 합의 → <strong>이중과세 해결</strong></li>
+                <li>MAP을 거치지 않아 시간·비용 절감</li>
+                <li>예측가능성이 모든 관할에서 확보됨</li>
+                <li>BEPS Action 14의 권고에도 부합</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA의 본질 + 내국법상 예규와의 차이 <span class="para">¶4.142–¶4.143</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.142는 APA가 OECD 모델협약 <strong>제7조(사업이윤)</strong>와 일치하는지 여부를 다루며, ¶4.143은 일방적 APA와 내국법상 예규(advance ruling)의 차이를 구별합니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>일방적 APA</th><th>내국법상 예규</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>법적 성격</strong></td>
+                <td>과세관청과 납세자 간의 합의</td>
+                <td>일방적 행정 해석</td>
+              </tr>
+              <tr>
+                <td><strong>구속력</strong></td>
+                <td>양 당사자 모두에게 구속력</td>
+                <td>과세관청의 자기구속에 가까움</td>
+              </tr>
+              <tr>
+                <td><strong>대상</strong></td>
+                <td>구체적 거래의 정상가격산출방법</td>
+                <td>일반적 법령 해석</td>
+              </tr>
+              <tr>
+                <td><strong>기간</strong></td>
+                <td>3~5년 정도 (갱신 가능)</td>
+                <td>해당 사실관계 유지 시 적용</td>
+              </tr>
+              <tr>
+                <td><strong>국제 측면</strong></td>
+                <td>이중과세 해소 가능 (쌍방 APA)</td>
+                <td>국내적 효력에 그침</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA 결정 과정 — 타방국 협력·납세자 참여·결정문 내용 <span class="para">¶4.144–¶4.147</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.144–4.147은 APA 절차의 운영 측면 — 타방국 협력, 납세자 참여, 결정문에 포함될 내용, 대상 거래 범위와 소급적용 — 을 다룹니다.</p>
+          <div class="practice-note">
+            <div class="pn-label">💼 APA 결정문에 포함되어야 할 내용 (¶4.146)</div>
+            <p><strong>① 대상 거래의 명세:</strong> 거래 유형, 거래 당사자, 적용 기간</p>
+            <p><strong>② 합의된 정상가격산출방법:</strong> 선정된 방법(CUP·RPM·CPM·TNMM·PSM)과 그 이유</p>
+            <p><strong>③ 핵심가정요소:</strong> 미래 예측에 영향을 미치는 가정과 범위</p>
+            <p><strong>④ 변동 조건 / 조정 메커니즘:</strong> 핵심가정요소 변동 시 자동 조정 절차</p>
+            <p><strong>⑤ 보고·관리 요건:</strong> 연례보고서 제출 의무·내용</p>
+            <p><strong>⑥ 갱신·취소 조건:</strong> APA의 변경·연장·종료 절차</p>
+            <p><strong>⑦ 양국 간 협력 사항 (쌍방 APA):</strong> 정보 교환·MAP 활용·대응조정 등</p>
+          </div>
+          <div class="key-point">💡 <strong>대상 거래 범위와 소급적용 (¶4.147):</strong> APA는 원칙적으로 <strong>미래 거래</strong>에 대해 적용되지만, 일부 국가는 신청 시점 이전의 일정 기간(rollback period)에도 소급 적용을 인정합니다. 한국도 일정한 조건에서 소급적용을 허용합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA 사후 관리와 취소 — 한국 vs 미국 Eaton 판례 <span class="para">¶4.148–¶4.149</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.148은 과세관청이 APA 결정 이후 관리하는 두 가지 주요 방법을 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📋 ① 연례보고서 제출 방식</h4>
+              <p>납세자가 매년 APA 적용 결과(이익률, 핵심가정요소 충족 여부, 거래 규모 등)를 정리하여 과세관청에 보고합니다. 가장 일반적·효율적 방식입니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>🔍 ② 정기 세무조사 방식</h4>
+              <p>일반적 세무조사와 함께 APA 거래를 함께 점검합니다. 조사 범위는 최초 APA 자료 검토 또는 APA 조건 준수 여부 등으로 한정될 수 있습니다.</p>
+            </div>
+          </div>
+          <p>¶4.149는 APA의 취소(revocation·cancellation) 문제를 다루며, 한국과 미국의 실무가 어떻게 다른지 비교결과를 제공합니다.</p>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국 국조법 제44조 — 협조의무와 절차 종료</div>
+            <p><strong>법적 근거:</strong> 한국 국조법 제44조는 APA 신청인의 협조의무를 두고 있습니다.</p>
+            <p><strong>제재:</strong> 협조의무를 성실하게 이행하지 않은 경우 국세청장 또는 기획재정부장관은 직권으로 상호합의절차를 종료할 수 있습니다.</p>
+            <p><strong>현황:</strong> 그러나 이미 APA가 승인된 경우에 그 승인을 취소한 사례는 한국에서 공식적으로 발표되지 않았습니다. 즉 한국은 APA의 안정성을 강하게 보장하는 운영입니다.</p>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 미국 사례 — US vs Eaton Corp (August 2022, Sixth Circuit)</div>
+            <p><strong>사실관계:</strong> 미국 IRS가 Eaton Corp에 대해 발급된 APA를 취소하였습니다. IRS의 취소 사유는 ① 중대한 사실에 대한 실수, ② 중대한 사실을 명시할 의무 위반, ③ 정상가격산출방법에 사용된 자료·계산방법의 착오 등이었습니다.</p>
+            <p><strong>법원 판단:</strong> 그러나 미국 1심법원은 납세자(Eaton)의 의견을 인정하고, IRS의 APA 취소는 일반적으로 적용되는 <strong>사법적 계약관계(contractual relationship)를 파기한 것</strong>이라고 판시하였습니다.</p>
+            <p><strong>시사점:</strong> 이 사례는 APA가 단순한 행정 처분이 아니라 양 당사자 간의 <strong>실질적 계약</strong>으로 인식되어야 한다는 메시지를 제시합니다. APA의 안정성은 납세자가 APA에 의존하여 사업을 영위할 수 있도록 보장하는 핵심 가치입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: APA의 법적 체계 -->
+    <section class="card" id="s3">
+      <h2>3. APA의 법적·행정적 체계 (F.2) <span class="tag tag-para">¶4.150–¶4.152</span></h2>
+      <p>F.2는 APA가 각국에서 어떤 법적 형태로 운영되는지를 다룹니다. 국가별로 APA를 별도의 법률로 규정하기도 하고, 내국법상 예규의 형태로 운영하기도 하며, 명시적 규정이 없는 경우 OECD 모델협약을 직접 적용하는 방식도 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA의 3가지 법적 운영 형태 <span class="para">¶4.150–¶4.152</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>형태</th><th>특징</th><th>예시</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>① OECD 모델협약 적용 (¶4.150)</strong></td>
+                <td>국내법에 별도 규정이 없거나 부족한 경우, MAP·제25조에 근거하여 운영</td>
+                <td>일부 신흥국</td>
+              </tr>
+              <tr>
+                <td><strong>② 내국법상 예규 형식 (¶4.151)</strong></td>
+                <td>일방적 APA를 내국법상 예규(advance ruling)로 규정·운영</td>
+                <td>일부 EU 국가</td>
+              </tr>
+              <tr>
+                <td><strong>③ 명시적 법률 규정 (¶4.152의 반대 형태)</strong></td>
+                <td>국내법에 APA 절차·요건을 명시적으로 규정</td>
+                <td>한국 (국조법 §14~§15), 미국 (Rev. Proc. 2015-41)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국의 APA 법적 체계 — 국조법 제14조~제19조</div>
+            <p><strong>제14조 (신청):</strong> 정상가격산출방법에 대한 사전승인 신청</p>
+            <p><strong>제15조 (사전승인의 효력):</strong> 승인된 방법에 따른 거래는 정상가격으로 간주</p>
+            <p><strong>시행령 제26조 (협조의무):</strong> 신청인은 자료 제출·정보 제공 의무 부담</p>
+            <p><strong>시행령 제30조 (사전승인의 변경·취소):</strong> 핵심가정 변경 시 변경 가능</p>
+            <p><strong>시행령 제32조 (연차보고서):</strong> 매년 사전승인 이행 결과 보고</p>
+            <p><strong>실무 시사점:</strong> 한국은 OECD 권고에 부합하는 명시적 법률 체계로 APA를 운영하며, 이는 납세자에게 높은 예측가능성을 제공합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: APA의 장점 -->
+    <section class="card" id="s4">
+      <h2>4. APA의 장점 (F.3) <span class="tag tag-para">¶4.153–¶4.157</span></h2>
+      <p>F.3은 APA의 핵심 장점을 5가지로 정리하여 설명하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA의 5가지 장점 <span class="para">¶4.153–¶4.157</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="three-col">
+            <div class="benefit-card">
+              <span class="badge" style="background:var(--green)">¶4.153</span>
+              <h4>① 법적 확실성<br>(Legal Certainty)</h4>
+              <p>합의된 방법론을 준수하면 사후 분쟁 없음 → 사업 의사결정의 예측가능성 극대화</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge" style="background:var(--green)">¶4.154</span>
+              <h4>② 비대립 협의 환경<br>(Non-Adversarial)</h4>
+              <p>세무조사의 대립적 분위기와 달리 협력적 환경에서 합의 도출</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge" style="background:var(--green)">¶4.155</span>
+              <h4>③ 소송 비용·시간 절감</h4>
+              <p>분쟁 사후 처리(MAP·소송)에 비해 시간·비용 절감 효과</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge" style="background:var(--green)">¶4.156</span>
+              <h4>④ 이중과세 해결<br>(쌍방·다자 APA)</h4>
+              <p>양국 사전 합의로 이중과세 위험 사실상 제거 (일방적 APA는 효과 제한적)</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge" style="background:var(--green)">¶4.157</span>
+              <h4>⑤ 세무당국 전문성 제고</h4>
+              <p>복잡한 거래·산업에 대한 사전 검토를 통해 과세관청의 전문성 축적</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 효과:</strong> APA의 5대 장점은 단독으로 작동하는 것이 아니라 <strong>상호 연결되어 시너지를 발생</strong>시킵니다. 법적 확실성이 비대립 환경을 가능하게 하고, 비대립 환경이 소송 비용을 줄이며, 소송 비용 절감이 자원을 전문성 제고에 투자할 여력을 줍니다. 일반적으로 이러한 선순환 구조가 APA를 가장 효율적이과 효과적인 분쟁 회피 도구로써 작동하게 합니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 일방적 APA vs 쌍방·다자 APA 선택 기준</div>
+            <p><strong>일방적 APA 적합:</strong> ① 거래 상대국이 APA 제도가 없거나 느린 경우, ② 단순 거래로 상대국 협의 필요성이 낮은 경우, ③ 신속한 결정이 필요한 경우</p>
+            <p><strong>쌍방·다자 APA 적합:</strong> ① 대규모·고가치 거래, ② 이중과세 위험이 높은 거래, ③ 복잡한 무형자산 거래, ④ 장기간 안정성이 중요한 경우</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: APA의 단점 -->
+    <section class="card" id="s5">
+      <h2>5. APA의 단점 (F.4) <span class="tag tag-para">¶4.158–¶4.169</span></h2>
+      <p>F.4는 APA의 단점을 다룹니다. 장점에도 불구하고 APA는 자원 소요·시장 변화 대응 어려움·경제적 실질 간과 위험 등을 동반하므로 신중한 검토가 필요합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA의 7가지 문제점 <span class="para">¶4.158–¶4.169</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.158–4.169는 APA의 단점을 다음과 같이 정리합니다.</p>
+          <div class="three-col">
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.158</span>
+              <h4>① 과세당국 간 불일치</h4>
+              <p>쌍방 APA에서도 양국 입장 차이로 협상이 결렬되거나 부분 합의에 그칠 수 있음</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.159</span>
+              <h4>② 대응조정 보장 문제</h4>
+              <p>일방적 APA의 경우 타방국이 다른 결론에 도달하면 대응조정이 보장되지 않음</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.160</span>
+              <h4>③ 시장조건 변화</h4>
+              <p>APA 기간 중 시장·산업·경기 등이 변하면 합의된 방법론이 부적합해질 수 있음</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.161</span>
+              <h4>④ 세무자원 소모</h4>
+              <p>APA 협의에 양국 권한있는 당국의 상당한 인력·시간이 투입됨</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.162</span>
+              <h4>⑤ 경제적 실질 간과</h4>
+              <p>사전 합의 방법론이 실제 거래의 경제적 실질을 충분히 반영하지 못할 위험</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.163</span>
+              <h4>⑥ 전문 자원 편중</h4>
+              <p>과세관청의 우수 인력이 APA에 집중되어 다른 영역의 자원 부족</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">¶4.164~4.169</span>
+              <h4>⑦ 기타 행정 부담</h4>
+              <p>인력 배치·갱신 절차·제도 설계 유연성·법적 구속력·부담 분배 등의 복합 과제</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>핵심 시사점:</strong> APA는 모든 거래에 만능 해법이 아닙니다. 단순한 거래·소규모 거래에는 APA의 행정 비용이 정당화되기 어려울 수 있으며, 시장 변화가 심한 산업·신기술 분야는 사전 예측 자체가 부정확할 수 있습니다. APA 신청 전 비용-편익 분석이 필수적입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>APA 활용 권고사항 (F.5) — 균형 잡힌 접근</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>F.5는 앞서 정리한 장단점을 종합하여 APA의 합리적 활용 원칙을 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box green">
+              <h4>✅ APA 적극 검토 영역</h4>
+              <ul>
+                <li>대규모·고가치 거래</li>
+                <li>장기간 반복되는 정형화된 거래</li>
+                <li>무형자산 관련 복잡 거래</li>
+                <li>이중과세 위험이 높은 거래</li>
+                <li>국가 간 분쟁이 자주 발생하는 산업</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>🚫 APA 회피 권장 영역</h4>
+              <ul>
+                <li>소규모·단순 거래 (Safe Harbour가 더 적합)</li>
+                <li>시장 변화가 심한 신기술 분야</li>
+                <li>일회성 비반복 거래</li>
+                <li>경제적 실질이 자주 변하는 거래</li>
+                <li>핵심가정요소 설정이 사실상 불가능한 거래</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>BEPS 시대의 APA:</strong> BEPS Action 14의 권고와 더불어 다국적 기업의 분쟁 회피 수요가 증가하면서 APA의 활용은 전 세계적으로 확대되는 추세입니다. 한국·미국·일본·EU 주요국 모두 APA 처리 건수와 처리 속도를 개선하는 노력을 기울이고 있습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6: 중재 -->
+    <section class="card" id="s6">
+      <h2>6. 중재 (Arbitration, Section G) <span class="tag tag-para">¶4.177–¶4.179</span></h2>
+      <p>Chapter IV의 마지막 절인 Section G는 <strong>국제중재</strong>를 다룹니다. 중재는 MAP에서 합의에 이르지 못한 경우의 보완 메커니즘으로, 2008년 OECD 모델협약 제25조 제5항의 신설로 도입되었습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>중재의 개시 — MAP 실패 시의 백업 (¶4.177) <span class="para">¶4.177</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.177은 중재가 언제 개시되는지를 다룹니다.</p>
+          <div class="key-point">💡 <strong>중재의 개시 시점:</strong> 상호합의(MAP)를 통해 양 당사자 과세관청이 합의에 도달하지 못하는 경우, OECD 모델협약 <strong>제25조 제5항</strong>에 명시된 중재 절차를 통해 문제를 해결합니다. 한국 국조법은 <strong>제43조(상호합의에 따른 중재)</strong>를 두어 이 절차를 수용하고 있습니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국 국조법 제43조 — 상호합의에 따른 중재</div>
+            <p>한국은 OECD 모델협약 제25조 제5항을 수용하여 국조법 제43조에 중재 절차를 규정하고 있습니다. 이는 한국이 BEPS Action 14의 권고를 적극 수용하고, MAP의 실효성을 중재로 뒷받침하는 국제적 흐름에 부합하는 노력입니다.</p>
+            <p><strong>실무적 활용:</strong> 다만 한국이 체결한 모든 조세조약에 중재 조항이 포함되어 있지는 않으므로, 자사 거래 상대국과의 조세조약에 중재 조항 유무를 사전에 확인해야 합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>2008년 제25조 제5항 신설 — MAP과 중재의 관계 <span class="para">¶4.178</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.178은 2008년 OECD 모델협약 개정의 의미를 다룹니다.</p>
+          <div class="key-point">💡 <strong>2008년 OECD 모델협약 개정:</strong> 제25조에 제5항이 신설되어, 상호합의 절차를 <strong>2년 안에 종결하지 못하는 경우 신청인의 요청에 따라 별도의 중재 절차</strong>를 두게 되었습니다.</div>
+          <div class="warn-point">⚠️ <strong>중재의 법적 성격:</strong> 제25조 제5항은 <strong>상호합의 절차의 일부</strong>이지, 국제조세 분쟁을 해결하기 위한 완전히 별도의 절차를 두는 것은 아닙니다. 즉 중재는 MAP의 확장된 형태이며, MAP의 실효성을 보완하는 메커니즘으로 설계되었습니다. OECD 모델협약 주석 제68–85항이 상호합의 절차와 중재 절차에 대한 상세 설명을 제공합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>중재 문단의 기능 (¶4.179) <span class="para">¶4.179</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.179는 OECD 모델협약 제25조 제5항의 구체적 기능을 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📌 중재의 주요 기능</h4>
+              <ul>
+                <li>MAP의 <strong>실효성 강화</strong> — 2년 내 합의 압박</li>
+                <li>장기 미해결 사건의 <strong>강제적 해결</strong></li>
+                <li>납세자의 <strong>구제 권리 확보</strong></li>
+                <li>독립적 제3자 결정의 <strong>구속력</strong></li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 중재의 효과</h4>
+              <ul>
+                <li>양국 권한있는 당국에 구속력 있는 결정</li>
+                <li>이중과세의 해소</li>
+                <li>MAP 절차의 신속화 유인</li>
+                <li>국제 조세 분쟁 해결의 마지막 안전망</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>BEPS MLI를 통한 확대:</strong> 다자조약(MLI)을 채택한 국가들은 별도 양자조약 개정 없이도 중재 조항을 일괄 적용할 수 있습니다. 한국도 MLI 회원국으로 중재 조항의 적용 범위를 점진적으로 확대해 가고 있습니다. 이는 BEPS Action 14 minimum standard의 정신을 구현하는 노력입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 7: Chapter IV 종합 정리 -->
+    <section class="card" id="s7">
+      <h2>7. Chapter IV 종합 정리 — 6개 모듈 한눈에 보기</h2>
+      <p>아래는 Chapter IV 중급과정 6개 모듈에서 다룬 분쟁 회피·해결 방법의 정리내용입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>중급과정 Chapter IV 6개 모듈 전체 순서</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>모듈</th><th>Section</th><th>핵심 주제</th><th>¶ 범위</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>M4-1</strong></td><td>A + B.1</td><td>Introduction & 세무조사 관행 — 상업적 판단 존중, 절차 중심 조사</td><td>4.1–4.10</td></tr>
+              <tr><td><strong>M4-2</strong></td><td>B.2 + B.3</td><td>입증책임 & 가산세 — 3유형 입증책임, 성실한 납세자 보호 (¶4.28)</td><td>4.11–4.28</td></tr>
+              <tr><td><strong>M4-3</strong></td><td>C.1–C.4.2</td><td>대응조정 & MAP 절차 — 제9조 §2, 제25조, BEPS Action 14 minimum standard</td><td>4.29–4.54</td></tr>
+              <tr><td><strong>M4-4</strong></td><td>C.4.3–C.5</td><td>MAP 운영 & 2차 처분 — 24개월 목표, 납부기한 연장(국조법 §49), 배당·대여 의제</td><td>4.55–4.78</td></tr>
+              <tr><td><strong>M4-5</strong></td><td>D + E</td><td>동시세무조사 & Safe Harbours — 제26조 정보교환, Maquiladora, 양자·다자 권장</td><td>4.79–4.133</td></tr>
+              <tr><td><strong>M4-6</strong></td><td>F + G</td><td>APA & 중재 — 핵심가정요소, 한국 국조법 §14~§15, 제25조 §5항 중재</td><td>4.134–4.179</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Chapter IV의 핵심 — "분쟁 회피·해결의 3단계"</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Chapter IV가 다룬 모든 메커니즘은 다음 3단계로 정리할 수 있습니다.</p>
+          <div class="three-col">
+            <div class="col-box green">
+              <h4>1️⃣ 분쟁 사전 회피<br>(Prevention)</h4>
+              <ul>
+                <li>Safe Harbours (Section E)</li>
+                <li>APA (Section F)</li>
+                <li>동시세무조사 (Section D)</li>
+              </ul>
+              <p style="margin-top:.5rem"><em>핵심:</em> 분쟁이 발생하기 전에 합의·정보교환으로 위험 제거</p>
+            </div>
+            <div class="col-box orange">
+              <h4>2️⃣ 분쟁 발생 시 대응<br>(Response)</h4>
+              <ul>
+                <li>조사 관행 (Section B.1)</li>
+                <li>입증책임 (Section B.2)</li>
+                <li>합리적 가산세 (Section B.3)</li>
+              </ul>
+              <p style="margin-top:.5rem"><em>핵심:</em> 분쟁이 발생했을 때 공정한 절차 보장</p>
+            </div>
+            <div class="col-box">
+              <h4>3️⃣ 분쟁 사후 해결<br>(Resolution)</h4>
+              <ul>
+                <li>대응조정 (Section C.2)</li>
+                <li>MAP (Section C.1·C.3·C.4)</li>
+                <li>2차 처분 (Section C.5)</li>
+                <li>중재 (Section G)</li>
+              </ul>
+              <p style="margin-top:.5rem"><em>핵심:</em> 발생한 분쟁을 효과적으로 해결</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 적용:</strong> 다국적 기업은 이 3단계 구조를 통합적으로 활용해야 합니다. 고가치·반복 거래는 APA로 사전 회피하고, 분쟁 발생 시에는 ¶4.28 선의 보호 원칙으로 가산세 부담을 줄이며, 최종적으로는 MAP·중재를 통해 이중과세를 해소하는 다층 방어 전략이 효과적입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국 국조법으로 본 Chapter IV — 주요 조문</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>OECD 메커니즘</th><th>한국 국조법 조문</th><th>핵심 내용</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>가산세 특례</strong></td><td>§17</td><td>정상가격산출방법 적용에 정당한 사유 시 과소신고가산세 면제</td></tr>
+              <tr><td><strong>MAP 신청</strong></td><td>§42 ② 4호</td><td>과세 사실을 안 날부터 3년 이내 신청</td></tr>
+              <tr><td><strong>MAP 중재</strong></td><td>§43</td><td>상호합의에 따른 중재 절차</td></tr>
+              <tr><td><strong>협조의무</strong></td><td>§44</td><td>신청인의 자료 제출·정보 제공 의무</td></tr>
+              <tr><td><strong>MAP 결정기한</strong></td><td>§46</td><td>원칙 5년 + 체약상대국과 합의 시 연장</td></tr>
+              <tr><td><strong>MAP 납부기한 연장</strong></td><td>§49</td><td>MAP 진행 중 납부기한 연장 (이자 가산)</td></tr>
+              <tr><td><strong>세무징수의 위탁</strong></td><td>§40</td><td>체약상대국에 대한 조세 징수를 위하여 필요한 조치를 하도록 요청</td></tr>
+              <tr><td><strong>부과제척기간 특례</strong></td><td>§51</td><td>MAP 종결 기준 부과제척기간 특례</td></tr>
+              <tr><td><strong>APA (사전승인)</strong></td><td>§14~§15</td><td>정상가격산출방법의 사전 승인 절차 (변경·취소·연차보고 포함)</td></tr>
+              <tr><td><strong>이전가격 자료제출</strong></td><td>§16</td><td>Local file, Master file, CbCR 의무</td></tr>
+            </tbody>
+          </table>
+          <div class="note-point">✅ <strong>한국의 체제의 특징:</strong> 한국은 OECD 권고에 부합하는 명시적 법률 체계를 갖추고 있으며, BEPS Inclusive Framework 회원국으로서 Action 14 minimum standard를 충실히 이행하고 있습니다. 이를 통해 한국 다국적 기업에게 비교적 예측가능하고 신뢰성 있는 분쟁 해결 환경을 제공합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter IV 완료 배너 -->
+    <div class="completion-banner">
+      <h3>🎉 Chapter IV 분쟁 회피·해결 행정적 접근 완주!</h3>
+      <p>M4-1부터 M4-6까지 ¶4.1–¶4.179 전 구간(중급과정 첫 챕터 22개 모듈 중 6개)을 완주하셨습니다.<br>다음은 <strong>Chapter V Documentation</strong>(이전가격 문서화)으로 이어집니다. 수고하셨습니다!</p>
+    </div>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. ¶4.135–4.139의 <strong>APA 핵심가정요소(critical assumption)</strong>에 관한 OECD의 권고로 가장 적절한 것은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) 미래 모든 변수를 단일 수치로 고정해야 한다</label>
+          <label><input type="radio" name="q1" value="b"> (B) 단일 고정 수치보다 LIBOR·시장 지표·신용도 등에 연동된 변수 구조와 허용 범위(range)를 활용하는 것이 더 합리적이다</label>
+          <label><input type="radio" name="q1" value="c"> (C) 핵심가정요소는 사용하지 말아야 한다</label>
+          <label><input type="radio" name="q1" value="d"> (D) 핵심가정요소는 항상 납세자의 단독 결정에 따른다</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. ¶4.140의 <strong>일방적(unilateral) APA 운영 시 거래당사국의 의무</strong>로 적절하지 않은 것은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) 상호합의 의사 여부를 타방국에 신속히 통지해야 한다</label>
+          <label><input type="radio" name="q2" value="b"> (B) 분쟁 발생 시 납세자를 상호합의에서 배제하는 규정을 두면 안 된다</label>
+          <label><input type="radio" name="q2" value="c"> (C) 일방적 APA 거래에 타방국이 과세하는 경우 대응조정 의무를 부담한다</label>
+          <label><input type="radio" name="q2" value="d"> (D) 타방국이 일방적 APA의 결과를 자동으로 인정하도록 강제할 수 있다</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. 미국 <strong>US vs Eaton Corp (2022, Sixth Circuit)</strong> 판례가 제시한 APA의 법적 성격은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) APA는 일방적 행정 처분이므로 IRS가 자유롭게 취소할 수 있다</label>
+          <label><input type="radio" name="q3" value="b"> (B) APA는 단순한 권고에 불과하므로 양 당사자에게 구속력이 없다</label>
+          <label><input type="radio" name="q3" value="c"> (C) APA는 양 당사자 간의 실질적 계약관계(contractual relationship)이며, IRS의 일방적 취소는 사법적 계약관계의 파기에 해당한다</label>
+          <label><input type="radio" name="q3" value="d"> (D) APA는 법원의 동의 없이는 효력이 발생하지 않는다</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. ¶4.153–4.157의 <strong>APA의 5대 장점</strong>이 아닌 것은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 법적 확실성 (Legal Certainty)</label>
+          <label><input type="radio" name="q4" value="b"> (B) 비대립적 협의 환경</label>
+          <label><input type="radio" name="q4" value="c"> (C) 자동적 가산세 면제 (Automatic Penalty Waiver)</label>
+          <label><input type="radio" name="q4" value="d"> (D) 세무당국의 전문성 제고</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶4.178에 따른 <strong>2008년 OECD 모델협약 제25조 제5항(중재) 신설의 의미</strong>로 가장 정확한 것은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 중재는 MAP과 완전히 별개의 새로운 분쟁해결 절차로 도입되었다</label>
+          <label><input type="radio" name="q5" value="b"> (B) 중재는 상호합의 절차(MAP)의 일부이며, MAP을 2년 안에 종결하지 못하는 경우 신청인의 요청에 따라 작동하는 보완 메커니즘이다</label>
+          <label><input type="radio" name="q5" value="c"> (C) 중재는 OECD 회원국 모두가 자동으로 적용해야 하는 강제 규정이다</label>
+          <label><input type="radio" name="q5" value="d"> (D) 중재는 일방적으로 과세관청만이 신청할 수 있다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사의 대규모·반복 거래에 대해 APA 활용 가능성과 비용-편익을 평가하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">APA 신청 시 핵심가정요소(critical assumption)를 단일 수치가 아닌 시장 지표(LIBOR·신용도 등) 연동 변수와 허용 범위(range) 구조로 설계하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">일방적 APA의 한계(타방국 미인정 시 이중과세 위험)를 인식하고, 가능한 경우 쌍방·다자 APA 활용을 우선 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">한국 국조법 제14조~제19조의 APA 절차(신청·승인·협조의무·연차보고·변경·취소)를 정확히 파악하고 절차를 준수할 체계를 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">APA 결정문에 거래 명세·정상가격산출방법·핵심가정요소·변동 조건·보고 요건·갱신 절차 등이 명확히 포함되도록 협의하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">APA 사후 관리를 위한 연차보고 체계와 핵심가정요소 모니터링 절차를 그룹 차원에서 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">APA가 부적합한 영역(시장 변화 심한 신기술, 일회성 거래, 핵심가정 설정 불가 거래)을 구별하여 다른 분쟁 회피 도구(Safe Harbour, MAP 등)를 활용하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">MAP에서 합의에 도달하지 못한 경우를 대비하여, 자사 거래 상대국과의 조세조약에 중재(OECD 모델 §25 ⑤항) 조항 유무를 사전 확인하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">한국 국조법 제43조(상호합의에 따른 중재)의 활용 가능성을 평가하고, MAP 진행이 장기화될 경우 중재 요청 옵션을 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">Chapter IV 전체의 3단계 사다리(사전 회피·발생 시 대응·사후 해결)를 통합 적용하여 분쟁 위험 관리 전략을 그룹 차원에서 수립하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M4-5_동시조사_SafeHarbours.html">← M4-5 동시조사·Safe Harbours</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter IV 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <button class="btn-nav success" onclick="alert('🎉 Chapter IV 분쟁 회피·해결 행정적 접근을 완주하셨습니다! M4-1 ~ M4-6 6개 모듈 (¶4.1–¶4.179) 전체 완료. 다음은 Chapter V Documentation입니다.')">🎉 Chapter IV 완료!</button>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','s6','s7','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'b',q2:'d',q3:'c',q4:'c',q5:'b'};
+const feedbacks={
+  q1:{
+    a:'❌ ¶4.136은 단일 고정 수치(예: "6%") 사용을 비현실적이라고 비판합니다.',
+    b:'✅ 정답! ¶4.135–4.139는 핵심가정요소를 LIBOR·시장 지표·신용도 등 객관적·동적 기준에 연동하고, 단일 수치보다 허용 범위(range)와 시장 역사적 자료를 활용하는 것이 합리적이라고 권고합니다.',
+    c:'❌ 핵심가정요소는 APA의 미래 예측을 가능하게 하는 필수 요소입니다.',
+    d:'❌ 핵심가정요소는 납세자와 과세관청의 합의 사항이며, 단독 결정 사항이 아닙니다.'
+  },
+  q2:{
+    a:'❌ ¶4.140은 상호합의 의사 신속 통지 의무를 명시합니다.',
+    b:'❌ ¶4.140은 납세자를 상호합의에서 배제하는 규정을 두면 안 된다고 명시합니다.',
+    c:'❌ ¶4.140은 타방국 과세 시 대응조정 의무를 부담한다고 명시합니다.',
+    d:'✅ 정답! ¶4.98과 ¶4.140 모두 일방적 APA의 결과를 타방국이 자동으로 인정하도록 강제할 수 없다고 명확히 합니다. 이것이 일방적 APA의 본질적 한계이며, 쌍방·다자 APA가 권장되는 이유입니다.'
+  },
+  q3:{
+    a:'❌ Eaton 판례는 IRS가 자유롭게 APA를 취소할 수 없다고 판시했습니다.',
+    b:'❌ APA는 양 당사자에게 구속력 있는 합의입니다. Eaton 판례도 이를 재확인하였습니다.',
+    c:'✅ 정답! US vs Eaton Corp (2022, Sixth Circuit)에서 미국 1심법원은 IRS의 APA 취소가 일반적으로 적용되는 사법적 계약관계(contractual relationship)를 파기한 것이라고 판시했습니다. 이는 APA가 단순한 행정 처분이 아니라 실질적 계약으로 인식되어야 한다는 강력한 메시지입니다.',
+    d:'❌ APA는 과세관청과 납세자 간의 합의이며 법원 동의를 전제로 하지 않습니다.'
+  },
+  q4:{
+    a:'❌ 법적 확실성(¶4.153)은 APA의 핵심 장점입니다.',
+    b:'❌ 비대립적 협의 환경(¶4.154)은 APA의 5대 장점 중 하나입니다.',
+    c:'✅ 정답! "자동적 가산세 면제"는 ¶4.153–4.157의 5대 장점에 포함되지 않습니다. APA의 장점은 ① 법적 확실성, ② 비대립적 협의 환경, ③ 소송 비용·시간 절감, ④ 이중과세 해결(쌍방 APA), ⑤ 세무당국의 전문성 제고입니다.',
+    d:'❌ 세무당국의 전문성 제고(¶4.157)는 APA의 5대 장점 중 하나입니다.'
+  },
+  q5:{
+    a:'❌ ¶4.178은 중재가 MAP과 별개의 절차가 아니라고 명시합니다.',
+    b:'✅ 정답! ¶4.178에 따르면 2008년 OECD 모델협약에 신설된 제25조 제5항의 중재는 상호합의 절차(MAP)의 일부이며, MAP을 2년 안에 종결하지 못하는 경우 신청인의 요청에 따라 작동하는 보완 메커니즘입니다. OECD 모델협약 주석 제68–85항이 상세 설명을 제공합니다.',
+    c:'❌ 중재 조항은 자동 적용이 아니며, 각 조세조약에 별도로 포함되어야 합니다.',
+    d:'❌ 중재는 납세자(신청인)의 요청에 따라 개시됩니다. 과세관청만의 권한이 아닙니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! Chapter IV 6개 모듈을 모두 완주하셨습니다. 분쟁 회피·해결 행정적 접근 마스터!':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

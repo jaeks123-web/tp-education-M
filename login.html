@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>로그인 | 대주 이전가격 교육</title>
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script src="tp-firebase.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Noto Sans KR',Arial,sans-serif;
+  background:linear-gradient(135deg,#1a3a6a 0%,#1a5fa8 50%,#3b7dd8 100%);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.login-card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+  padding:2.8rem 2.5rem 2.5rem;
+  width:100%;max-width:400px;
+  text-align:center;
+}
+.logo{
+  width:64px;height:64px;
+  background:linear-gradient(135deg,#1a5fa8,#3b7dd8);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+  margin:0 auto 1.4rem;
+  box-shadow:0 4px 16px rgba(26,95,168,.35);
+}
+.login-card h1{
+  font-size:1.35rem;font-weight:800;
+  color:#1a2a4a;margin-bottom:.4rem;
+}
+.login-card .subtitle{
+  font-size:.88rem;color:#777;margin-bottom:2rem;
+}
+.divider{
+  border:none;border-top:1px solid #eee;margin:1.6rem 0;
+}
+.google-btn{
+  display:flex;align-items:center;justify-content:center;gap:.75rem;
+  width:100%;padding:.85rem 1.2rem;
+  background:#fff;
+  border:2px solid #e0e0e0;
+  border-radius:10px;
+  font-size:.97rem;font-weight:600;color:#333;
+  cursor:pointer;
+  transition:all .15s;
+  box-shadow:0 2px 6px rgba(0,0,0,.07);
+}
+.google-btn:hover{
+  border-color:#4285f4;
+  box-shadow:0 4px 16px rgba(66,133,244,.2);
+  transform:translateY(-1px);
+}
+.google-btn img{width:22px;height:22px}
+.err-msg{
+  display:none;
+  margin-top:1rem;
+  padding:.7rem 1rem;
+  background:#fdecea;
+  border:1px solid #f5c6c6;
+  border-radius:8px;
+  font-size:.85rem;
+  color:#b02020;
+}
+.loading-state{
+  display:none;
+  margin-top:1rem;
+  font-size:.88rem;
+  color:#1a5fa8;
+}
+.footer-note{
+  margin-top:1.8rem;
+  font-size:.78rem;
+  color:#aaa;
+  line-height:1.6;
+}
+.badge-row{
+  display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;
+  margin-bottom:1.6rem;
+}
+.badge{
+  font-size:.72rem;font-weight:600;
+  padding:3px 10px;border-radius:20px;
+}
+.badge-blue{background:#e8f0fa;color:#1a5fa8}
+.badge-green{background:#e6f5ee;color:#1a7a4a}
+.badge-orange{background:#fff3e0;color:#c06000}
+/* 미승인 안내 박스 */
+.denied-box{
+  display:none;
+  margin-bottom:1.4rem;
+  padding:1rem 1.2rem;
+  background:#fff8e1;
+  border:1.5px solid #f5c060;
+  border-radius:10px;
+  text-align:left;
+}
+.denied-box .denied-title{
+  font-size:.92rem;font-weight:700;color:#c06000;margin-bottom:.4rem;
+}
+.denied-box .denied-body{
+  font-size:.82rem;color:#6b4700;line-height:1.6;
+}
+.denied-box .denied-email{
+  display:inline-block;margin-top:.4rem;
+  font-size:.78rem;background:#fff3e0;
+  padding:2px 8px;border-radius:20px;color:#c06000;
+  word-break:break-all;
+}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="logo">📚</div>
+  <h1>대주회계법인 이전가격 교육</h1>
+  <p class="subtitle">OECD 이전가격 지침서 기초과정</p>
+
+  <!-- 미승인 사용자 안내 (denied=true 파라미터 시 표시) -->
+  <div class="denied-box" id="deniedBox">
+    <div class="denied-title">⚠️ 접근 권한이 없습니다</div>
+    <div class="denied-body">
+      아직 교육 참여 승인이 되지 않은 계정입니다.<br>
+      아래 이메일로 접근 요청을 해주시면 관리자가 승인 후 안내드립니다.<br>
+      <strong><a href="mailto:jaekwang.lim@kr.gt.com">jaekwang.lim@kr.gt.com</a></strong>
+      <span class="denied-email" id="deniedEmail"></span>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-blue">기초과정 · Chapter I</span>
+    <span class="badge badge-green">7개 모듈</span>
+    <span class="badge badge-orange">개인별 진도 저장</span>
+    <span class="badge badge-blue">기초과정 · Chapter II</span>
+    <span class="badge badge-green">9개 모듈</span>
+    <span class="badge badge-orange">개인별 진도 저장</span>
+    <span class="badge badge-blue">기초과정 · Chapter III</span>
+    <span class="badge badge-green">6개 모듈</span>
+    <span class="badge badge-orange">개인별 진도 저장</span>
+  </div>
+
+  <button class="google-btn" id="googleBtn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    Google 계정으로 로그인
+  </button>
+
+  <div class="err-msg" id="errMsg"></div>
+  <div class="loading-state" id="loadingState">⏳ 로그인 처리 중...</div>
+
+  <hr class="divider">
+  <p class="footer-note">
+    회사 Google 계정 또는 Gmail로 로그인하세요.<br>
+    개인 학습 진도는 안전하게 클라우드에 저장됩니다.
+  </p>
+</div>
+
+<script>
+// ─── 미승인 거절 메시지 처리 ──────────────────────────────────
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('denied') === 'true') {
+    var box = document.getElementById('deniedBox');
+    box.style.display = 'block';
+    var emailParam = params.get('email');
+    if (emailParam) {
+      var emailEl = document.getElementById('deniedEmail');
+      emailEl.textContent = '로그인 시도 계정: ' + decodeURIComponent(emailParam);
+    }
+    // URL에서 파라미터 제거 (새로고침 시 재표시 방지)
+    history.replaceState(null, '', 'login.html');
+  }
+})();
+
+document.getElementById('googleBtn').addEventListener('click', function() {
+  var btn = document.getElementById('googleBtn');
+  var err = document.getElementById('errMsg');
+  var loading = document.getElementById('loadingState');
+
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  err.style.display = 'none';
+  loading.style.display = 'block';
+
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider)
+    .then(function() {
+      // 성공 → tp-firebase.js의 onAuthStateChanged가 index.html로 리다이렉트
+    })
+    .catch(function(e) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      loading.style.display = 'none';
+      err.style.display = 'block';
+      if (e.code === 'auth/popup-closed-by-user') {
+        err.textContent = '로그인 창이 닫혔습니다. 다시 시도해 주세요.';
+      } else if (e.code === 'auth/unauthorized-domain') {
+        err.textContent = '이 도메인에서는 로그인이 허용되지 않습니다. 관리자에게 문의하세요.';
+      } else {
+        err.textContent = '로그인 오류: ' + e.message;
+      }
+    });
+});
+</script>
+</body>
+</html>

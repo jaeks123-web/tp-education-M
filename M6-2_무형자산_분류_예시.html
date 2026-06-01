@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M6-2: 무형자산의 분류·예시</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Chapter VI — Amber 호박색 */
+  --purple:#b45309;--purple-light:#fef3c7;--purple-mid:#d97706;--purple-dark:#78350f;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#fde68a}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #fcd34d;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.num-pill{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;margin:0 .2rem}
+/* ── 무형자산 8유형 카드 ── */
+.intang-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.8rem 0}
+.intang-card{border-radius:10px;padding:.9rem 1rem;border:1.5px solid var(--purple);background:var(--purple-light)}
+.intang-card .badge{display:inline-block;background:var(--purple);color:#fff;padding:1px 8px;border-radius:99px;font-size:.7rem;font-weight:700;margin-bottom:.3rem}
+.intang-card h4{font-size:.92rem;font-weight:700;color:var(--purple-dark);margin-bottom:.3rem}
+.intang-card p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.55}
+/* ── 분류 시각화 (스펙트럼) ── */
+.spectrum-row{display:flex;align-items:stretch;margin:.8rem 0;gap:0;border-radius:10px;overflow:hidden;border:2px solid var(--purple)}
+.spec-left{flex:1;background:#fef3c7;padding:.9rem;text-align:center}
+.spec-mid{width:60px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+.spec-right{flex:1;background:#fed7aa;padding:.9rem;text-align:center}
+.spec-left h5,.spec-right h5{font-size:.88rem;font-weight:700;margin-bottom:.3rem}
+.spec-left h5{color:#a16207}
+.spec-right h5{color:#9a3412}
+.spec-left p,.spec-right p{font-size:.78rem;color:var(--text2);margin:0;line-height:1.55}
+/* ── 사례 박스 ── */
+.case-box{background:#fffbeb;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#78350f;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.intang-grid{grid-template-columns:1fr}
+  .spectrum-row{flex-direction:column}
+  .spec-mid{width:100%;padding:.4rem}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VI Intangibles › M6-2 (2/8)</div>
+  <h1>M6-2. 무형자산의 분류·예시 (Categories & Illustrations)</h1>
+  <div class="sub">A.3 분류 (연성/경성·Unique·마케팅) + A.4 예시 — 특허·노하우·상표·라이선스·영업권·시너지·시장특성 &nbsp;|&nbsp; ¶6.15 – ¶6.31 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 무형자산 분류 (A.3)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 분석의 주요 요소 (A.4)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 특허·노하우·상표 계열</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 라이선스·정부 허가·계약권</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 영업권·계속적 가치</button>
+      <button class="nav-item" onclick="goTo('s6')">6. 그룹 시너지 & 시장특성</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>무형자산의 3대 분류 — 연성(Soft/Routine) vs 경성(Hard/Non-routine), 마케팅 무형자산 vs 상표권, 특별하고 가치있는 ("Unique & Valuable") 무형자산 — 을 구별하고 정상가격 분석에 어떤 영향을 미치는지 이해한다</span></li>
+        <li><span class="obj-num">2</span><span>White Paper(1988)·Lilly·GlaxoSmithKline 등 주요 정책 및 판례가 현대 OECD 무형자산 분류에 미친 영향을 설명할 수 있다</span></li>
+        <li><span class="obj-num">3</span><span>OECD가 예시한 8가지 무형자산 유형 — 특허·노하우·상표권·상표·브랜드·정부 라이선스·계약권·라이선스 권리 — 의 정의와 차이를 구별한다</span></li>
+        <li><span class="obj-num">4</span><span>영업권(goodwill)과 계속적 가치(ongoing concern)의 이전가격상 처리 문제, 사업이전(business transfer)과의 관계(Chapter IX 9.68~9.70 참조)를 파악한다</span></li>
+        <li><span class="obj-num">5</span><span>그룹 시너지(group synergies)와 시장특성(market characteristics)이 통상적으로 무형자산이 아닌 이유를 ¶6.9·¶6.30·¶6.31의 일관된 원칙으로 설명할 수 있다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: 무형자산 분류 -->
+    <section class="card" id="s1">
+      <h2>1. 무형자산의 3대 분류 (A.3) <span class="tag tag-para">¶6.15–¶6.17</span></h2>
+      <p>A.3은 무형자산을 정상가격 분석의 관점에서 분류하는 3가지 기준을 제시합니다. 각 분류는 정상가격산출방법 선택·비교가능거래 탐색·이익 배분 방식에 영향을 미칩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>연성(Soft/Routine) vs 경성(Hard/Non-routine) 무형자산 <span class="para">¶6.15</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산을 그 수익 창출 능력 기준으로 다음 두 가지로 분류합니다.</p>
+          <div class="spectrum-row">
+            <div class="spec-left">
+              <h5>연성 무형자산 (Soft / Routine)</h5>
+              <p>일반무형자산 — 일반적인 무형자산이 창출하는 정도의 수익을 발생시키는 무형자산. 비교가능거래 존재 가능.</p>
+            </div>
+            <div class="spec-mid">vs</div>
+            <div class="spec-right">
+              <h5>경성 무형자산 (Hard / Non-routine)</h5>
+              <p>고도수익 무형자산 — 독특하고 특별한 가치를 통해 고도수익을 발생시키는 무형자산. 비교가능거래 찾기 매우 어려움.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 역사적 기원 — The White Paper (1988)</div>
+            <p>무형자산을 2가지로 분류하기 시작한 것은 <strong>The White Paper (1988, pp. 50-51; Chapter 6. C. "Application of Commensurate with Income Standard to Normal Profit and High Profit Intangibles")</strong>부터 시작되었습니다.</p>
+            <p>White Paper는 무형자산에 <strong>내재하는 특성</strong> 및 <strong>비교가능거래(exact/non-exact)의 존재 여부</strong>를 기준으로 일반무형자산과 고도수익 무형자산을 나누어 설명합니다. 이는 미국 IRC §482의 "commensurate with income" 기준 적용 논의에서 비롯되었습니다.</p>
+          </div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>연성 (Soft)</th><th>경성 (Hard)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>수익 수준</strong></td>
+                <td>일반적·정형화된 수익</td>
+                <td>특별·고도 수익 (초과이익)</td>
+              </tr>
+              <tr>
+                <td><strong>비교가능거래</strong></td>
+                <td>존재 가능 (산업 평균 등)</td>
+                <td>거의 존재하지 않음</td>
+              </tr>
+              <tr>
+                <td><strong>정상가격산출방법</strong></td>
+                <td>CUP, TNMM 적용 가능</td>
+                <td>PSM, 가치평가 기법 필요</td>
+              </tr>
+              <tr>
+                <td><strong>예시</strong></td>
+                <td>일반 기술 특허, 표준화된 노하우</td>
+                <td>혁신적 신약 특허, 핵심 브랜드</td>
+              </tr>
+              <tr>
+                <td><strong>분석 난이도</strong></td>
+                <td>상대적으로 용이</td>
+                <td>매우 복잡 (M6-7·M6-8에서 다룸)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>분석의 차별화:</strong> 경성 무형자산은 비교가능거래가 부재하므로 일방적 방법(TNMM)보다 이익분할방법(PSM)이나 가치평가 기법(DCF)이 적합합니다. 이는 M6-7·M6-8에서 자세히 다루는 HTVI(Hard-to-Value Intangibles) 논의의 출발점이 됩니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>마케팅 무형자산 vs 상표권(Trade Intangibles) <span class="para">¶6.16</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산을 그 형성 활동의 성격에 따라 두 가지로 분류합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📢 마케팅 무형자산 (Marketing Intangibles)</h4>
+              <ul>
+                <li>마케팅·판매·고객 관계 활동을 통해 형성</li>
+                <li>브랜드 이미지, 고객 로열티, 유통 네트워크</li>
+                <li>고객 데이터베이스, 시장 명성</li>
+                <li>일반적으로 시간이 지나면서 누적·강화</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>🏭 상표권/거래 무형자산 (Trade Intangibles)</h4>
+              <ul>
+                <li>R&D, 기술 개발, 제조 활동을 통해 형성</li>
+                <li>특허, 기술 노하우, 영업비밀</li>
+                <li>제조 공정, 디자인 권리</li>
+                <li>일반적으로 R&D 투자로부터 발생</li>
+              </ul>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 The White Paper(1988) — Lilly & GlaxoSmithKline 사례</div>
+            <p><strong>Lilly case (Eli Lilly & Co. v. Commissioner):</strong> 의약품 회사 Lilly가 푸에르토리코 자회사에 핵심 제조 기술을 이전하면서 이전된 제조 기술과 대응하는 모회사 마케팅 무형자산의 가치 평가가 쟁점이 된 사례. 미국 법원은 마케팅 무형자산이 미국 모회사에 의해 개발·소유되었다고 판단.</p>
+            <p><strong>GlaxoSmithKline case (글락소스미스클라인 IRS 합의):</strong> 영국 GSK가 미국 자회사 GSK USA의 마케팅 활동(Zantac·기타 의약품 미국 판매)으로 형성된 마케팅 무형자산의 귀속을 다툰 사례. 2006년 약 34억 달러로 IRS와 합의 — 사상 최대 이전가격 합의.</p>
+            <p><strong>실무 시사점:</strong> 마케팅 무형자산은 누가 마케팅 활동을 수행했는가 + 누가 통제·자금조달했는가에 따라 귀속이 결정되며, 이는 매우 분쟁이 잦은 영역입니다. M6-5에서 자세히 다룹니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Unique and Valuable 무형자산 — 특별하고 가치 있는 무형자산 <span class="para">¶6.17</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.17은 가장 중요한 분류 중 하나인 "Unique and Valuable" 무형자산을 정의합니다. 이는 ¶6.10에서 언급한 Chapter I D.1.3의 정의를 적용합니다.</p>
+          <div class="key-point">💡 <strong>Unique and Valuable 무형자산의 2대 요건:</strong>
+            <br>(i) <strong>비교가능거래가 존재하지 않음</strong> (no comparable transactions exist)
+            <br>(ii) <strong>유사한 무형자산에서 실현할 수 있는 이익을 초과하는 미래 기대수익이 존재</strong> (expected future returns exceed those realizable from similar intangibles)
+          </div>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📊 Unique and Valuable의 특성</h4>
+              <ul>
+                <li>비교가능거래 부재 → CUP·RPM·CPM·TNMM 적용 어려움</li>
+                <li>초과수익 발생 → 잔여이익(residual profit) 발생</li>
+                <li>경성(Hard) 무형자산과 사실상 동일 개념</li>
+                <li>PSM·가치평가 기법 적용</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 분석상의 중요성</h4>
+              <ul>
+                <li>이익분할 시 분할 대상이 되는 잔여이익의 원천</li>
+                <li>HTVI(M6-8)의 핵심 대상</li>
+                <li>DEMPE 분석(M6-3)의 핵심 적용 영역</li>
+                <li>BEPS 위험의 주요 발생 지점</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>통합 시각:</strong> 실무에서 "연성/경성", "마케팅/상표권", "Unique and Valuable"의 3가지 분류는 서로 독립되어 있지 않습니다. 일반적으로 <strong>경성 무형자산은 Unique and Valuable</strong>이며, <strong>마케팅 무형자산도 강력한 브랜드의 경우 Unique and Valuable</strong>이 될 수 있습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: 분석의 주요 요소 -->
+    <section class="card" id="s2">
+      <h2>2. 무형자산 분석의 주요 요소 (A.4 도입) <span class="tag tag-para">¶6.18</span></h2>
+      <p>A.4는 OECD가 실무에서 자주 마주치는 무형자산의 예시를 8가지로 제시합니다. ¶6.18은 이 예시 목록이 어떻게 활용되어야 하는지에 대한 사용 지침을 제공합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>A.4 예시 목록 사용 지침 — "명칭"이 아닌 "실질" <span class="para">¶6.18</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.18은 A.4 예시 목록의 사용에 관한 4가지 원칙을 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📝 예시 목록의 성격</h4>
+              <ul>
+                <li>무형자산 거래에서 자주 고려되는 항목들의 사례</li>
+                <li>Section A.1 지침의 이해를 돕는 <strong>보조 자료</strong></li>
+                <li><strong>포괄적 목록이 아님</strong> — 새로운 유형 가능</li>
+                <li>각 사안에 맞게 관할권의 법적·규제적 환경에 따라 유연하게 적용</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>⚠️ 명칭 의존의 위험</h4>
+              <ul>
+                <li>"이 항목은 특허다" → 그것만으로 무형자산 확정 아님</li>
+                <li>예시 목록의 명칭이 자동 분류를 의미하지 않음</li>
+                <li>실질적 비교가능성 분석(특히 기능분석) 필요</li>
+                <li>해당 거래가 실제로 가치 창출에 어떤 기여를 하는지 판단 필요</li>
+              </ul>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>¶6.18의 핵심 — "명칭(label)에 의존하지 말 것":</strong> 납세자나 과세당국 모두 단순한 명칭(label)에 의존하지 않고, 해당 항목이 구체적으로 어떤 무형자산인지 식별해야 할 의무가 있습니다. "Trademark"라는 명칭이 곧 가치 있는 상표권을 의미하지 않으며, 실제 시장에서의 인지도·가치 창출 여부를 평가해야 합니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 OECD 예시 8가지 유형 (Section A.4)</div>
+            <p>A.4는 다음 8가지 유형의 무형자산을 예시합니다. 각각은 본 모듈의 섹션 3~6에서 자세히 다룹니다.</p>
+            <ol style="font-size:.85rem;color:#78350f;padding-left:1.3rem">
+              <li><strong>특허(Patents)</strong> — A.4.1</li>
+              <li><strong>노하우와 상업비밀(Know-how & Trade Secrets)</strong> — A.4.2</li>
+              <li><strong>상표권·상표·브랜드(Trademarks, Trade Names, Brands)</strong> — A.4.3</li>
+              <li><strong>계약상 권리 및 정부 라이선스(Rights under Contracts & Government Licenses)</strong> — A.4.4</li>
+              <li><strong>라이선스 등 무형자산상 제한적 권리(Licenses & Similar Limited Rights)</strong> — A.4.5</li>
+              <li><strong>영업권과 계속적 가치(Goodwill & Ongoing Concern Value)</strong> — A.4.6</li>
+              <li><strong>그룹 시너지(Group Synergies)</strong> — A.4.7</li>
+              <li><strong>시장 특성(Market Specific Characteristics)</strong> — A.4.8</li>
+            </ol>
+            <p style="margin-top:.4rem"><em>참고:</em> 마지막 두 항목(시너지·시장특성)은 <strong>"통상 무형자산이 아니지만 가치 분석에 영향을 미치는 요소"</strong>로 분류됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: 특허·노하우·상표 -->
+    <section class="card" id="s3">
+      <h2>3. 특허·노하우·상표 계열 (A.4.1–A.4.3) <span class="tag tag-para">¶6.19–¶6.23</span></h2>
+      <p>가장 대표적이고 자주 마주치는 무형자산 유형입니다. 기술·지식 기반 무형자산(특허·노하우)과 마케팅 기반 무형자산(상표권·상표·브랜드)으로 구분됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>특허(Patents) & 노하우·상업비밀(Know-how & Trade Secrets) <span class="para">¶6.19–¶6.20</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>특허와 노하우는 모두 기술·지식 기반의 무형자산이지만, 법률적 보호 방식이 다릅니다.</p>
+          <div class="intang-grid">
+            <div class="intang-card">
+              <span class="badge">A.4.1 ¶6.19</span>
+              <h4>🔬 특허 (Patent)</h4>
+              <p><strong>정의:</strong> 발명에 대한 법적 독점권 — 정부에 등록·공시되어 보호받음</p>
+              <p style="margin-top:.4rem"><strong>특징:</strong> 일정 기간(통상 20년) 동안 독점 사용권, 라이선싱·양도 가능, 공시된 정보로 비교가능거래 검색 용이</p>
+              <p style="margin-top:.4rem"><strong>실무 가치:</strong> 신약·전자·기계·소프트웨어 등 모든 기술 산업의 핵심 무형자산</p>
+            </div>
+            <div class="intang-card">
+              <span class="badge">A.4.2 ¶6.20</span>
+              <h4>🔐 노하우 & 상업비밀</h4>
+              <p><strong>정의:</strong> 등록되지 않은 기술·관리 지식·정보 — 비밀유지로 보호</p>
+              <p style="margin-top:.4rem"><strong>특징:</strong> 공시되지 않음, 비밀유지가 핵심 보호 수단, 노출 시 가치 즉시 소멸 위험</p>
+              <p style="margin-top:.4rem"><strong>예시:</strong> 코카콜라 제조 비법, KFC 11가지 향신료 조합, 제조 공정 노하우, 고객 명단</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>특허 vs 노하우의 이전가격 처리 차이:</strong> 특허는 등록 정보를 통해 비교가능 라이선싱 거래를 찾기 비교적 용이하지만, 노하우는 본질적으로 비밀이어서 비교가능거래 찾기 매우 어렵습니다. 따라서 노하우는 자주 PSM이나 가치평가 기법으로 분석됩니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국 실무 — 특허·노하우 라이선싱</div>
+            <p><strong>국조법상 분석:</strong> 한국 자회사가 해외 모회사로부터 특허·노하우 라이선싱을 받는 경우, 정상 사용료율 평가가 필요함. CUP(상업 라이선싱 데이터베이스 - RoyaltyStat, RoyaltySource 등 활용)이 일반적 출발점.</p>
+            <p><strong>사용료 원천세:</strong> 한국 법인세법 §93에 따라 사용료에 원천세 부과 (조세조약상 제한세율 적용). 노하우와 특허는 모두 일반적으로 사용료에 해당하나, 일부 조약은 노하우를 별도로 명시.</p>
+            <p><strong>위험 관리:</strong> 노하우는 노출 시 가치 소멸하므로 NDA·접근 통제 등 보호 장치 + 명확한 사용 범위·기간 계약 필수.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>상표권(Trademark) · 상표(Trade Name) · 브랜드(Brand)의 구별 <span class="para">¶6.21–¶6.23</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.21~6.23은 자주 혼용되는 세 가지 마케팅 무형자산을 구별합니다.</p>
+          <div class="three-col">
+            <div class="intang-card">
+              <span class="badge">¶6.21</span>
+              <h4>™ Trademark<br>(상표권)</h4>
+              <p><strong>정의:</strong> 상품·서비스의 출처를 식별하기 위해 사용되는 등록된 표지·로고·기호</p>
+              <p style="margin-top:.4rem"><strong>특징:</strong> 정부 기관에 등록, 갱신 가능, 지역별·범주별 등록</p>
+              <p style="margin-top:.4rem"><em>예:</em> 나이키 스우시(✓), 애플 로고(🍎)</p>
+            </div>
+            <div class="intang-card">
+              <span class="badge">¶6.22</span>
+              <h4>™ Trade Name<br>(상표·상호)</h4>
+              <p><strong>정의:</strong> 기업이 사업 활동에서 사용하는 명칭 — 상호명</p>
+              <p style="margin-top:.4rem"><strong>특징:</strong> 법인등록부 등록, 상표권보다 좁은 보호, 기업 정체성</p>
+              <p style="margin-top:.4rem"><em>예:</em> Samsung Electronics, Hyundai Motor Company</p>
+            </div>
+            <div class="intang-card">
+              <span class="badge">¶6.23</span>
+              <h4>™ Brand<br>(브랜드)</h4>
+              <p><strong>정의:</strong> 소비자 인식·정서적 가치를 포함하는 종합적 개념 — 가장 광범위한 마케팅 자산</p>
+              <p style="margin-top:.4rem"><strong>특징:</strong> 상표권보다 넓은 개념, 평판·이미지·로열티 포함, 정량화 어려움</p>
+              <p style="margin-top:.4rem"><em>예:</em> "삼성"이 가진 신뢰성 이미지 전체</p>
+            </div>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 실무 통합 사례 — "삼성"의 마케팅 무형자산 구조</div>
+            ① <strong>상표권(Trademark):</strong> 등록된 "SAMSUNG" 로고와 한글 "삼성" 글자 디자인 (각국 특허청 등록)<br>
+            ② <strong>상표/상호(Trade Name):</strong> "Samsung Electronics Co., Ltd." 법인명<br>
+            ③ <strong>브랜드(Brand):</strong> 글로벌 시장에서 "Samsung"이 가진 종합적 가치 — 신뢰성·혁신성·품질 이미지 (Interbrand Best Global Brands 5위 수준)
+          </div>
+          <div class="key-point">💡 <strong>3개 개념의 관계:</strong> Trademark ⊂ Trade Name ⊂ Brand의 포함 관계로 이해할 수 있습니다. 상표권은 법률적 보호 단위, 상표/상호는 사업 식별 단위, 브랜드는 시장 인식의 종합 가치를 의미합니다. 이전가격 분석에서는 가장 넓은 "브랜드"의 가치 평가가 가장 어렵고 분쟁이 잦습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: 라이선스·정부 허가·계약권 -->
+    <section class="card" id="s4">
+      <h2>4. 라이선스·정부 허가·계약권 (A.4.4–A.4.5) <span class="tag tag-para">¶6.24–¶6.26</span></h2>
+      <p>이 섹션은 정부 또는 계약을 통해 부여된 권리에서 비롯되는 무형자산을 다룹니다. 단순한 행정 허가가 아니라 사업 운영에 필수적인 가치 있는 권리가 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정부 라이선스·허가 & 계약상 권리 <span class="para">¶6.24–¶6.25</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.24와 ¶6.25는 두 가지 권리 기반 무형자산을 다룹니다.</p>
+          <div class="intang-grid">
+            <div class="intang-card">
+              <span class="badge">A.4.4 ¶6.24</span>
+              <h4>🏛️ 정부 라이선스·허가</h4>
+              <p><strong>정의:</strong> 정부가 부여하는 사업 운영·자원 사용·진입 권리</p>
+              <p style="margin-top:.4rem"><strong>예시:</strong> 통신 주파수 라이선스, 광업권, 발전사업 허가, 의료 라이선스, 항공운송 라이선스</p>
+              <p style="margin-top:.4rem"><strong>가치:</strong> 진입 제한이 강한 산업에서 매우 큰 무형자산 가치 보유</p>
+            </div>
+            <div class="intang-card">
+              <span class="badge">A.4.5 ¶6.25</span>
+              <h4>📋 계약상 권리</h4>
+              <p><strong>정의:</strong> 사적 계약을 통해 부여된 권리·의무 관계</p>
+              <p style="margin-top:.4rem"><strong>예시:</strong> 독점 공급 계약, 유통권, 프랜차이즈권, 장기 공급 계약</p>
+              <p style="margin-top:.4rem"><strong>가치:</strong> 안정적 수익원·시장 접근권 확보</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 사례 — 통신 주파수 라이선스의 이전가격</div>
+            <p><strong>상황:</strong> 다국적 통신사 그룹이 한국 정부로부터 5G 주파수 라이선스를 취득하여 한국 자회사가 보유. 라이선스 가치는 수백억~조 단위.</p>
+            <p><strong>이전가격 쟁점:</strong> ① 라이선스 취득 자금을 누가 부담했는가, ② 라이선스 관련 사업 운영을 누가 통제하는가, ③ 라이선스를 활용한 수익이 어디에 귀속되어야 하는가</p>
+            <p><strong>분석 결과:</strong> 라이선스를 한국 자회사가 보유하더라도 모회사가 자금조달·핵심 의사결정을 한 경우, 모회사에 일부 수익 귀속이 필요할 수 있음. M6-3·M6-4의 DEMPE 분석으로 해결.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>라이선스 계약상 권리 — 무형자산의 분할 사용 <span class="para">¶6.26</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.26은 무형자산 자체와 그 무형자산에 대한 라이선스 권리를 구별하는 중요한 개념을 다룹니다.</p>
+          <div class="key-point">💡 <strong>핵심 구별:</strong> 무형자산을 "소유"하는 것과 무형자산에 대한 "라이선스 권리를 받는 것"은 다릅니다. 라이선스는 무형자산의 일부 사용권만을 부여하며, 그 자체가 별도의 무형자산이 됩니다.</div>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📜 라이선스의 주요 유형</h4>
+              <ul>
+                <li><strong>독점적 vs 비독점적:</strong> 한 사용자만 vs 여러 사용자</li>
+                <li><strong>지역 제한:</strong> 특정 국가·지역만 사용</li>
+                <li><strong>기간 제한:</strong> 일정 기간만 사용</li>
+                <li><strong>용도 제한:</strong> 특정 제품·시장만 사용</li>
+                <li><strong>서브라이선스 권한:</strong> 제3자에게 재라이선싱 가능 여부</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 이전가격 분석상 중요성</h4>
+              <ul>
+                <li>라이선스 조건이 사용료율을 결정</li>
+                <li>독점·광범위 라이선스 → 높은 사용료</li>
+                <li>제한적 라이선스 → 낮은 사용료</li>
+                <li>비교가능 라이선스 거래 검색 시 동일 조건 확인 필요</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>실무 적용:</strong> 한국 자회사가 해외 모회사로부터 받는 라이선스는 일반적으로 "비독점적 + 지역 제한(한국) + 기간 제한 + 용도 제한"의 형태가 많습니다. 이 모든 조건이 사용료율 결정에 영향을 미치므로 라이선스 계약서의 정확한 조건 분석이 필수입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: 영업권·계속적 가치 -->
+    <section class="card" id="s5">
+      <h2>5. 영업권 & 계속적 가치 (A.4.6) <span class="tag tag-para">¶6.27–¶6.29</span></h2>
+      <p>A.4.6은 무형자산 분석에서 가장 어렵고 논쟁이 많은 영역 중 하나인 영업권(goodwill)과 계속적 가치(ongoing concern value)를 다룹니다. 회계기준과 이전가격 기준의 차이가 가장 크게 나타나는 영역입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>영업권과 계속적 가치의 정의 (Chapter IX 9.68–9.70 참조) <span class="para">¶6.27</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.27은 영업권과 계속적 가치를 정의하면서 Chapter IX(사업재편) §9.68~9.70 참조를 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>💰 영업권 (Goodwill)</h4>
+              <p>회계상 정의: 사업 인수 시 지급한 대가가 인식 가능한 순자산의 공정가치를 초과한 부분</p>
+              <p style="margin-top:.4rem"><strong>이전가격 관점:</strong> 식별되지 않은 무형의 가치 — 평판·고객 기반·종업원 역량 등의 종합 가치</p>
+              <p style="margin-top:.4rem"><em>특징:</em> 회계에서는 인수 시에만 인식, 내부 창출 영업권은 회계상 인식 안 함</p>
+            </div>
+            <div class="col-box orange">
+              <h4>🏢 계속적 가치 (Ongoing Concern Value)</h4>
+              <p>사업을 계속할 수 있는 능력에서 비롯되는 가치 — "사업체로서의 가치"</p>
+              <p style="margin-top:.4rem"><strong>이전가격 관점:</strong> 종업원·고객·시설·시스템이 결합된 통합적 사업 운영 능력</p>
+              <p style="margin-top:.4rem"><em>특징:</em> 영업권과 중첩되나 더 넓은 개념</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>왜 두 개념이 중요한가?</strong> 사업이전(business transfer)·사업재편(business restructuring) 시 단순 자산 양도를 넘어 영업권·계속적 가치까지 함께 이전되는 경우가 많습니다. 이때 이전가격상 관련된 가치를 어떻게 평가할 것이지가 문제가 됩니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>영업권·계속적 가치의 이전가격상 처리 문제 <span class="para">¶6.28</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.28은 영업권·계속적 가치를 이전가격 분석에서 어떻게 처리할지의 실무적 어려움을 다룹니다.</p>
+          <div class="warn-point">⚠️ <strong>핵심 어려움:</strong> 영업권·계속적 가치는 <strong>경계가 모호하고 식별이 어려우며 정량화가 까다롭습니다</strong>. 회계기준상 명확한 인식 기준이 없고, 시장 비교가능거래도 찾기 어려워 이전가격 분석에서 분쟁이 자주 발생합니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>처리 쟁점</th><th>실무 문제</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>① 식별</strong></td>
+                <td>다른 무형자산(특허·상표 등)과의 경계가 모호 — 무엇이 영업권이고 무엇이 별도 무형자산인가?</td>
+              </tr>
+              <tr>
+                <td><strong>② 가치 평가</strong></td>
+                <td>비교가능거래 부재 — 일반적으로 DCF 등 가치평가 기법 적용 필요</td>
+              </tr>
+              <tr>
+                <td><strong>③ 귀속</strong></td>
+                <td>영업권이 누구의 활동·자산으로 형성되었는가 — DEMPE 분석 필요</td>
+              </tr>
+              <tr>
+                <td><strong>④ 사업이전 시 처리</strong></td>
+                <td>사업전체가 이전될 때 영업권·계속적 가치도 함께 이전 — 정상가격 평가 필수 (Chapter IX 9.68~9.70)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>영업권과 사업이전(Business Transfer)의 관계 <span class="para">¶6.29</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.29는 영업권 처리가 가장 자주 쟁점이 되는 상황 — <strong>사업재편(business restructuring)·사업이전</strong> — 에 관한 핵심 원칙을 다룹니다.</p>
+          <div class="case-box">
+            <div class="case-label">💼 사례 — 다국적 그룹의 사업재편</div>
+            <strong>시나리오:</strong> 한국 자회사가 그룹의 동아시아 유통 기능을 수행하다가, 그룹 재편으로 동 기능을 싱가포르 계열사로 이전. 한국 자회사는 단순 판매대행자(commissionaire)로 전환.<br><br>
+            <strong>이전가격 쟁점:</strong> 한국 자회사가 보유했던 ① 고객 기반, ② 시장 노하우, ③ 종업원 네트워크, ④ 사업 운영 능력 — 즉 영업권·계속적 가치 — 가 싱가포르 계열사로 함께 이전됨. 이에 대한 <strong>정상가격 보상</strong>이 필요.<br><br>
+            <strong>실무 해결:</strong> Chapter IX(사업재편) 분석 + DCF 등 가치평가 기법 + 손실보상금(exit charge) 평가 + MAP·APA 활용
+          </div>
+          <div class="key-point">💡 <strong>Chapter IX 연계:</strong> 영업권·계속적 가치의 이전가격 처리는 본질적으로 <strong>사업재편 이전가격(Chapter IX) 영역</strong>과 깊이 연결됩니다. ¶9.68~9.70이 사업재편 시 무형자산 가치의 보상 원칙을 자세히 다루고 있어, 영업권 거래는 Chapter VI와 Chapter IX의 관련 항목을 함께 분석해야 하는 어려움이 있습니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 적용 — 사업재편 시 영업권 평가</div>
+            <p><strong>위험 영역:</strong> 다국적 그룹이 한국 자회사의 기능을 축소·이전할 때 영업권·계속적 가치에 대한 보상 없이 진행하면 다양한 과세위험에 노출될 수 있음</p>
+            <p><strong>대응 방안:</strong> 사전 가치평가 보고서 작성(DCF·시장접근법·자산접근법 등) + 보상금 산정 + 사업재편 사유 문서화 + APA 신청 검토</p>
+            <p><strong>판례 동향:</strong> 한국 조세심판원·법원도 사업재편 시 영업권 가치 미보상에 대한 과세를 지지하는 경향이 증가하고 있어, 사전 평가의 중요성이 매우 큼</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6: 그룹 시너지 & 시장특성 -->
+    <section class="card" id="s6">
+      <h2>6. 그룹 시너지 & 시장 특성 (A.4.7–A.4.8) <span class="tag tag-para">¶6.30–¶6.31</span></h2>
+      <p><strong>"통상적으로 무형자산이 아닌" 것들</strong>이지만 가치 분석에 영향을 미치는 요소들입니다. 즉 무형자산은 아니지만 이전가격 분석에서 함께 고려해야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>그룹 시너지(Group Synergies) <span class="para">¶6.30</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.30은 그룹 시너지가 일반적으로 무형자산으로 정의되지 않기 때문에 별도 항목으로 다루어야 한다는 것을 명확히 합니다.</p>
+          <div class="key-point">💡 <strong>그룹 시너지의 본질:</strong> 그룹 시너지는 <strong>"다국적 그룹의 일원이라는 점에서 발생하는 우연한 이익"</strong>입니다. 이는 어떤 회사가 개발·소유한 무형자산이 아니라, 단지 그룹에 속해 있다는 사실에서 비롯되는 가치이므로 통상적으로 무형자산을 구성하지 않습니다.</div>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>🤝 그룹 시너지의 예시</h4>
+              <ul>
+                <li>그룹 차원의 구매력 — 대량 구매 할인</li>
+                <li>그룹 차원의 자금조달 능력 — 낮은 차입 비용</li>
+                <li>그룹 차원의 신용도 — 그룹 평판 활용</li>
+                <li>그룹 차원의 협상력 — 공급업체·고객과의 협상</li>
+                <li>리스크 분산 효과 — 그룹 차원의 다각화</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>⚠️ 이전가격 처리 (Chapter I D.8)</h4>
+              <ul>
+                <li>무형자산은 아니지만 정상가격 분석에 영향</li>
+                <li>의도적·계획된 활동으로 발생한 시너지: 별도 보상 필요</li>
+                <li>단순한 그룹 소속에서 비롯된 우연적 시너지: 별도 보상 불필요</li>
+                <li>구별 기준: 그룹 차원의 의도적 노력·기여 여부</li>
+              </ul>
+            </div>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 사례 — 그룹 시너지 보상 vs 비보상</div>
+            <strong>보상 필요 시너지:</strong> 그룹 본사가 의도적으로 모든 자회사의 IT 시스템을 통합하여 비용을 절감 → 본사의 의도적 활동의 결과 → 본사에 일부 보상 필요<br><br>
+            <strong>보상 불필요 시너지:</strong> 그룹 차원의 신용도가 자회사 차입금 금리를 낮춤 → 단순히 그룹 소속에서 비롯된 우연적 효과 → 별도 보상 불필요 (단, 본사가 명시적 보증을 한 경우는 별도)
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>시장 특성(Market Specific Characteristics) <span class="para">¶6.31</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.31은 ¶6.9와 일관된 원칙을 재확인합니다 — 시장특성은 통상적으로 무형자산이 아닙니다.</p>
+          <div class="key-point">💡 <strong>¶6.31의 핵심:</strong> 특정 시장의 특성(characteristics of a given market)은 통상적으로 무형자산을 구성하지 않습니다. 시장의 특성은 그 시장에서 활동하는 모든 사업자에게 영향을 미치는 외부 환경이지, 특정 기업이 소유·통제할 수 있는 가치가 아닙니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>시장 특성 유형</th><th>예시</th><th>이전가격 처리</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>인구통계적 특성</strong></td>
+                <td>인구 규모, 연령 분포, 소득 수준</td>
+                <td>비교가능성 분석 시 시장 차이 조정</td>
+              </tr>
+              <tr>
+                <td><strong>지리적 특성</strong></td>
+                <td>위치, 기후, 자원 접근성</td>
+                <td>위치 우위(location savings) 별도 분석</td>
+              </tr>
+              <tr>
+                <td><strong>규제 환경</strong></td>
+                <td>관세, 규제, 라이선싱 요건</td>
+                <td>시장 진입 비용·운영 비용에 반영</td>
+              </tr>
+              <tr>
+                <td><strong>경쟁 구조</strong></td>
+                <td>경쟁 강도, 시장 포화도</td>
+                <td>가격 결정·이익률에 영향</td>
+              </tr>
+              <tr>
+                <td><strong>구매력·취향</strong></td>
+                <td>가처분 소득, 소비 패턴</td>
+                <td>시장 특성 분석 — 무형자산 아님</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="warn-point">⚠️ <strong>"지역혜택(Location Savings)"의 구별:</strong> 일부 국가의 낮은 인건비·저렴한 자원 등으로 발생하는 비용 절감(location savings)은 무형자산이 아니지만, 그 이익이 어떻게 분배되어야 하는가는 별도의 이전가격 쟁점입니다. 시장 차이 조정에서 다루어집니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 사례 — 한국 시장 특성과 무형자산의 구별</div>
+            <p><strong>시장 특성 (무형자산 아님):</strong> 한국 시장의 높은 디지털 접근성, K-pop·K-drama로 인한 한국 브랜드 선호도, 한국 소비자의 높은 구매력 — 모든 기업이 동일하게 경험하는 시장 환경</p>
+            <p><strong>무형자산 (가능):</strong> 한국 시장 진출을 위해 특정 기업이 개발한 한국 소비자 데이터베이스, 한국 시장에 특화된 마케팅 노하우, 한국 유통 채널과의 관계 — 특정 기업이 개발·소유한 가치</p>
+            <p><strong>실무 시사점:</strong> 한국 시장이 매력적이라는 점만으로 한국 자회사에 추가 보상이 필요한 것은 아니며, 한국 자회사가 자체적으로 개발한 시장 특화 무형자산이 있는 경우에만 별도 보상이 정당화됩니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M6-2 핵심 정리 — A.3·A.4 8가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>분류/유형</th><th>핵심 특징</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>연성 vs 경성</strong></td><td>일반/고도수익 (White Paper 1988 기원)</td><td>6.15</td></tr>
+              <tr><td><strong>마케팅 vs 상표권</strong></td><td>마케팅 활동 vs R&D 활동에서 형성 (Lilly·GSK 사례)</td><td>6.16</td></tr>
+              <tr><td><strong>Unique and Valuable</strong></td><td>비교가능거래 부재 + 초과 미래수익</td><td>6.17</td></tr>
+              <tr><td><strong>특허·노하우</strong></td><td>법률적 보호 vs 비밀유지</td><td>6.19–6.20</td></tr>
+              <tr><td><strong>상표권·상표·브랜드</strong></td><td>Trademark ⊂ Trade Name ⊂ Brand 포함 관계</td><td>6.21–6.23</td></tr>
+              <tr><td><strong>정부 라이선스·계약권</strong></td><td>진입 제한 산업에서 큰 가치</td><td>6.24–6.26</td></tr>
+              <tr><td><strong>영업권·계속적 가치</strong></td><td>사업재편 시 핵심 쟁점 (Chapter IX 9.68~9.70)</td><td>6.27–6.29</td></tr>
+              <tr><td><strong>시너지·시장특성</strong></td><td>통상 무형자산 아님 — 별도 분석 필요</td><td>6.30–6.31</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. ¶6.15의 <strong>연성(Soft/Routine) vs 경성(Hard/Non-routine) 무형자산</strong> 구별의 역사적 기원은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) OECD BEPS Action 8-10 (2015)</label>
+          <label><input type="radio" name="q1" value="b"> (B) 미국 The White Paper (1988) — IRC §482의 "commensurate with income" 기준 적용 논의에서 무형자산을 일반무형자산(연성)과 고도수익 무형자산(경성)으로 분류하기 시작</label>
+          <label><input type="radio" name="q1" value="c"> (C) EU Directive 2016</label>
+          <label><input type="radio" name="q1" value="d"> (D) UN Practical Manual on Transfer Pricing 2017</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. ¶6.17의 <strong>Unique and Valuable 무형자산</strong>의 2대 요건은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) 법률적 보호 + 회계기준상 자본화</label>
+          <label><input type="radio" name="q2" value="b"> (B) (i) 비교가능거래가 존재하지 않음 + (ii) 유사한 무형자산에서 실현할 수 있는 이익을 초과하는 미래 기대수익이 존재</label>
+          <label><input type="radio" name="q2" value="c"> (C) 모회사 소유 + 5년 이상 보유</label>
+          <label><input type="radio" name="q2" value="d"> (D) 매출액 1조 원 이상 + 종업원 1,000명 이상</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. ¶6.21–6.23이 구별하는 <strong>Trademark · Trade Name · Brand</strong>의 관계로 가장 정확한 것은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) 세 개념은 완전히 동일하다</label>
+          <label><input type="radio" name="q3" value="b"> (B) Trademark는 등록된 표지·로고(법률 보호 단위), Trade Name은 사업 식별 명칭(상호), Brand는 소비자 인식·정서적 가치까지 포함하는 가장 광범위한 마케팅 자산 — 일반적으로 Trademark ⊂ Trade Name ⊂ Brand의 포함 관계</label>
+          <label><input type="radio" name="q3" value="c"> (C) Brand가 가장 좁은 개념이다</label>
+          <label><input type="radio" name="q3" value="d"> (D) 모두 회계상 무형자산으로 인식되어야 한다</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. ¶6.27–6.29의 <strong>영업권·계속적 가치 이전가격 처리</strong>가 가장 자주 쟁점이 되는 상황은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 단순 상품 매매 거래</label>
+          <label><input type="radio" name="q4" value="b"> (B) 사업이전(business transfer)·사업재편(business restructuring) — Chapter IX 9.68~9.70이 사업재편 시 무형자산 가치의 보상 원칙을 자세히 다루며, 영업권·계속적 가치 미보상 시 큰 과세 위험</label>
+          <label><input type="radio" name="q4" value="c"> (C) 일반 서비스 거래</label>
+          <label><input type="radio" name="q4" value="d"> (D) 금융 대출 거래</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶6.30–6.31에 따른 <strong>그룹 시너지와 시장 특성의 이전가격 처리</strong>로 가장 정확한 것은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 둘 다 항상 무형자산으로 인식되어 별도 보상이 필요하다</label>
+          <label><input type="radio" name="q5" value="b"> (B) 둘 다 통상적으로 무형자산을 구성하지 않으나, 그룹 시너지 중 의도적·계획된 활동의 결과는 별도 보상 필요(¶6.30, Chapter I D.8); 시장 특성(인구·구매력 등)은 외부 환경이므로 별도 무형자산 아님(¶6.31)</label>
+          <label><input type="radio" name="q5" value="c"> (C) 둘 다 무형자산이 아니므로 어떤 분석도 불필요</label>
+          <label><input type="radio" name="q5" value="d"> (D) 시장 특성이 매력적이면 자동으로 자회사에 추가 보상이 필요하다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사의 무형자산을 연성(Soft/Routine) vs 경성(Hard/Non-routine)으로 분류하여, 각각에 적합한 정상가격산출방법(CUP·TNMM vs PSM·가치평가)을 적용할 준비를 하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">Unique and Valuable 무형자산(비교가능거래 부재 + 초과 미래수익)에 해당하는 자산이 있는지 식별하고, M6-7·M6-8의 HTVI 분석 가능성을 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">자사의 마케팅 무형자산(브랜드·고객 기반)과 상표권 계열(특허·노하우)의 구별을 명확히 하고, 각각의 가치 형성 활동을 추적하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">자사가 보유한 특허·등록된 상표권의 법률적 보호 범위(국가·기간·용도)와 비교가능 라이선싱 거래 데이터(RoyaltyStat 등)를 확보하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">노하우·상업비밀(등록되지 않은 무형자산)의 비밀유지 보호 장치(NDA·접근 통제·서면 매뉴얼)를 갖추고, 정상가격 평가 시 비교가능거래 부재를 인식하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">자사가 보유한 정부 라이선스·계약상 권리(독점·지역·기간·용도 제한 등)의 조건을 정확히 문서화하여 사용료 평가의 기초로 활용하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">Trademark·Trade Name·Brand의 포함 관계를 인식하여, 가장 평가가 어려운 "Brand" 가치에 대한 별도 분석 체계를 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">사업재편·사업이전 계획이 있는 경우, 영업권·계속적 가치의 사전 평가(DCF 등)와 적정 보상금(exit charge) 산정을 통해 Chapter IX 위험에 대비하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">그룹 시너지를 의도적 활동의 결과(별도 보상 필요)와 그룹 소속에서 비롯된 우연적 효과(별도 보상 불필요)로 구별하여 처리하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">한국 시장의 매력적 특성(인구·구매력 등)을 무형자산으로 오해하지 않고, 한국 자회사가 실제로 개발·소유한 시장 특화 무형자산만을 별도 보상의 근거로 활용하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M6-1_무형자산_정의.html">← M6-1 무형자산 정의</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter VI 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M6-3는 다음 단계에서 작성됩니다.');return false;">M6-3 DEMPE 개관 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','s6','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'b',q2:'b',q3:'b',q4:'b',q5:'b'};
+const feedbacks={
+  q1:{
+    a:'❌ BEPS Action 8-10(2015)은 무형자산 분류 자체를 새로 만든 것이 아니라 기존 분류에 DEMPE 분석을 강화한 것입니다.',
+    b:'✅ 정답! 미국 The White Paper (1988, pp. 50-51; Chapter 6.C "Application of Commensurate with Income Standard to Normal Profit and High Profit Intangibles")가 IRC §482의 "commensurate with income" 기준 적용 논의에서 무형자산을 일반무형자산(연성)과 고도수익 무형자산(경성)으로 분류하기 시작했습니다. 이는 비교가능거래(exact/non-exact) 존재 여부를 기준으로 합니다.',
+    c:'❌ EU Directive와 무관합니다.',
+    d:'❌ UN Manual은 White Paper 이후의 발전된 자료입니다.'
+  },
+  q2:{
+    a:'❌ 법률적 보호와 회계 자본화는 OECD 무형자산 정의의 필수 요소가 아닙니다 (¶6.6, ¶6.7).',
+    b:'✅ 정답! ¶6.17과 Chapter I D.1.3에 따르면 Unique and Valuable 무형자산은 (i) 비교가능거래가 존재하지 않고, (ii) 유사한 무형자산에서 실현할 수 있는 이익을 초과하는 미래 기대수익이 존재하는 무형자산을 말합니다. 이는 경성(Hard) 무형자산과 사실상 동일 개념이며, HTVI(M6-8)·잔여이익 분할(PSM)의 핵심 대상이 됩니다.',
+    c:'❌ 소유자와 보유 기간은 정의 요건이 아닙니다.',
+    d:'❌ 매출액·종업원 수는 정의 요건이 아닙니다.'
+  },
+  q3:{
+    a:'❌ 세 개념은 명확히 구별됩니다.',
+    b:'✅ 정답! ¶6.21~6.23에 따르면 Trademark는 등록된 표지·로고(법률 보호 단위), Trade Name은 사업 식별 명칭(상호), Brand는 소비자 인식·정서적 가치까지 포함하는 가장 광범위한 개념입니다. 일반적으로 Trademark ⊂ Trade Name ⊂ Brand의 포함 관계로 볼 수 있으며, 이전가격 분석에서는 가장 평가하기 어려운 "Brand" 가치가 분쟁의 핵심이 됩니다.',
+    c:'❌ Brand가 가장 넓은 개념입니다.',
+    d:'❌ 회계상 자본화 여부는 이전가격 분석과 무관합니다.'
+  },
+  q4:{
+    a:'❌ 단순 상품 매매는 영업권 쟁점과 무관합니다.',
+    b:'✅ 정답! ¶6.29와 Chapter IX 9.68~9.70에 따르면 영업권·계속적 가치 이전가격 처리는 사업이전·사업재편 상황에서 가장 자주 쟁점이 됩니다. 다국적 그룹이 한국 자회사의 기능을 축소·이전할 때 영업권·계속적 가치에 대한 보상 없이 진행하면 국세청의 큰 과세 위험이 발생하며, 사전 가치평가(DCF 등)와 보상금 산정이 필수입니다.',
+    c:'❌ 일반 서비스 거래는 영업권 쟁점과 무관합니다.',
+    d:'❌ 금융 대출 거래는 별도 영역(Chapter X)입니다.'
+  },
+  q5:{
+    a:'❌ ¶6.30, ¶6.31에 따르면 둘 다 통상 무형자산이 아닙니다.',
+    b:'✅ 정답! 그룹 시너지(¶6.30)는 통상적으로 무형자산이 아니지만, 의도적·계획된 활동의 결과로 발생한 시너지는 별도 보상이 필요할 수 있습니다 (Chapter I D.8 참조). 시장 특성(¶6.31)은 인구·구매력·규제 등 외부 환경 요소로서 모든 사업자에게 영향을 미치므로 별도 무형자산이 아닙니다. 다만 그 시장에 특화된 노하우를 개발했다면 별도 무형자산이 될 수 있습니다.',
+    c:'❌ 무형자산이 아니더라도 정상가격 분석에서 함께 고려해야 합니다.',
+    d:'❌ 시장이 매력적이라는 점만으로 자회사에 추가 보상이 정당화되지는 않습니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M6-2를 완료하셨습니다. 다음은 M6-3 무형자산 소유권 & DEMPE 개관입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

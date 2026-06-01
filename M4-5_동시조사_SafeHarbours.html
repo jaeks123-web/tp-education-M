@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M4-5: 동시세무조사 & Safe Harbours</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#3730a3;--purple-light:#eef2ff;--purple-mid:#4f46e5;--purple-dark:#1e1b4b;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e1b4b;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#e0e7ff}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #c7d2fe;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.num-pill{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;margin:0 .2rem}
+/* ── 혜택/우려 카드 ── */
+.benefit-card{border-radius:10px;padding:1rem 1.1rem;border:1.5px solid var(--green);background:var(--green-light)}
+.benefit-card h4{font-size:.92rem;font-weight:700;color:var(--green);margin-bottom:.35rem}
+.benefit-card p{font-size:.85rem;color:var(--text2);margin:0;line-height:1.65}
+.concern-card{border-radius:10px;padding:1rem 1.1rem;border:1.5px solid var(--red);background:#fef2f2}
+.concern-card h4{font-size:.92rem;font-weight:700;color:var(--red);margin-bottom:.35rem}
+.concern-card p{font-size:.85rem;color:var(--text2);margin:0;line-height:1.65}
+.badge{display:inline-block;background:var(--purple);color:#fff;padding:1px 8px;border-radius:99px;font-size:.7rem;font-weight:700;margin-bottom:.3rem}
+/* ── 흐름 다이어그램 ── */
+.sim-flow{display:flex;align-items:center;justify-content:space-around;margin:1rem 0;flex-wrap:wrap;gap:.5rem}
+.sim-country{flex:1;min-width:120px;text-align:center;padding:.9rem 1rem;border-radius:10px;background:var(--purple-light);border:1.5px solid var(--purple)}
+.sim-country h5{font-size:.85rem;color:var(--purple-dark);font-weight:700;margin-bottom:.3rem}
+.sim-country p{font-size:.78rem;color:var(--text2);margin:0;line-height:1.5}
+.sim-arrow{font-size:1.5rem;color:var(--purple);font-weight:700}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col{grid-template-columns:1fr}
+  .sim-flow{flex-direction:column}
+  .sim-arrow{transform:rotate(90deg)}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter IV 분쟁 회피·해결 행정적 접근 › M4-5 (5/6)</div>
+  <h1>M4-5. 동시세무조사 & Safe Harbours</h1>
+  <div class="sub">D. Simultaneous Tax Examinations + E. Safe Harbours — 동시조사 메커니즘, 세이프하버 정의·혜택·문제점, OECD 권고사항 &nbsp;|&nbsp; ¶4.79 – ¶4.133 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 동시세무조사 (Section D)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. Safe Harbours 도입 & 변천 (E.1)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 정의·종류 (E.2)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 3대 혜택 (E.3)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 4가지 문제점 (E.4)</button>
+      <button class="nav-item" onclick="goTo('s6')">6. OECD 권고사항 (E.5)</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>동시세무조사(Simultaneous Tax Examinations)의 개념·법적 근거(제26조 정보교환)·운영 메커니즘과 이전가격 분쟁 사전 방지의 의미를 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>세이프하버("Safe Harbours")의 정의·종류와 1995년 부정적 입장에서 BEPS Pillar 2 CbCR 일부 수용으로 이어진 OECD 입장의 변천을 이해한다</span></li>
+        <li><span class="obj-num">3</span><span>Safe Harbours의 3대 혜택(Compliance Relief · Certainty · Administrative Simplicity)을 사례와 함께 설명할 수 있다</span></li>
+        <li><span class="obj-num">4</span><span>Safe Harbours의 4대 문제점(정상가격 차이·이중과세·조세회피·공평성)와 일방적(unilateral) vs 양자(bilateral)·다자(multilateral) Safe Harbour의 차이를 구별한다</span></li>
+        <li><span class="obj-num">5</span><span>OECD가 권고하는 Safe Harbour 활용 원칙 — 소규모·단순 거래 제한적 활용, 양자·다자간 협의 우선 — 을 실무에 적용한다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: 동시세무조사 -->
+    <section class="card" id="s1">
+      <h2>1. 동시세무조사 (Simultaneous Tax Examinations, Section D) <span class="tag tag-para">¶4.79–¶4.94</span></h2>
+      <p>Section D는 <strong>두 개 이상의 국가가 동시에 동일 다국적 기업 그룹의 거래에 대해 세무조사를 실시</strong>하는 협력적 메커니즘을 다룹니다. 이는 MAP·APA와는 달리 분쟁이 발생하기 전에 양국이 사실관계를 함께 평가함으로써 분쟁의 발생 자체를 사전에 방지하는 접근입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>동시세무조사란 무엇인가요? <span class="para">¶4.79–¶4.85</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>동시세무조사는 OECD 모델협약 <strong>제26조(정보교환)</strong>에 근거하여 두 개 이상의 과세관청이 합의에 따라 동일 다국적 기업 그룹의 관계회사들에 대한 세무조사를 같은 기간에 협력적으로 진행하는 절차입니다. OECD는 1992년 <strong>"Model Agreement for the Undertaking of Simultaneous Tax Examinations"</strong>를 발표하여 표준 운영 기준을 제시하였습니다.</p>
+          <div class="sim-flow">
+            <div class="sim-country">
+              <h5>A국 과세관청</h5>
+              <p>한국 자회사 조사<br>(이전가격·기능·자산·위험 등)</p>
+            </div>
+            <div class="sim-arrow">⇄</div>
+            <div class="sim-country">
+              <h5>🤝 양국 협의</h5>
+              <p>정보 교환·사실관계 공동 평가·일관된 분석</p>
+            </div>
+            <div class="sim-arrow">⇄</div>
+            <div class="sim-country">
+              <h5>🌐 B국 과세관청</h5>
+              <p>해외 모회사 조사<br>(같은 거래의 대응 측면)</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>핵심 차이 — MAP vs 동시세무조사:</strong> MAP은 분쟁 <strong>발생 후</strong> 해결을 위한 절차이고, 동시세무조사는 분쟁 <strong>발생 전</strong> 사실관계의 일관된 평가를 통해 분쟁을 예방하는 절차입니다. 양자는 상호 보완적 관계에 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>동시세무조사의 장점·한계와 한국 실무 <span class="para">¶4.86–¶4.94</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>동시세무조사는 분쟁 사전 예방이라는 강력한 장점이 있지만, 실무 운영상 일정한 제약도 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box green">
+              <h4>✅ 장점</h4>
+              <ul>
+                <li><strong>사실관계 일관성:</strong> 양국이 같은 사실에 기초한 동일한 결론에 도달할 가능성 증가</li>
+                <li><strong>이중과세 사전 방지:</strong> 분쟁 발생 자체를 줄여 MAP 부담 경감</li>
+                <li><strong>시간·비용 절감:</strong> 양국이 각자 별도로 조사하는 중복 부담 해소</li>
+                <li><strong>이전가격 위험 조기 식별:</strong> 양국이 동시에 보면 위험 노출 거래가 더 빠르게 드러남</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>⚠️ 한계</h4>
+              <ul>
+                <li><strong>자원 소요:</strong> 양국 동시 조사를 위한 행정 자원 부담</li>
+                <li><strong>비밀유지 우려:</strong> 정보 교환에 따른 영업비밀 노출 위험</li>
+                <li><strong>합의 의무 부재:</strong> 양국이 같은 결론에 이르지 않을 수 있음</li>
+                <li><strong>납세자 부담:</strong> 양국에서 동시에 자료 제출·면담 요구</li>
+                <li><strong>적용 제한:</strong> 협력 의지·자원이 있는 국가 간에만 가능</li>
+              </ul>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국 국조법 제50조 — 동시세무조사 운영</div>
+            <p><strong>법적 근거:</strong> 한국 국조법 제39조는 동시세무조사 실시 근거를 두고 있으며, 국세청장이 체약상대국의 권한있는 당국과 합의에 따라 동시세무조사를 실시할 수 있도록 규정합니다.</p>
+            <p><strong>운영 방식:</strong> 한국 거주 자회사와 해외 관계회사 간 이전가격 거래에 대해 양국이 같은 기간에 조사를 실시하며, 정보 교환을 통해 협력합니다.</p>
+            <p><strong>OECD 모델협약 제26조:</strong> 한국은 국조법 제36조에 정보교환 조항을 두고 있고 제39조에 세무조사 협력 조항을 두고 있어, 동시세무조사의 법적 기반이 마련되어 있습니다.</p>
+            <p><strong>실무 시사점:</strong> 다국적 기업 입장에서는 동시세무조사가 분쟁 사전 예방의 기회이지만, 양국이 일관된 결론에 이르지 못하는 경우 오히려 위험이 부각될 수 있으므로 양국에 동일한 입장과 자료를 제공하는 그룹 차원의 조율이 필수적입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: Safe Harbours 도입 -->
+    <section class="card" id="s2">
+      <h2>2. Safe Harbours 도입과 OECD 입장의 변천 (E.1) <span class="tag tag-para">¶4.95–¶4.100</span></h2>
+      <p>Section E는 <strong>Safe Harbours(안전항)</strong> 제도를 다룹니다. 세이프하버는 특정 거래나 납세자 범주에 대해 정상가격산출방법 대신 미리 정해진 단순한 기준(예: Cost plus 6.5%)을 적용함으로써 행정 부담을 줄이는 제도입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>OECD의 입장 변천 — 1995년 부정 → 2010년대 BEPS 이후 재조명 <span class="para">¶4.95–¶4.97</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Safe Harbours에 대한 OECD 입장의 역사적 변천은 다음과 같습니다. 이는 단순한 제도 소개가 아니라 <strong>이전가격 정책의 진화 과정</strong>을 이해하는 중요한 맥락입니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>시기</th><th>OECD 입장</th><th>배경</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1988년 White Paper</strong></td>
+                <td>Safe Harbours에 대한 활발한 논의</td>
+                <td>이전가격 행정의 단순화 필요성 인식</td>
+              </tr>
+              <tr>
+                <td><strong>1995년 지침서 승인</strong></td>
+                <td>❌ 대체로 부정적</td>
+                <td>정상가격원칙을 잠식할 위험, 비합리적 결과 우려</td>
+              </tr>
+              <tr>
+                <td><strong>2000년대–BEPS 이전</strong></td>
+                <td>여전히 부정적 (미국·OECD 공조)</td>
+                <td>국제적 정상가격원칙 통일성 우선</td>
+              </tr>
+              <tr>
+                <td><strong>BEPS 이후 (2015~)</strong></td>
+                <td>일부 영역 재조명·수용</td>
+                <td>저부가가치 서비스 간소화, CbCR Safe Harbour 도입</td>
+              </tr>
+              <tr>
+                <td><strong>2022년 Pillar 2 도입</strong></td>
+                <td>✅ Pillar 2 Safe Harbours를 CbCR에 일부 수용</td>
+                <td>미국이 Pillar 2와 함께 Safe Harbours를 주장 → OECD 수용</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 멕시코 Maquiladora 사례 (¶4.97)</div>
+            <p>가장 잘 알려진 Safe Harbour 사례 중 하나는 멕시코의 <strong>Maquiladora 제도</strong>입니다. 미국 기업이 멕시코에서 위탁 제조한 완성품을 미국이나 다른 국가에 판매하는 경우, 정상가격 수익으로 다음 중 하나를 적용할 수 있습니다:</p>
+            <p style="text-align:center;font-weight:700;color:var(--purple)"><span class="num-pill">Cost + 6.5%</span> 또는 <span class="num-pill">Cost + 6.9%</span></p>
+            <p>이 제도는 1990년대 이후 미국 다국적 기업의 멕시코 제조활동을 크게 활성화한 대표적 사례로, "신중하게 잘 계획된" Safe Harbour의 가능성을 보여줍니다 (Uribe, 2023).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Safe Harbour의 적용 범위와 영향 <span class="para">¶4.98–¶4.100</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.98은 Safe Harbour 제도의 결정적 한계를 명시합니다.</p>
+          <div class="warn-point">⚠️ <strong>¶4.98의 핵심:</strong> Safe Harbour 규정은 <strong>이를 명시적으로 승인한 국가 이외에 다른 국가를 강제하거나 제한할 수 없습니다.</strong> 즉 A국이 Safe Harbour를 운영하더라도, 그 결과를 B국이 인정해야 하는 의무는 없으며, B국은 여전히 정상가격원칙에 따라 독자적으로 평가할 수 있습니다.</div>
+          <p>Safe Harbour의 혜택과 동시에 고려해야 할 4가지 핵심 문제은 다음과 같습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>차원</th><th>핵심 질문</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>① 정상가격 대치의 합리성</strong></td>
+                <td>고정 기준이 실제 정상가격을 얼마나 잘 대표하는가?</td>
+              </tr>
+              <tr>
+                <td><strong>② 조세회피 위험</strong></td>
+                <td>이중무과세 등 회피 행위에 악용될 가능성은?</td>
+              </tr>
+              <tr>
+                <td><strong>③ 납세 공평성</strong></td>
+                <td>Safe Harbour 적용자와 비적용자 간의 형평성은?</td>
+              </tr>
+              <tr>
+                <td><strong>④ 이중과세 위험</strong></td>
+                <td>일방적 Safe Harbour로 인한 양국 결론 불일치는?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: 정의·종류 -->
+    <section class="card" id="s3">
+      <h2>3. Safe Harbour의 정의와 종류 (E.2) <span class="tag tag-para">¶4.101–¶4.104</span></h2>
+      <p>E.2는 Safe Harbour의 개념적 정의를 다룹니다. Safe Harbour는 단순한 절차상의 편의가 아니라 <strong>정상가격원칙의 일반적 적용에 대한 예외</strong>이며, 따라서 적용 범위·요건을 명확히 한정해야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Safe Harbour의 본질 — 간편성과 납세협력비용 절감 <span class="para">¶4.101–¶4.102</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.101은 Safe Harbour의 본질적 특징인 <strong>간편성(simplicity)</strong>을 강조하며, ¶4.102는 그 결과로 발생하는 <strong>납세협력비용(compliance cost)의 절감</strong>을 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>🎯 간편성 (Simplicity)</h4>
+              <p>Safe Harbour는 복잡한 비교가능거래 검색·기능 분석·이익률 비교 등을 거치지 않고 <strong>미리 정해진 단순한 기준</strong>(예: Cost + 5%)을 그대로 적용할 수 있도록 합니다.</p>
+            </div>
+            <div class="col-box green">
+              <h4>💰 납세협력비용 절감</h4>
+              <p>정상가격산출방법의 적용에는 상당한 분석 비용·전문가 자문료·자료 작성 부담이 발생합니다. Safe Harbour는 이러한 <strong>compliance cost를 대폭 줄임</strong>으로써 특히 중소기업·단순거래에 큰 도움이 됩니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Safe Harbour의 적용상 한계와 다른 제도와의 구별 <span class="para">¶4.103–¶4.104</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.103은 Safe Harbour 지침이 <strong>다른 행정 간소화 제도에 영향을 미치지 않는다</strong>는 점을 명확히 합니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>📄 자료 간편제출·면제</h4>
+              <p>이전가격 자료의 간편제출·면제 제도는 Safe Harbour와 별개의 제도이며, 본 지침의 영향을 받지 않습니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>📋 사전가격승인(APA)</h4>
+              <p>APA는 Safe Harbour와 본질적으로 다른 제도이며, Section F에서 별도로 다룹니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>💵 과소자본세제</h4>
+              <p>과도한 외국채무를 방지하기 위한 thin capitalization 규정도 본 지침의 영향을 받지 않습니다.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>¶4.104의 함의:</strong> 엄밀한 의미의 Safe Harbour 정의에는 해당되지 않지만, 일부 국가는 납세자의 행정상 편의를 위한 다양한 간편 제도를 두고 있습니다. 이러한 제도들도 실무상 Safe Harbour와 유사한 기능을 합니다(예: 한국의 일부 단순 거래 가이드라인, 저부가가치 서비스에 대한 간소화된 마진율 등).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: 3대 혜택 -->
+    <section class="card" id="s4">
+      <h2>4. Safe Harbours의 3대 혜택 (E.3) <span class="tag tag-para">¶4.105–¶4.109</span></h2>
+      <p>E.3은 Safe Harbour가 실무에서 가져다주는 구체적 혜택을 3가지로 정리합니다. 이는 Safe Harbour의 도입 정당성을 뒷받침하는 핵심 논거입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>3대 혜택 한눈에 보기 <span class="para">¶4.105</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Safe Harbour의 3대 혜택은 다음과 같습니다.</p>
+          <div class="three-col">
+            <div class="benefit-card">
+              <span class="badge">E.3.1 ¶4.106–4.107</span>
+              <h4>1. Compliance Relief</h4>
+              <p><strong>납세협력비용 절감.</strong> 정상가격산출방법 적용에 드는 분석·자료 작성·전문가 자문 비용을 대폭 줄입니다.</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge">E.3.2 ¶4.108</span>
+              <h4>2. Certainty</h4>
+              <p><strong>과세 안전성(예측가능성).</strong> Safe Harbour 기준을 따르면 사후 조사·조정 위험이 거의 없어 사업 의사결정의 예측가능성이 높아집니다.</p>
+            </div>
+            <div class="benefit-card">
+              <span class="badge">E.3.3 ¶4.109</span>
+              <h4>3. Administrative Simplicity</h4>
+              <p><strong>행정상 간편성.</strong> 과세관청도 복잡한 분석 없이 조사를 신속히 처리할 수 있어, 자원을 고위험·고가치 사건에 집중할 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Compliance Relief — 이전가격의 과도한 비용 부담 해소 <span class="para">¶4.106–¶4.107</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.106은 이전가격 분석이 본질적으로 <strong>과도한 조세협력비용(disproportionate compliance cost)</strong>을 수반한다는 점을 지적합니다.</p>
+          <div class="practice-note">
+            <div class="pn-label">💼 이전가격 Compliance 비용의 구성</div>
+            <p><strong>① 분석 비용:</strong> 기능·자산·위험 분석, 정상가격산출방법 선정, 비교가능거래 검색·선정·조정</p>
+            <p><strong>② 자료 작성 비용:</strong> Local file, Master file, CbCR 작성 및 매년 갱신</p>
+            <p><strong>③ 전문가 자문료:</strong> 세무·법무·경제 컨설팅, 비교가능회사 데이터베이스 구독료(예: Bureau van Dijk Orbis, S&P Capital IQ)</p>
+            <p><strong>④ 분쟁 대응 비용:</strong> 세무조사·MAP·APA 대응에 따른 추가 자원</p>
+            <p><strong>중소기업·단순거래의 부담:</strong> 거래 규모는 작아도 분석 비용은 거의 동일하게 발생하므로, Safe Harbour의 혜택이 상대적으로 큽니다.</p>
+          </div>
+          <div class="note-point">✅ <strong>¶4.107의 의미:</strong> Safe Harbour를 통한 compliance cost 절감은 단순한 비용 절약이 아니라 <strong>세제의 비례성·합리성</strong>과 연결됩니다. 거래 규모에 비해 과도한 행정 부담은 비례원칙에 반하기 때문입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Certainty & Administrative Simplicity <span class="para">¶4.108–¶4.109</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.108은 <strong>예측가능성(Certainty)</strong>이 사업 의사결정에 미치는 영향을, ¶4.109는 <strong>행정상 간편성</strong>이 과세관청의 자원 활용에 미치는 영향을 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box green">
+              <h4>📊 납세자 측면 (Certainty)</h4>
+              <ul>
+                <li>이전가격 분쟁 위험의 사실상 제거</li>
+                <li>장기 사업 계획·투자 의사결정의 안정성</li>
+                <li>가산세·소송 비용 위험 회피</li>
+                <li>해외 진출 시 진입 장벽 완화</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>🏛️ 과세관청 측면 (Administrative Simplicity)</h4>
+              <ul>
+                <li>저위험·소규모 사건의 신속 처리</li>
+                <li>조사 자원을 <strong>고위험·고가치 사건에 집중</strong></li>
+                <li>전문 인력의 효율적 활용</li>
+                <li>분쟁 발생 감소로 MAP·APA 부담 경감</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>윈-윈(Win-Win)의 가능성:</strong> 잘 설계된 Safe Harbour는 납세자와 과세관청 모두에게 혜택을 가져다줍니다. 이것이 BEPS 이후 Safe Harbour가 다시 주목받게 된 이론적 기반입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: 4대 우려 -->
+    <section class="card" id="s5">
+      <h2>5. Safe Harbours의 4가지 문제점 (E.4) <span class="tag tag-para">¶4.110–¶4.126</span></h2>
+      <p>E.4는 Safe Harbour의 4가지 문제점을 다룹니다. 혜택이 분명함에도 불구하고 OECD가 오랫동안 부정적이었던 이유 — 정상가격원칙과의 충돌, 이중과세, 조세회피, 공평성 침해 — 가 모두 여기에서 다루어집니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>4가지 문제점 한눈에 보기 <span class="para">¶4.110</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.110은 Safe Harbour의 부정적 영향을 4가지로 정리합니다.</p>
+          <div class="three-col">
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">E.4.1</span>
+              <h4>1. 정상가격과 차이</h4>
+              <p>고정 기준이 실제 시장의 정상가격을 정확히 반영하지 못함.</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">E.4.2</span>
+              <h4>2. 이중과세 증가</h4>
+              <p>일방적 Safe Harbour로 인한 양국 결론 불일치 → MAP 부담.</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">E.4.3</span>
+              <h4>3. 조세회피 기회</h4>
+              <p>Safe Harbour의 단순성을 악용한 인위적 거래 구조 가능.</p>
+            </div>
+            <div class="concern-card">
+              <span class="badge" style="background:var(--red)">E.4.4</span>
+              <h4>4. 공평성 침해</h4>
+              <p>Safe Harbour 적용자와 비적용자 간의 과세 불평등.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정상가격원칙과의 차이 (E.4.1) <span class="para">¶4.111–¶4.113</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>모든 거래에 공통적으로 적용되는 단일 기준을 찾는 것이 본질적으로 어렵다는 점을 지적합니다. 모든 거래는 시장·산업·기능·위험·자산이 다르기 때문에 단일 Safe Harbour 기준이 모든 사례에 정확한 예측을 하기 어렵습니다.</p>
+          <div class="warn-point">⚠️ <strong>¶4.113의 비대칭 위험:</strong> Safe Harbour 기준이 실제 정상가격보다 <strong>높은 소득을 요구</strong>하는 경우, 납세자는 Safe Harbour를 선택하지 않을 것입니다. 반대로 <strong>낮은 소득을 요구</strong>하는 경우 모든 납세자가 Safe Harbour를 선택하여 과세관청은 정상보다 낮은 세수를 얻게 됩니다. 이러한 <strong>선택 편향(adverse selection)</strong>이 Safe Harbour의 구조적 약점입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>이중과세·이중무과세 위험 (E.4.2) — 일방 vs 양자·다자 <span class="para">¶4.114–¶4.121</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Safe Harbour가 정상가격과 다른 결과를 가져올 때의 발생하는 구체적인 문제점은 아래와 같습니다.</p>
+          <div class="key-point">💡 <strong>실무 이슈:</strong> 실제로는 <strong>이전가격 자료제출 가산세를 피하고 조사를 회피하기 위해 정상가격을 초과한 과다세금을 납부하는 경우가 있습니다.</strong> 즉 Safe Harbour는 이론적으로 양방향 위험이 있지만, 실무에서는 납세자가 "방어적으로" 과대 납부하는 것입니다.</div>
+          <table class="compare-table">
+            <thead>
+              <tr><th>유형</th><th>특징</th><th>이중과세 위험</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>일방적(Unilateral)</strong></td>
+                <td>한 국가만 Safe Harbour 운영</td>
+                <td style="color:var(--red)"><strong>높음</strong> — 타방국 미인정 시 불가피한 이중과세</td>
+              </tr>
+              <tr>
+                <td><strong>쌍방적(Bilateral)</strong></td>
+                <td>두 국가가 합의에 의해 Safe Harbour 운영</td>
+                <td style="color:var(--orange)"><strong>중간</strong> — 양국 모두 인정하나 제3국 거래 시 위험</td>
+              </tr>
+              <tr>
+                <td><strong>다자적(Multilateral)</strong></td>
+                <td>다수 국가가 협약 기반으로 운영 (예: BEPS Pillar 2 CbCR)</td>
+                <td style="color:var(--green)"><strong>낮음</strong> — 다수 국가가 인정하므로 안정적</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 ¶4.115–4.120의 함의</div>
+            <p><strong>거래 한 당사자만 Safe Harbour 적용:</strong> 한쪽만 Safe Harbour를 사용하면 양국 입장이 서로 일치하지 않아 분쟁 발생합니다.</p>
+            <p><strong>소규모 기업 혜택:</strong> Safe Harbour는 행정 부담이 큰 중소기업에게 특히 유익하지만, 동시에 중소 규모의 거래에서도 이중과세 위험은 동일하게 존재합니다.</p>
+            <p><strong>양자·다자 Safe Harbour 권장:</strong> 일방적 Safe Harbour의 위험을 줄이는 가장 효과적 방법은 체약상대국과의 양자 합의 또는 다자간 협약을 통한 운영입니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>조세회피 가능성 (E.4.3) & 공평성 (E.4.4) <span class="para">¶4.122–¶4.126</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Safe Harbour의 단순성이 <strong>인위적 거래 구조의 도구로 악용</strong>될 수 있다는 점을 지적합니다.</p>
+          <div class="practice-note">
+            <div class="pn-label">💼 Safe Harbour를 통한 조세회피 시나리오 예시</div>
+            <p><strong>① 거래 분리·변형:</strong> 고부가가치 거래를 인위적으로 단순 거래로 재구성하여 Safe Harbour 적용 자격을 얻으려 시도</p>
+            <p><strong>② 기능·위험의 형식적 재배치:</strong> Safe Harbour 적격 거래로 변경하기 위해 실질과 다른 기능·위험 배분</p>
+            <p><strong>③ 이중무과세:</strong> 양국이 모두 Safe Harbour에 따라 낮은 소득을 인정하여 글로벌 차원에서 정상가격보다 낮은 세 부담 발생</p>
+          </div>
+          <p>이러한 조세회피를 방지하기 위한 방법으로 ① <strong>Safe Harbour 적격 요건의 엄격한 정의</strong>, ② <strong>주기적 검토 및 갱신</strong>, ③ <strong>일반 회피방지규정(GAAR)과의 결합</strong>, ④ <strong>BEPS Action 6 등 협약남용 방지 규정</strong>을 제시합니다.</p>
+          <div class="warn-point">⚠️ <strong>공평성 문제:</strong> Safe Harbour는 동일한 거래라도 <strong>적용 여부에 따라 세 부담이 달라지므로 납세자 간 형평성 침해 가능성</strong>이 있습니다. 또한 Safe Harbour의 가용성·요건이 국가별로 다르므로 국제적 일관성도 훼손될 수 있습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6: 권고사항 -->
+    <section class="card" id="s6">
+      <h2>6. OECD 권고사항 (E.5) <span class="tag tag-para">¶4.127–¶4.133</span></h2>
+      <p>E.5는 앞서 다룬 혜택과 문제점를 종합하여 OECD가 권고하는 Safe Harbour 활용 원칙을 제시합니다. 이는 Safe Harbour의 <strong>절대적 금지도 무제한 허용도 아닌</strong>, 신중하고 제한적인 활용을 권장하는 균형 잡힌 접근입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>OECD 권고사항 요약 <span class="para">¶4.127–¶4.133</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>Safe Harbour 활용에 관한 OECD의 핵심 권고사항은 아래와 같습니다.</p>
+          <div class="two-col">
+            <div class="col-box green">
+              <h4>✅ 적극 활용 권장 영역</h4>
+              <ul>
+                <li><strong>소규모 납세자(SMEs):</strong> Compliance 부담이 거래 규모에 비해 과도한 경우</li>
+                <li><strong>단순 거래:</strong> 저부가가치 서비스, 단순 제조·유통 거래</li>
+                <li><strong>저위험 거래:</strong> 정형화된 routine 거래</li>
+                <li><strong>양자·다자 합의 기반:</strong> 체약상대국과의 협의로 도입</li>
+              </ul>
+            </div>
+            <div class="col-box red">
+              <h4>🚫 활용 회피 권장 영역</h4>
+              <ul>
+                <li><strong>복잡한 거래:</strong> 무형자산, 사업재편(business restructuring)</li>
+                <li><strong>고부가가치 거래:</strong> 핵심 가치창출 활동 관련</li>
+                <li><strong>일방적 도입:</strong> 양국 협의 없는 단독 운영</li>
+                <li><strong>조세회피 위험 영역:</strong> 인위적 거래 구조화 가능성이 높은 경우</li>
+              </ul>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 OECD 권고의 실무적 시사점</div>
+            <p><strong>① 효율성과 공평성의 균형:</strong> Safe Harbour는 효율성·단순성의 장점이 있지만, 형평성·과세권 충돌·국제적 조화의 위험을 동반합니다. 신중한 도입과 정기적 검토가 필요합니다.</p>
+            <p><strong>② 양자·다자간 협의 우선:</strong> 일방적 Safe Harbour의 한계를 극복하기 위해 체약상대국과의 양자 또는 다자간 합의 형태가 권장됩니다. BEPS Pillar 2의 CbCR Safe Harbour가 다자간 활용의 좋은 예입니다.</p>
+            <p><strong>③ 적용 범위의 명확화:</strong> Safe Harbour 적격 거래·기업의 범위와 요건을 명확히 정의하여 회피 행위와 형평성 침해를 방지해야 합니다.</p>
+            <p><strong>④ 정기적 검토:</strong> Safe Harbour 기준(예: Cost + X%)이 시장 변화에 따라 정상가격과 괴리되지 않도록 정기적으로 재검토해야 합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국의 Safe Harbour 관련 제도 현황 <span class="para">한국 실무</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>한국은 OECD의 신중한 입장과 보조를 맞추어 <strong>명시적 Safe Harbour 제도를 광범위하게 두지는 않고</strong> 있지만, 유사 기능을 하는 여러 제도가 운영되고 있습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>제도</th><th>유사 기능</th><th>근거</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>이전가격 신고 특례</strong></td>
+                <td>일정 규모 이하 거래에 대한 간이 신고</td>
+                <td>국조법 시행령</td>
+              </tr>
+              <tr>
+                <td><strong>저부가가치 그룹내 용역</strong></td>
+                <td>OECD Chapter VII D 단순 마진율(5%) 적용</td>
+                <td>OECD 가이드라인 (한국도 실무상 수용)</td>
+              </tr>
+              <tr>
+                <td><strong>APA</strong></td>
+                <td>사전 합의로 사후 분쟁 위험 제거</td>
+                <td>국조법 제14조~제19조</td>
+              </tr>
+              <tr>
+                <td><strong>중소기업 면제·간소화</strong></td>
+                <td>Master file·CbCR 의무 면제 (일정 규모 이하)</td>
+                <td>국조법 제13조</td>
+              </tr>
+              <tr>
+                <td><strong>CbCR Safe Harbour</strong></td>
+                <td>Pillar 2 Transitional CbCR Safe Harbour</td>
+                <td>국조법 (Pillar 2 도입) 및 OECD 모델 규칙</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-point">✅ <strong>BEPS Pillar 2의 영향:</strong> 2022년 이후 한국은 Pillar 2(글로벌 최저한세) 도입과 함께 Transitional CbCR Safe Harbour를 일부 수용하였습니다. 이는 한국이 OECD의 변화하는 Safe Harbour 정책 흐름에 능동적으로 대응하고 있음을 보여줍니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M4-5 핵심 정리 — Section D·E 5가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>키워드</th><th>의미</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>동시세무조사</strong></td><td>OECD 모델 제26조 정보교환 기반 양국 동시 조사 → 분쟁 사전 예방</td><td>4.79–4.94</td></tr>
+              <tr><td><strong>Safe Harbour의 변천</strong></td><td>1995년 부정 → BEPS 이후 일부 수용 (Pillar 2 CbCR)</td><td>4.95–4.97</td></tr>
+              <tr><td><strong>3대 혜택</strong></td><td>Compliance Relief · Certainty · Administrative Simplicity</td><td>4.105–4.109</td></tr>
+              <tr><td><strong>4가지 문제점</strong></td><td>정상가격 차이 · 이중과세 · 조세회피 · 공평성</td><td>4.110–4.126</td></tr>
+              <tr><td><strong>양자·다자 권장</strong></td><td>일방적 Safe Harbour의 한계 → 양국·다자 합의 우선</td><td>4.127–4.133</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. <strong>동시세무조사(Simultaneous Tax Examinations)</strong>의 법적 근거와 주요 특징으로 가장 적절한 것은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) OECD 모델 제9조 — 분쟁 사후 해결 절차</label>
+          <label><input type="radio" name="q1" value="b"> (B) OECD 모델 제26조(정보교환) — 두 국가가 동시에 동일 다국적 기업 거래에 대해 협력적 조사를 실시하여 분쟁의 사전 예방</label>
+          <label><input type="radio" name="q1" value="c"> (C) OECD 모델 제25조 — MAP의 별칭</label>
+          <label><input type="radio" name="q1" value="d"> (D) OECD 모델 제5조 — 고정사업장 결정</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. 멕시코의 <strong>Maquiladora Safe Harbour</strong>가 적용하는 정상가격 기준으로 가장 적절한 것은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) Cost plus 0% — 원가만 인정</label>
+          <label><input type="radio" name="q2" value="b"> (B) Cost plus 6.5% 또는 6.9% — 미국 기업의 멕시코 제조활동에 광범위하게 적용</label>
+          <label><input type="radio" name="q2" value="c"> (C) 매출액 대비 20% 마진율</label>
+          <label><input type="radio" name="q2" value="d"> (D) TNMM 풀 검색에 따른 사분위 중간값</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. ¶4.105의 <strong>Safe Harbours의 3대 혜택</strong>이 아닌 것은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) Compliance Relief (납세협력비용 절감)</label>
+          <label><input type="radio" name="q3" value="b"> (B) Certainty (예측가능성)</label>
+          <label><input type="radio" name="q3" value="c"> (C) Administrative Simplicity (행정상 간편성)</label>
+          <label><input type="radio" name="q3" value="d"> (D) 조세 회피 방지 (Anti-avoidance)</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. ¶4.98에 따른 Safe Harbour의 <strong>국제적 적용 한계</strong>로 가장 정확한 것은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 모든 OECD 회원국이 자동으로 인정해야 한다</label>
+          <label><input type="radio" name="q4" value="b"> (B) Safe Harbour 규정은 이를 명시적으로 승인한 국가 이외의 다른 국가를 강제하거나 제한할 수 없다 — 따라서 일방적 Safe Harbour는 양국 결론 불일치로 이중과세 위험을 야기할 수 있다</label>
+          <label><input type="radio" name="q4" value="c"> (C) UN 협약을 통해 자동적으로 모든 국가에 적용된다</label>
+          <label><input type="radio" name="q4" value="d"> (D) Safe Harbour는 국내법상의 문제로 국제법과 무관하다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶4.127–4.133의 <strong>OECD 권고사항</strong>에 따라 Safe Harbour 활용이 가장 권장되지 않는 영역은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 소규모 납세자(SMEs)의 단순 거래</label>
+          <label><input type="radio" name="q5" value="b"> (B) 저부가가치 그룹내 용역</label>
+          <label><input type="radio" name="q5" value="c"> (C) 무형자산 이전·사업재편 등 복잡하고 고부가가치 거래 (양자·다자 합의 없는 일방적 적용 시 특히 부적합)</label>
+          <label><input type="radio" name="q5" value="d"> (D) 양자·다자간 협의를 통한 정형화된 거래</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사의 해외 관계회사 소재국과 한국 간 동시세무조사 가능성(조세조약상 정보교환 조항, 국조법 제50조)을 사전에 평가하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">동시세무조사가 실시되는 경우, 양국에 일관된 입장과 자료를 제공할 수 있도록 그룹 차원의 조율 체계를 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">자사의 거래·소재국이 활용 가능한 Safe Harbour 제도(예: 멕시코 Maquiladora, OECD 저부가가치 서비스 5% 마진 등)를 파악하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">Safe Harbour 적용 시 일방적 적용으로 인한 양국 결론 불일치 위험(¶4.98)을 평가하고, 양자·다자 협의 가능성을 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">Safe Harbour 적용이 정상가격보다 높은 소득을 요구하는지 평가하여, 방어적 과대 납부 위험(¶4.114)을 모니터링하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">Safe Harbour를 인위적으로 활용하기 위한 거래 분리·변형이 조세회피 방지 규정(GAAR, BEPS Action 6 등) 위반 위험을 야기하지 않는지 점검하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">중소기업·단순거래에 적용되는 한국의 신고·문서화 간소화 제도(국조법 시행령 등)를 활용 가능한지 점검하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">BEPS Pillar 2의 Transitional CbCR Safe Harbour 적용 가능성과 그 적격 요건을 자사 그룹에 대해 평가하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">복잡·고부가가치 거래(무형자산, 사업재편 등)에는 Safe Harbour 적용을 회피하고 정상적 정상가격산출방법·APA 활용을 우선 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">Safe Harbour 적용 기준(예: Cost + X%)이 시장 변화로 인해 정상가격과 괴리되지 않는지 정기적으로 재검토하고 있습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M4-4_MAP운영_2차처분.html">← M4-4 MAP 운영·2차처분</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter IV 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M4-6는 다음 단계에서 작성됩니다.');return false;">M4-6 APA & 중재 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','s6','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'b',q2:'b',q3:'d',q4:'b',q5:'c'};
+const feedbacks={
+  q1:{
+    a:'❌ 제9조는 대응조정 규정이며, 동시세무조사의 직접 근거가 아닙니다.',
+    b:'✅ 정답! 동시세무조사는 OECD 모델 제26조(정보교환)에 근거하여 두 개 이상의 국가가 합의에 따라 동일 다국적 기업 그룹의 거래에 대해 같은 기간에 협력적으로 조사를 실시하는 절차입니다. 1992년 OECD가 표준 협정안을 발표하였고, 한국은 국조법 제50조로 시행하고 있습니다. 분쟁 사전 예방이 핵심 목적입니다.',
+    c:'❌ 제25조는 MAP의 근거이며 동시세무조사와 별개입니다.',
+    d:'❌ 제5조는 고정사업장(PE) 결정 규정으로 동시세무조사와 무관합니다.'
+  },
+  q2:{
+    a:'❌ Maquiladora는 원가만 인정하는 방식이 아닙니다.',
+    b:'✅ 정답! ¶4.97에 따르면 멕시코 Maquiladora 제도는 정상가격 수익으로 Cost plus 6.5% 또는 6.9%를 적용할 수 있도록 하며, 1990년대 이후 미국 다국적 기업의 멕시코 제조활동을 크게 활성화한 대표적 Safe Harbour 사례입니다 (Uribe, 2023).',
+    c:'❌ 매출액 기준 마진율이 아니라 원가 기준입니다.',
+    d:'❌ Maquiladora는 사분위 검색을 거치지 않는 고정 기준입니다.'
+  },
+  q3:{
+    a:'❌ Compliance Relief는 E.3.1에 해당하는 3대 혜택 중 하나입니다.',
+    b:'❌ Certainty(예측가능성)는 E.3.2에 해당하는 3대 혜택 중 하나입니다.',
+    c:'❌ Administrative Simplicity는 E.3.3에 해당하는 3대 혜택 중 하나입니다.',
+    d:'✅ 정답! 조세회피 방지는 ¶4.105의 3대 혜택에 포함되지 않습니다. 오히려 Safe Harbour는 조세회피의 기회를 제공할 수 있다는 우려(E.4.3, ¶4.122–4.125)가 4대 문제점 중 하나로 다뤄집니다.'
+  },
+  q4:{
+    a:'❌ 자동 인정 의무는 없습니다. 이것이 ¶4.98이 명확히 한 한계입니다.',
+    b:'✅ 정답! ¶4.98은 Safe Harbour 규정이 이를 명시적으로 승인한 국가 이외의 다른 국가를 강제·제한할 수 없음을 명확히 합니다. 따라서 일방적 Safe Harbour는 타방국이 인정하지 않으면 양국 결론 불일치로 이중과세 위험을 야기하며, 이것이 OECD가 양자·다자 합의 기반 Safe Harbour를 권장하는 이유입니다.',
+    c:'❌ UN 협약을 통한 자동 적용 메커니즘은 존재하지 않습니다.',
+    d:'❌ Safe Harbour는 국제적 거래에 적용되므로 국제법과 밀접히 관련됩니다.'
+  },
+  q5:{
+    a:'❌ 소규모 납세자의 단순 거래는 OECD가 Safe Harbour 활용을 권장하는 영역입니다 (¶4.127–4.133).',
+    b:'❌ 저부가가치 그룹내 용역은 OECD가 간소화(simplified approach)를 권장하는 영역입니다 (Chapter VII D 5% 마진율).',
+    c:'✅ 정답! ¶4.127–4.133의 OECD 권고에 따르면 복잡·고부가가치 거래(무형자산, 사업재편 등)에는 Safe Harbour 적용이 부적합하며, 특히 양자·다자 합의 없는 일방적 적용은 회피해야 합니다. 이러한 거래에는 정상적 정상가격산출방법 또는 APA 활용이 우선됩니다.',
+    d:'❌ 양자·다자간 협의를 통한 정형화된 거래는 OECD가 가장 권장하는 Safe Harbour 활용 형태입니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M4-5를 완료하셨습니다. 다음은 M4-6 APA & 중재입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

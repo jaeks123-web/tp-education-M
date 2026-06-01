@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M6-6: 무형자산 거래 유형과 보완 지침 개관</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#b45309;--purple-light:#fef3c7;--purple-mid:#d97706;--purple-dark:#78350f;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --blue:#1d4ed8;--blue-light:#eff6ff;
+  --teal:#0f766e;--teal-light:#f0fdfa;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.blue-point{background:var(--blue-light);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e3a8a;line-height:1.75}
+.teal-point{background:var(--teal-light);border-left:4px solid var(--teal);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#134e4a;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#fde68a}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0; table-layout:fixed;}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #fcd34d;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.col-box.blue{border-color:#93c5fd;background:#eff6ff}
+.col-box.blue h4{color:var(--blue)}
+.col-box.teal{border-color:#5eead4;background:#f0fdfa}
+.col-box.teal h4{color:var(--teal)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+/* ── 거래유형 분류도 ── */
+.tx-type-tree{margin:.8rem 0}
+.tx-root{background:var(--purple);color:#fff;border-radius:8px;padding:.6rem 1rem;font-weight:700;font-size:.9rem;text-align:center;margin-bottom:.5rem}
+.tx-branch-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.5rem}
+.tx-branch{background:var(--purple-light);border:2px solid var(--purple);border-radius:8px;padding:.6rem .9rem}
+.tx-branch h5{font-size:.83rem;font-weight:700;color:var(--purple-dark);margin-bottom:.3rem}
+.tx-branch ul{padding-left:1rem;font-size:.78rem;color:var(--text2);margin:0}
+.tx-branch li{margin-bottom:.15rem}
+/* ── 거래 예시 카드 ── */
+.tx-example{background:#fff;border:1.5px solid var(--gray-border);border-radius:8px;padding:.75rem .9rem;margin:.5rem 0}
+.tx-example .tx-label{font-size:.75rem;font-weight:700;background:var(--purple-light);color:var(--purple);padding:2px 8px;border-radius:99px;margin-bottom:.35rem;display:inline-block}
+.tx-example h5{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.tx-example p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.55}
+/* ── 약물 사례 시각화 ── */
+.pharma-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin:.8rem 0}
+.pharma-card{border-radius:8px;padding:.7rem .8rem;text-align:center;border:2px solid var(--purple);background:var(--purple-light)}
+.pharma-card .p-icon{font-size:1.4rem;margin-bottom:.3rem}
+.pharma-card h5{font-size:.8rem;font-weight:700;color:var(--purple-dark);margin-bottom:.2rem}
+.pharma-card p{font-size:.72rem;color:var(--text2);margin:0;line-height:1.4}
+.pharma-plus{display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:var(--purple)}
+/* ── Section D 구조 카드 ── */
+.d-section-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.8rem 0}
+.d-card{border-radius:8px;padding:.75rem .9rem;border:1.5px solid var(--gray-border);background:#fff}
+.d-card .d-num{display:inline-block;background:var(--purple);color:#fff;font-size:.75rem;font-weight:800;padding:2px 10px;border-radius:99px;margin-bottom:.35rem}
+.d-card h5{font-size:.87rem;font-weight:700;color:var(--purple-dark);margin-bottom:.25rem}
+.d-card p{font-size:.8rem;color:var(--text2);margin:0;line-height:1.5}
+/* ── 옵션 비교 ── */
+.option-flow{display:flex;align-items:stretch;gap:.5rem;margin:.8rem 0}
+.option-box{flex:1;border-radius:8px;padding:.8rem .9rem;border:1.5px solid var(--purple);background:var(--purple-light)}
+.option-box h5{font-size:.86rem;font-weight:700;color:var(--purple-dark);margin-bottom:.3rem}
+.option-box p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.55}
+.option-vs{display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:var(--gray);flex-shrink:0;padding:0 .2rem}
+/* ── 사례 박스 ── */
+.case-box{background:#fffbeb;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#78350f;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+/* ── 종합 요약 ── */
+.summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.summary-box h4{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--purple-dark)}
+.summary-box ul{padding-left:1.3rem;font-size:.9rem;line-height:1.75;color:var(--text2)}
+.summary-box li{margin-bottom:.3rem;color:var(--text2)}
+.summary-box li strong{color:var(--purple-dark)}
+/* ── 퀴즈 ── */
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+/* ── 체크리스트 ── */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+/* ── 하단 네비 ── */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.tx-branch-row,.d-section-grid,.pharma-grid{grid-template-columns:1fr}
+  .option-flow{flex-direction:column}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VI Intangibles › M6-6 (6/8)</div>
+  <h1>M6-6. 무형자산 거래 유형과 보완 지침 개관</h1>
+  <div class="sub">Section C·D 도입 — 양도·라이선스·복합거래·상품판매 연계, 현실적 선택가능조건, 보완지침 D.1~D.5 구조 &nbsp;|&nbsp; ¶6.86 – ¶6.114 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 무형자산 거래의 2대 유형 (Section C)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 무형자산 권리의 양도 (C.1.1)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 복수 무형자산의 결합 양도 (C.1.2)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 사업거래와 결합된 무형자산 이전 (C.1.3)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 상품·서비스 판매에 연계된 무형자산 사용 (C.2)</button>
+      <button class="nav-item" onclick="goTo('s6')">6. 보완 지침 개관 (Section D)</button>
+      <button class="nav-item" onclick="goTo('s7')">7. 무형자산 거래의 일반 원칙 — 현실적 선택가능조건 (D.1)</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>Section C의 무형자산 거래 2대 유형(①권리 양도·라이선스, ②상품·서비스 판매 연계)을 구분하고, 각각의 이전가격 분석 접근법의 차이를 설명할 수 있다 (¶6.86–6.87)</span></li>
+        <li><span class="obj-num">2</span><span>C.1.1(¶6.88–6.91)에서 전부양도·라이선스의 구분, 거래 명칭이 아닌 실질에 따른 정상가격 산출 원칙, 비독점적 유한 라이선스의 특수성을 이해한다</span></li>
+        <li><span class="obj-num">3</span><span>C.1.2(¶6.92–6.96)에서 복수 무형자산이 결합 양도될 때의 분석 방법 — 제약사 사례(특허+정부승인+상표)를 통해 무형자산 간 상호작용과 상대적 기여도 분석의 중요성을 파악한다</span></li>
+        <li><span class="obj-num">4</span><span>C.1.3(¶6.97–6.103)에서 무형자산이 영업자산·서비스와 결합되어 거래될 때의 분석 방법(패키지 계약, 프랜차이즈, 통합·개별 측정)을 이해한다</span></li>
+        <li><span class="obj-num">5</span><span>Section D 보완 지침의 5개 소절(D.1~D.5) 구조를 파악하고, D.1의 핵심인 현실적 선택가능조건("Options Realistically Available") 원칙(¶6.111–6.114)을 이전가격 분석에 적용할 수 있다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: Section C 개관 -->
+    <section class="card" id="s1">
+      <h2>1. 무형자산 거래의 2대 유형 (Section C) <span class="tag tag-para">¶6.86–6.87</span></h2>
+      <p>Section C는 무형자산이 관여된 거래를 구체적으로 분류하고, 각 유형에 따른 이전가격 분석 방법을 제시합니다. ¶6.86·6.87은 전체 구조를 제시하는 도입부로, 이후 C.1과 C.2로 나뉩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 거래의 2대 유형 분류</span>
+          <span class="para">¶6.86–6.87</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.86은 무형자산 거래의 이전가격 분석에서 먼저 해당 무형자산의 특성을 파악해야 함을 강조하고, ¶6.87은 무형자산 거래를 2가지 유형으로 분류합니다.</p>
+
+          <div class="tx-type-tree">
+            <div class="tx-root">Section C: 무형자산 관련 거래 유형 (¶6.87)</div>
+            <div class="tx-branch-row">
+              <div class="tx-branch">
+                <h5>① C.1 — 무형자산 또는 권리의 양도·라이선스</h5>
+                <ul>
+                  <li>C.1.1: 단일 무형자산 권리 이전 (¶6.88–6.91)</li>
+                  <li>C.1.2: 복수 무형자산 결합 이전 (¶6.92–6.96)</li>
+                  <li>C.1.3: 사업거래와 결합된 이전 (¶6.97–6.103)</li>
+                </ul>
+              </div>
+              <div class="tx-branch">
+                <h5>② C.2 — 상품 판매·서비스 수행에 연계된 무형자산 사용</h5>
+                <ul>
+                  <li>무형자산 자체의 이전 없이</li>
+                  <li>상품 제조·판매 또는 서비스 제공과 함께</li>
+                  <li>무형자산이 내재(embedded)된 경우 (¶6.104–6.106)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="key-point">💡 <strong>두 유형의 핵심 차이:</strong> C.1은 무형자산 자체(또는 그 사용권)가 이전되는 거래이고, C.2는 무형자산이 상품·서비스 안에 내재되어 이전 없이 활용되는 거래입니다. 이 구분은 어떤 이전가격 방법을 적용할지, 어떤 비교가능성 요소를 분석할지를 결정하는 출발점입니다.</div>
+
+          <table class="compare-table">
+  <thead>
+    <tr>
+      <th>구분</th>
+      <th>C.1 — 권리 양도·라이선스</th>
+      <th>C.2 — 상품·서비스 연계 사용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>무형자산 이전</strong></td>
+      <td>있음 (전부양도 또는 라이선스)</td>
+      <td>없음 (상품·서비스에 내재)</td>
+    </tr>
+    <tr>
+      <td><strong>대가 형태</strong></td>
+      <td>매매대금, 로열티, 라이선스료</td>
+      <td>상품 가격 또는 서비스 대가에 내포</td>
+    </tr>
+    <tr>
+      <td><strong>주요 분석 쟁점</strong></td>
+      <td>양도/라이선스 조건, 로열티율의 적정성</td>
+      <td>무형자산 가치가 거래 가격에 적절히 반영됐는지</td>
+    </tr>
+    <tr>
+      <td><strong>적용 사례</strong></td>
+      <td>특허 라이선스, 상표권 양도, 노하우 이전</td>
+      <td>특허 내재 제품 판매, 브랜드 소프트웨어 서비스</td>
+    </tr>
+  </tbody>
+</table>
+
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: C.1.1 단일 무형자산 권리 양도 -->
+    <section class="card" id="s2">
+      <h2>2. 무형자산 권리의 양도 (C.1.1) <span class="tag tag-para">¶6.88–6.91</span></h2>
+      <p>C.1.1은 단일 무형자산 또는 그 권리가 이전되는 거래를 다룹니다. 전부양도와 라이선스의 구분, 거래 <em>명칭</em>이 아닌 <em>실질</em>에 따른 처리, 그리고 라이선스 조건의 다양한 형태를 분석합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>전부양도와 라이선스(일부양도)의 구분</span>
+          <span class="para">¶6.88</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산 권리 이전의 두 가지 기본 형태를 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>전부양도 (Full Transfer)</h4>
+              <p>무형자산의 모든 권리를 영구적으로 이전하는 거래입니다.</p>
+              <ul>
+                <li>특허권의 완전 매각</li>
+                <li>상표권의 완전 이전</li>
+                <li>영구적·배타적 라이선스 (실질적 전부양도와 동일)</li>
+              </ul>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--orange)">→ 일시금(lump-sum) 방식 대가가 일반적</p>
+            </div>
+            <div class="col-box">
+              <h4>라이선스 (일부양도, License)</h4>
+              <p>일정 기간·지역·용도로 한정하여 사용권만 이전하는 거래입니다.</p>
+              <ul>
+                <li>특정 기간 한정 특허 사용권</li>
+                <li>특정 지역 한정 상표 라이선스</li>
+                <li>비독점적·유한 라이선스</li>
+              </ul>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--purple)">→ 로열티(royalty) 방식 대가가 일반적</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>거래 명칭은 정상가격 산출과 무관: 실질 우선</span>
+          <span class="para">¶6.89</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.89는 이전가격 분석에서 매우 중요한 원칙을 제시합니다 — <strong>거래의 표면적 명칭은 정상가격 산출과 관계없다</strong>는 것입니다.</p>
+          <div class="key-point">💡 <strong>¶6.89 핵심 원칙:</strong> 특허권을 "양도"한 거래와 특허를 "영구적으로 사용하게 하는" 라이선스 거래는 경제적 실질이 동일하다면, <strong>동일한 방법으로 정상가격을 산출해야 합니다.</strong> 거래의 법률적 명칭이 이전가격 분석을 결정하지 않습니다.</div>
+          <div class="two-col">
+            <div class="col-box orange">
+              <h4>❌ 명칭 기준 (잘못된 접근)</h4>
+              <p>"이건 '라이선스'라고 부르므로 로열티를 기준으로 한다" → 거래의 실질보다 명칭을 우선하는 오류</p>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 실질 기준 (올바른 접근)</h4>
+              <p>거래의 경제적 실질(이전되는 권리의 범위, 기간, 배타성 등)을 분석하여 그에 맞는 방법으로 정상가격 산출</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 적용 예시</div>
+            <p>A법인이 B법인에게 특허를 "영구적·배타적 라이선스" 방식으로 이전. 사실상 전부양도와 동일한 효과. → 명칭이 '라이선스'여도 실질이 전부양도에 가깝다면 전부양도에 상당하는 일시금 또는 그에 상응하는 대가 기준으로 정상가격을 산출해야 합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>라이선스의 특수 조건과 비독점적 유한 라이선스</span>
+          <span class="para">¶6.90–6.91</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>라이선스 거래의 다양한 조건과 이전가격 분석상 주의점을 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>¶6.90 — 개발 제한이 있는 라이선스</h4>
+              <p>라이선스 계약에 <strong>새로운 무형자산 개발에 대한 제한</strong>이 포함된 경우, 이 제한 자체가 실시권자(licensee)의 사업 역량에 영향을 미치므로 비교가능성 분석에서 중요한 요소가 됩니다.</p>
+              <p style="margin-top:.4rem;font-size:.82rem">개발 제한이 있는 라이선스 ≠ 제한 없는 라이선스 → 로열티율 차이 발생 가능</p>
+            </div>
+            <div class="col-box blue">
+              <h4>¶6.91 — 비독점적 유한 라이선스</h4>
+              <p>비독점적(non-exclusive)이고 기간이 한정된(time-limited) 라이선스가 실제 내용과 계약 내용이 다른 경우 <strong>실제 내용을 기준</strong>으로 분석합니다.</p>
+              <p style="margin-top:.4rem;font-size:.82rem">Chapter VI Annex I Example 18 참조</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>비교가능성 핵심 요소:</strong> 라이선스의 ①독점성(exclusive/non-exclusive), ②지역 범위, ③기간, ④개발 제한 여부는 모두 로열티율의 비교가능성에 영향을 미치는 핵심 요소입니다. 단순히 산업 평균 로열티율을 적용하는 것은 정상가격으로 인정되지 않습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: C.1.2 복수 무형자산 결합 양도 -->
+    <section class="card" id="s3">
+      <h2>3. 복수 무형자산의 결합 양도 (C.1.2) <span class="tag tag-para">¶6.92–6.96</span></h2>
+      <p>C.1.2는 여러 무형자산이 단독이 아닌 <strong>결합(bundle)</strong>되어 이전되는 경우를 다룹니다. 무형자산들이 결합될 때 시너지 효과로 개별 합산보다 더 큰 가치가 창출될 수 있습니다. 제약산업 사례가 핵심 예시입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>복수 무형자산의 단독·혼합 거래</span>
+          <span class="para">¶6.92–6.93</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산은 단독으로 거래되기도 하지만, 여러 무형자산이 혼합되어(in combination) 거래되는 경우가 많습니다. ¶6.93은 복수 무형자산이 혼합되어 거래될 때의 분석 지침을 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>단독 무형자산 거래</h4>
+              <p>하나의 특허권, 하나의 상표권 등 단일 무형자산만 이전되는 경우</p>
+              <ul>
+                <li>분석 대상이 명확</li>
+                <li>비교가능거래 탐색이 상대적으로 쉬움</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>복수 무형자산 결합 거래</h4>
+              <p>특허 + 노하우 + 상표 등 여러 무형자산이 묶음으로 이전되는 경우</p>
+              <ul>
+                <li>각 무형자산의 개별 가치 파악 필요</li>
+                <li>시너지 효과로 개별 합산보다 높은 가치 가능</li>
+                <li>기여도 분석이 복잡해짐</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>제약산업 사례: 특허 + 정부승인 + 상표의 결합</span>
+          <span class="para">¶6.94</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.94는 복수 무형자산 결합 거래의 대표적 사례로 제약 회사를 제시합니다. 이 사례는 무형자산 간 상호작용이 개별 가치를 어떻게 변화시키는지를 생생하게 보여줍니다.</p>
+
+          <p style="margin-bottom:.7rem">의약품은 통상 3가지 이상의 무형자산이 결합됩니다.</p>
+          <div class="pharma-grid">
+            <div class="pharma-card">
+              <div class="p-icon">🔬</div>
+              <h5>특허<br>(Patent)</h5>
+              <p>활성 의약 성분(API)을 보호하는 하나 이상의 특허</p>
+            </div>
+            <div class="pharma-plus">+</div>
+            <div class="pharma-card">
+              <div class="p-icon">🏥</div>
+              <h5>정부 승인<br>(Regulatory Approval)</h5>
+              <p>임상시험·정부기관 승인을 통한 시장 진입 허가</p>
+            </div>
+            <div class="pharma-plus">+</div>
+            <div class="pharma-card">
+              <div class="p-icon">®️</div>
+              <h5>상표<br>(Trademark)</h5>
+              <p>제품에 부착되어 브랜드 인지도를 형성하는 상표</p>
+            </div>
+          </div>
+
+          <div class="key-point" style="margin-top:.8rem">💡 <strong>무형자산 간 상호작용의 핵심:</strong>
+            <ul style="margin-top:.4rem;padding-left:1.2rem">
+              <li>상표만 있고 특허·정부승인 없는 경우 → 시장 출시 불가, 경쟁 배제 불가 → <strong>상표의 가치가 극히 제한적</strong></li>
+              <li>정부승인 획득 후에는 특허의 가치가 <strong>훨씬 더 크게</strong> 상승</li>
+              <li>3가지가 결합될 때 개별 합산 이상의 시너지 가치 창출</li>
+            </ul>
+          </div>
+
+          <div class="warn-point">⚠️ <strong>이전가격 분석 함의:</strong> 무형자산이 결합 양도될 때는 ①각 무형자산의 상호작용, ②어떤 당사자가 어떤 무형자산의 DEMPE 기능을 수행했는지, ③각 관계회사의 상대적 기여도를 종합적으로 고려해야 합니다. 단순히 로열티율 하나로 모든 무형자산의 기여를 포괄하는 접근은 오류를 유발합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>개별 거래 검토의 중요성과 영업권·평판의 처리</span>
+          <span class="para">¶6.95–6.96</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="two-col">
+            <div class="col-box">
+              <h4>¶6.95 — 개별 무형자산 거래 검토</h4>
+              <p>복수 무형자산이 결합 거래되더라도 <strong>각 무형자산을 이전가격 목적에서 개별적으로 검토</strong>하는 것이 중요합니다. Chapter VI Annex I Example 20 참조.</p>
+              <p style="margin-top:.4rem;font-size:.82rem">예: 특허와 상표를 패키지로 이전할 때도 각각의 기여도와 정상가격을 별도로 검토해야 합니다.</p>
+            </div>
+            <div class="col-box blue">
+              <h4>¶6.96 — 영업권·회사 평판의 처리</h4>
+              <p>영업권(goodwill)이나 회사 평판(going concern value)으로부터 상표권이나 상표를 <strong>분리하여 정상가격을 산출할 수 있습니다.</strong></p>
+              <p style="margin-top:.4rem;font-size:.82rem">단, 일반적으로 제3자 간에도 이러한 무형자산을 개별 분리하지 않는 경향이 있음을 감안해야 합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 포인트 — 영업권의 이전가격 처리</div>
+            <p>영업권은 식별 가능한 개별 무형자산과 달리 독립적으로 분리·이전이 어렵습니다. 그러나 사업 재구조화(Business Restructuring, Chapter IX) 맥락에서 기능과 위험이 이전될 때 영업권도 함께 이전될 수 있으며, 이 경우 영업권의 가치를 별도로 평가해야 하는 쟁점이 발생합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: C.1.3 사업거래와 결합된 양도 -->
+    <section class="card" id="s4">
+      <h2>4. 사업거래와 결합된 무형자산 이전 (C.1.3) <span class="tag tag-para">¶6.97–6.103</span></h2>
+      <p>C.1.3은 무형자산이 영업자산(business assets) 또는 서비스 거래와 <strong>결합</strong>되어 이전되는 경우를 다룹니다. 단순 IP 이전이 아닌 복합 거래 구조에서의 이전가격 분석 원칙입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>서면계약과 실제 수행 활동의 분석 원칙</span>
+          <span class="para">¶6.97</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.97은 서면계약과 실제 수행 활동을 모두 분석해야 함을 강조합니다.</p>
+          <div class="key-point">💡 <strong>¶6.97 원칙:</strong> 복합 거래에서는 서면계약에 나타난 내용과 당사자들이 실제로 수행한 활동 모두를 분석해야 합니다. 계약서에 특정 방식으로 대가 지급이 규정되어 있어도, 실제 거래의 경제적 실질에 따라 정상가격을 결정합니다. 이는 ¶6.73(실질 우선 원칙)의 연장입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>영업자산·서비스와의 결합, 패키지 계약, 프랜차이즈</span>
+          <span class="para">¶6.98–6.100</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산이 영업자산·서비스와 결합되는 대표적인 3가지 상황입니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>¶6.98 — 영업자산·서비스 결합</h4>
+              <p>무형자산이 영업자산(유형자산, 재고 등) 또는 서비스 거래와 함께 이전되는 경우</p>
+              <p style="margin-top:.3rem;font-size:.82rem">각 구성 요소(무형자산, 영업자산, 서비스)를 분리하여 정상가격을 분석하거나, 전체를 통합하여 분석할 수 있습니다.</p>
+            </div>
+            <div class="col-box orange">
+              <h4>¶6.99 — 패키지 계약</h4>
+              <p>여러 종류의 이전(무형자산 + 서비스 + 자산)이 단일 계약으로 묶인 경우</p>
+              <p style="margin-top:.3rem;font-size:.82rem">패키지 전체의 가격이 합리적인지, 그리고 각 구성 요소의 가격이 개별적으로도 정상가격 범위 내에 있는지 확인이 필요합니다.</p>
+            </div>
+            <div class="col-box blue">
+              <h4>¶6.100 — 프랜차이즈</h4>
+              <p>프랜차이즈 거래는 상표 + 노하우 + 운영 지원 서비스 + 품질 관리 등이 결합된 복합 거래의 전형적 사례</p>
+              <p style="margin-top:.3rem;font-size:.82rem">각 구성 요소별 정상가격을 별도로 분석하거나 전체를 통합 분석합니다.</p>
+            </div>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 프랜차이즈 사례 — 패스트푸드 체인</div>
+            글로벌 패스트푸드 체인이 한국 자회사에게: ①브랜드 상표 라이선스 + ②레시피·노하우 이전 + ③운영 매뉴얼 서비스 + ④품질 검사 서비스를 패키지로 제공하고 단일 로열티율로 대가를 받는 경우. → 각 구성 요소의 기여도를 분석하여 패키지 로열티율이 전체적으로 정상가격 범위 내에 있는지 검토해야 하는 경우가 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>서비스·무형자산 혼합, 방법 강제 불필요, 통합·개별 측정</span>
+          <span class="para">¶6.101–6.103</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="three-col">
+            <div class="col-box">
+              <h4>¶6.101 — 서비스·무형자산 혼합</h4>
+              <p>서비스와 무형자산 거래가 혼합된 경우, 둘을 분리하여 각각의 이전가격을 분석하거나 통합하여 분석하는 방법 중 사안에 맞는 방법을 선택합니다.</p>
+            </div>
+            <div class="col-box green">
+              <h4>¶6.102 — 특정방법 강제 적용</h4>
+              <p>복합 거래라고 해서 특정 방법(가치평가법, 이익분할법 등)을 반드시 적용해야 하는 것은 아닙니다. 가장 신뢰할 수 있는 결과를 제공하는 방법을 선택하면 됩니다.</p>
+            </div>
+            <div class="col-box">
+              <h4>¶6.103 — 통합 또는 개별 측정</h4>
+              <p>복합 거래를 통합하여 하나의 거래로 분석할지, 아니면 각 구성 요소를 개별적으로 분석할지는 사안의 사실관계에 따라 결정합니다 (¶3.9~3.12, 3.37 참조).</p>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>유연한 접근 원칙:</strong> OECD 지침은 복합 거래의 처리에서 특정 방법을 강제하지 않습니다. 분석자는 거래의 경제적 실질, 정보의 가용성, 각 방법의 신뢰도를 종합적으로 고려하여 가장 적합한 접근방법을 선택해야 합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: C.2 상품·서비스 판매 연계 -->
+    <section class="card" id="s5">
+      <h2>5. 상품·서비스 판매에 연계된 무형자산 사용 (C.2) <span class="tag tag-para">¶6.104–6.106</span></h2>
+      <p>C.2는 무형자산 자체가 이전되지 않고, 무형자산이 <strong>상품 제조·판매나 서비스 수행에 내재(embedded)</strong>되어 활용되는 경우를 다룹니다. 이 경우 별도의 무형자산 대가가 아닌 상품·서비스 가격 속에 무형자산 가치가 반영됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>양도 없이 무형자산이 상품에 내재된 경우: 자동차 사례</span>
+          <span class="para">¶6.104–6.105</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.104는 무형자산 또는 권리의 양도거래 없이 무형자산이 활용되는 상황을 제시하고, ¶6.105는 자동차 제조업체 사례로 이를 구체화합니다.</p>
+          <div class="case-box">
+            <div class="case-label">💼 ¶6.105 — 자동차 제조업체 사례</div>
+            <strong>상황:</strong> A자동차 제조업체가 가치 있는 독점 특허를 사용하여 자동차를 제조하고, 이를 B관계회사에게 판매합니다. 해당 특허는 자동차의 가치 형성에 중대한 영향을 미칩니다.<br><br>
+            <strong>핵심 포인트:</strong>
+            <ul style="margin-top:.5rem;padding-left:1.2rem;font-size:.88rem">
+              <li>B관계회사는 자동차를 구매하지만 <strong>특허에 대한 어떠한 권리도 획득하지 않음</strong></li>
+              <li>특허는 제조 과정에서 사용되며 자동차 가치 형성에 영향 → 그러나 특허는 이전되지 않음</li>
+              <li>특허의 기여 가치는 A가 B에게 자동차를 판매하는 <strong>거래 가격에 반영</strong>되어야 함</li>
+            </ul>
+          </div>
+          <div class="key-point">💡 <strong>C.2의 핵심 분석 과제:</strong> 무형자산이 상품에 내재된 경우, 상품 거래의 정상가격을 분석할 때 <strong>무형자산의 기여 가치가 이미 가격에 충분히 반영되어 있는지</strong>를 확인해야 합니다. 별도의 로열티 지급 없이 제조원가에만 기반한 가격 설정이 무형자산 가치를 충분히 반영하지 못할 수 있습니다.</div>
+
+          <table class="compare-table">
+            <thead>
+              <tr><th>구분</th><th>C.1 — 무형자산 별도 이전</th><th>C.2 — 상품에 내재</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>이전 형태</strong></td>
+                <td>특허 라이선스 계약 별도 체결</td>
+                <td>특허 내재된 자동차 자체를 판매</td>
+              </tr>
+              <tr>
+                <td><strong>대가 형태</strong></td>
+                <td>로열티(매출의 X%) 별도 지급</td>
+                <td>자동차 판매 가격에 내포</td>
+              </tr>
+              <tr>
+                <td><strong>분석 방법</strong></td>
+                <td>로열티율의 정상가격 범위 검토</td>
+                <td>자동차 판매 가격이 특허 기여 가치를 충분히 반영하는지 검토</td>
+              </tr>
+              <tr>
+                <td><strong>비교가능거래</strong></td>
+                <td>유사 특허 라이선스 거래</td>
+                <td>동등 기술력의 자동차 판매 거래</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>데이터·소프트웨어 서비스 제공 사례</span>
+          <span class="para">¶6.106</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.106은 C.2의 두 번째 사례로, 데이터·소프트웨어 회사가 지리 데이터 및 분석 소프트웨어를 관계회사에 서비스로 제공하는 경우를 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>상황</h4>
+              <p>모회사가 지리 데이터 및 분석 소프트웨어(무형자산)를 개발 또는 구매하고, 이를 관계회사에게 서비스 형태로 제공합니다.</p>
+            </div>
+            <div class="col-box orange">
+              <h4>이전가격 쟁점</h4>
+              <p>모회사가 관계회사에게 서비스를 제공할 때, 그 서비스에 <strong>일정한 무형자산을 제공하는 것인지 여부</strong>를 고려해야 합니다. 단순 서비스 대가인지, 무형자산 사용의 대가가 포함된 서비스인지를 구분해야 합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 디지털 경제 맥락에서의 중요성</div>
+            <p>디지털 플랫폼, 데이터 분석 서비스, AI 기반 서비스 등이 확산되면서 ¶6.106과 같은 상황이 더욱 일반화되고 있습니다. 서비스 대가에 무형자산 사용 가치가 적절히 반영되었는지 분석하는 것이 디지털 경제 이전가격의 핵심 쟁점 중 하나입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6: Section D 보완 지침 개관 -->
+    <section class="card" id="s6">
+      <h2>6. 보완 지침 개관 (Section D) <span class="tag tag-para">¶6.107–6.109</span></h2>
+      <p>Section D는 무형자산 거래의 정상가격 조건을 결정하기 위한 <strong>보완 지침(Supplemental Guidance)</strong>을 제공합니다. ¶6.107~6.109는 Section D의 도입부로, 이후 D.1~D.5의 구조를 안내합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>무형자산 파악 이후 분석 단계</span>
+          <span class="para">¶6.107–6.108</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="two-col">
+            <div class="col-box">
+              <h4>¶6.107 — 파악 이후 기여도 측정</h4>
+              <p>무형자산을 파악한 이후에는 무형자산 거래와 관련된 법인 및 그 법인이 제공하는 <strong>기여도(contribution)를 측정</strong>합니다. ¶3.4(기여도 분석)를 참조하여 각 당사자의 상대적 가치 창출을 평가합니다.</p>
+            </div>
+            <div class="col-box orange">
+              <h4>¶6.108 — 정상가격원칙 적용이 어려운 경우</h4>
+              <p>무형자산 거래의 특성상 정상가격원칙 적용이 어려운 경우가 있습니다. 이때 Section D의 보완 지침이 추가적인 분석 틀을 제공합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Section D의 5개 소절 구조</span>
+          <span class="para">¶6.109</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.109는 Section D가 5개 소절로 구성되며, 각 소절이 어떤 유형의 거래에 대한 보완 지침을 제공하는지 안내합니다.</p>
+
+          <div class="d-section-grid">
+            <div class="d-card">
+              <span class="d-num">D.1</span>
+              <h5>일반 원칙 (¶6.110–6.114)</h5>
+              <p>무형자산 관련 모든 거래에 공통으로 적용되는 보완 지침. 현실적 선택가능조건 원칙이 핵심. <em>이 모듈(M6-6)에서 다룸.</em></p>
+            </div>
+            <div class="d-card">
+              <span class="d-num">D.2</span>
+              <h5>무형자산 이전 거래 특화 (¶6.115–6.180)</h5>
+              <p>양도·라이선스 거래에 특화된 비교가능성 분석, 위험 비교, 이전가격 방법 선택, 가치평가 기법 등. <em>M6-7에서 다룸.</em></p>
+            </div>
+            <div class="d-card">
+              <span class="d-num">D.3</span>
+              <h5>HTVI 이전 — 가치 불확실 (¶6.181–6.188)</h5>
+              <p>이전 시점에 가치가 고도로 불확실한 무형자산(HTVI) 이전에 대한 보완 지침. <em>M6-8에서 다룸.</em></p>
+            </div>
+            <div class="d-card">
+              <span class="d-num">D.4</span>
+              <h5>HTVI 가격결정 접근법 (¶6.189–6.200)</h5>
+              <p>HTVI에 대한 구체적 가격결정 접근법. 사후 정보 활용, 세무당국의 조정 권한 등. <em>M6-8에서 다룸.</em></p>
+            </div>
+          </div>
+          <div class="d-card" style="margin-top:.6rem">
+            <span class="d-num">D.5</span>
+            <h5>상품·서비스 연계 사용 특화 (¶6.201–6.212)</h5>
+            <p>C.2(무형자산이 직접 이전되지 않고 상품·서비스 판매에 연계되어 사용)에 특화된 보완 지침. <em>M6-8에서 다룸.</em></p>
+          </div>
+
+          <div class="blue-point" style="margin-top:.8rem">🔷 <strong>M6-6·M6-7·M6-8의 연결:</strong> 이 모듈(M6-6)에서는 D.1(일반 원칙)을 다루고, M6-7에서는 D.2(양도·라이선스 특화 지침)를, M6-8에서는 D.3~D.5(HTVI 및 상품·서비스 연계)를 다룹니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 7: D.1 현실적 선택가능조건 -->
+    <section class="card" id="s7">
+      <h2>7. 무형자산 거래의 일반 원칙 — 현실적 선택가능조건 (D.1) <span class="tag tag-para">¶6.110–6.114</span></h2>
+      <p>D.1은 무형자산 관련 모든 거래에 공통으로 적용되는 보완 지침입니다. <strong>"Options Realistically Available(현실적으로 선택가능한 조건)"</strong> 원칙이 핵심으로, 이는 Chapter I에서 도입된 개념이 무형자산 맥락에서 구체화된 것입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>비교가능성 분석 원칙: Chapter I·III 기준의 무형자산 적용</span>
+          <span class="para">¶6.110</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.110은 무형자산 거래의 비교가능성 분석도 Chapter I·III의 일반 원칙에 따라 수행해야 함을 확인합니다.</p>
+          <div class="key-point">💡 <strong>¶6.110 원칙:</strong> 무형자산 관련 특수관계거래의 비교가능성 분석은 Chapter I(정상가격원칙)과 Chapter III(비교가능성 분석)에서 제시된 원칙 및 절차를 <strong>예외 없이</strong> 따라야 합니다. 무형자산이 포함된 거래라고 해서 일반 원칙의 적용을 면제받지 않습니다.</div>
+          <ul style="margin-top:.5rem;font-size:.91rem">
+            <li>거래의 실질적 내용, 기능 분석, 위험 분담 등 비교가능성 기준 동일 적용</li>
+            <li>비교가능성 5요소(재화·용역의 특성, 기능분석, 계약조건, 경제적 환경, 사업전략) 적용</li>
+            <li>다만, 무형자산의 고유성으로 인해 비교가능거래 탐색이 더 어렵고 조정이 더 복잡할 수 있음</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>현실적으로 선택가능한 조건 (Options Realistically Available)</span>
+          <span class="para">¶6.111</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.111은 무형자산 거래에서 <strong>"현실적으로 선택가능한 조건"</strong> 원칙의 중요성을 강조합니다. 이 원칙은 거래의 정상가격 범위를 결정하는 데 있어 핵심적인 역할을 합니다.</p>
+
+          <div class="option-flow">
+            <div class="option-box">
+              <h5>🏢 양도인(이전자) 관점</h5>
+              <p>독립 기업이라면 이 거래 조건보다 더 유리한 다른 현실적 선택지(예: 제3자에게 더 높은 가격으로 판매, 직접 활용)가 있었는가? 있다면 해당 특수관계거래 조건은 정상가격 이하.</p>
+            </div>
+            <div class="option-vs">↔</div>
+            <div class="option-box">
+              <h5>🏢 양수인(취득자) 관점</h5>
+              <p>독립 기업이라면 이 거래 조건보다 더 유리한 다른 현실적 선택지(예: 제3자에게서 더 저렴하게 구매, 자체 개발)가 있었는가? 있다면 해당 특수관계거래 조건은 정상가격 초과.</p>
+            </div>
+          </div>
+
+          <div class="key-point">💡 <strong>정상가격의 범위:</strong> 양도인이 수용 가능한 최저가격(더 좋은 선택지가 없는 수준)과 양수인이 수용 가능한 최고가격(더 좋은 선택지가 없는 수준) 사이의 범위가 정상가격 범위입니다. 독립 기업이라면 이 범위 내에서 협상을 통해 가격을 결정했을 것입니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>거래당사자 관점, 차이가 있는 경우·없는 경우의 처리</span>
+          <span class="para">¶6.112–6.114</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <div class="three-col">
+            <div class="col-box">
+              <h4>¶6.112 — 거래당사자의 관점</h4>
+              <p>현실적 선택가능조건 분석은 <strong>양 당사자 모두의 관점</strong>에서 수행합니다. 한쪽만의 관점으로는 완전한 분석이 불가능합니다.</p>
+              <p style="margin-top:.3rem;font-size:.82rem">독립 기업은 자신의 이익에 부합하지 않는 거래를 하지 않으므로, 양측 모두 자신의 현실적 선택지를 고려하여 거래 조건을 결정합니다.</p>
+            </div>
+            <div class="col-box red">
+              <h4>¶6.113 — 차이가 있는 경우</h4>
+              <p>특수관계거래 가격이 현실적으로 선택가능한 조건과 <strong>차이가 있는 경우</strong>, 독립기업 간 거래에서 합의됐을 가격으로 조정합니다.</p>
+              <p style="margin-top:.3rem;font-size:.82rem">예: 자체 개발비용이 라이선스료보다 낮다면, 독립 기업 양수인은 라이선스 계약을 맺지 않았을 것 → 라이선스료 상한이 자체 개발비용 수준임</p>
+            </div>
+            <div class="col-box green">
+              <h4>¶6.114 — 차이가 없는 경우</h4>
+              <p>특수관계거래 가격이 현실적으로 선택가능한 조건과 <strong>동일한 경우</strong>, 정상가격 원칙을 충족하는 것으로 볼 수 있습니다.</p>
+              <p style="margin-top:.3rem;font-size:.82rem">독립 기업이 선택했을 조건과 동일하다는 것은 해당 거래가 정상가격 범위 내에 있음을 시사합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 현실적 선택가능조건 분석의 실무 적용</div>
+            <p><strong>라이선스 상한 결정:</strong> 양수인 자회사가 자체 개발하는 비용이 연간 50억 원이라면, 독립기업으로서 50억 원 이상의 로열티는 지급하지 않았을 것 → 로열티 상한: 50억 원</p>
+            <p style="margin-top:.4rem"><strong>라이선스 하한 결정:</strong> 양도인 모회사가 제3자에게 동일 라이선스를 70억 원에 제공할 수 있다면, 독립기업으로서 70억 원 이하로는 관계회사에도 제공하지 않았을 것 → 로열티 하한: 70억 원</p>
+            <p style="margin-top:.4rem">이 사례에서 하한(70억) > 상한(50억)이면 거래 자체가 성립하지 않거나 조건 재협상이 필요합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 종합 요약 -->
+      <div class="summary-box" style="margin-top:1.2rem">
+        <h4>📋 M6-6 핵심 정리 — 거래 유형과 보완 지침 개관</h4>
+        <ul>
+          <li><strong>2대 거래 유형(¶6.87):</strong> ①무형자산 권리 양도·라이선스(C.1) vs. ②상품·서비스에 내재된 사용(C.2) — 분석 방법의 출발점</li>
+          <li><strong>실질 우선(¶6.89):</strong> 거래 명칭("양도"/"라이선스")이 아닌 경제적 실질로 정상가격을 결정</li>
+          <li><strong>복수 무형자산 시너지(¶6.94):</strong> 결합 양도 시 개별 합산 이상의 가치 창출 가능 — 제약사 특허+정부승인+상표 사례</li>
+          <li><strong>복합거래 유연성(¶6.102):</strong> 패키지·프랜차이즈 등 복합거래에서 특정 방법 강제 불필요, 가장 신뢰성 높은 방법 선택</li>
+          <li><strong>현실적 선택가능조건(¶6.111–6.114):</strong> 양 당사자가 독립기업으로서 선택했을 조건의 범위가 정상가격 범위를 결정</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 확인 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="margin-bottom:1.2rem;font-size:.93rem;color:var(--text2)">M6-6의 핵심 개념을 확인합니다. 5문항, 80점(4문항) 이상이면 합격입니다.</p>
+
+      <div class="q-block">
+        <div class="q-text">Q1. ¶6.87에 따라 Section C가 분류하는 무형자산 거래의 2대 유형에 해당하지 않는 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q1" value="a"> a) 무형자산 또는 권리의 양도·라이선스 거래</label>
+          <label><input type="radio" name="q1" value="b"> b) 상품 판매·서비스 수행에 연계된 무형자산 사용 거래</label>
+          <label><input type="radio" name="q1" value="c"> c) 무형자산 연구개발 비용 분담 약정(CCA) 거래</label>
+          <label><input type="radio" name="q1" value="d"> d) 위 a)와 b)가 2대 유형이므로 c)가 해당하지 않음</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q2. ¶6.89에 따르면, 이전가격 목적에서 정상가격을 산출할 때 특허권 "양도" 거래와 특허를 "영구적으로 사용하게 하는" 라이선스 거래의 관계는?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q2" value="a"> a) 명칭이 다르므로 반드시 다른 방법으로 정상가격을 산출해야 한다</label>
+          <label><input type="radio" name="q2" value="b"> b) 경제적 실질이 동일하다면 동일한 방법으로 정상가격을 산출한다</label>
+          <label><input type="radio" name="q2" value="c"> c) "양도"는 일시금 기준, "라이선스"는 로열티 기준으로 각각 산출해야 한다</label>
+          <label><input type="radio" name="q2" value="d"> d) 라이선스 거래는 항상 양도 거래보다 낮은 가격이어야 한다</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q3. ¶6.94의 제약산업 사례에서 특허+정부승인+상표가 결합될 때의 특성으로 가장 올바른 설명은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q3" value="a"> a) 결합 시 각 무형자산의 가치는 단독일 때와 동일하다</label>
+          <label><input type="radio" name="q3" value="b"> b) 상표만 있어도 특허·정부승인 없이 시장에서 경쟁 우위를 충분히 확보할 수 있다</label>
+          <label><input type="radio" name="q3" value="c"> c) 무형자산들이 결합될 때 개별 합산 이상의 시너지 가치가 창출될 수 있으며, 상호작용을 고려한 분석이 필요하다</label>
+          <label><input type="radio" name="q3" value="d"> d) 이전가격 분석에서 복수 무형자산은 항상 하나로 통합하여 분석해야 한다</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q4. ¶6.105의 자동차 제조업체 사례에서, 특허 내재 자동차를 관계회사에 판매할 때 이전가격 분석의 핵심 과제는?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q4" value="a"> a) 자동차 판매 가격과는 별도로 특허 로열티를 추가 징수해야 한다</label>
+          <label><input type="radio" name="q4" value="b"> b) 특허는 이전되지 않으므로 이전가격 분석에서 특허 가치를 무시해도 된다</label>
+          <label><input type="radio" name="q4" value="c"> c) 자동차 판매 가격에 특허의 기여 가치가 충분히 반영되어 있는지 확인한다</label>
+          <label><input type="radio" name="q4" value="d"> d) 구매 관계회사가 특허권을 취득하지 않으면 거래 자체가 이전가격 규제를 받지 않는다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">Q5. ¶6.111의 "현실적으로 선택가능한 조건" 원칙에 관한 설명으로 가장 올바른 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q5" value="a"> a) 이 원칙은 무형자산 양도인(이전자)의 관점에서만 분석한다</label>
+          <label><input type="radio" name="q5" value="b"> b) 독립기업이 현실적으로 선택했을 조건의 범위가 정상가격 범위를 결정하며, 양 당사자 모두의 관점에서 분석한다</label>
+          <label><input type="radio" name="q5" value="c"> c) 현실적 선택지가 있는지 여부는 이전가격 분석에서 고려할 필요가 없다</label>
+          <label><input type="radio" name="q5" value="d"> d) 양수인이 자체 개발 비용이 없다면 어떤 금액의 로열티도 정상가격으로 인정된다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="qBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreVal"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <p style="margin-bottom:1rem;font-size:.92rem;color:var(--text2)">무형자산 거래 유형 분석 및 보완 지침 적용 시 확인 항목입니다.</p>
+      <ul class="checklist">
+        <li>
+          <input type="checkbox" id="c1">
+          <label for="c1">분석 대상 무형자산 거래가 C.1(권리 양도·라이선스)인지 C.2(상품·서비스에 내재된 사용)인지 먼저 구분하였습니까? (¶6.87)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c2">
+          <label for="c2">거래의 법률적 명칭("양도"/"라이선스")에 의존하지 않고, 이전되는 권리의 범위·기간·배타성 등 경제적 실질을 분석하여 정상가격 산출 방법을 결정하였습니까? (¶6.89)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c3">
+          <label for="c3">라이선스 거래의 비교가능성 분석 시 ①독점성, ②지역 범위, ③기간, ④개발 제한 여부 등 핵심 조건을 비교가능거래와 대조하였습니까? (¶6.90–6.91)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c4">
+          <label for="c4">복수 무형자산이 결합 양도되는 경우, 각 무형자산 간 상호작용(시너지)과 각 관계회사의 상대적 기여도를 별도로 분석하였습니까? (¶6.92–6.94)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c5">
+          <label for="c5">영업권·회사 평판을 상표권과 분리하여 별도의 정상가격을 산출할 필요가 있는지 검토하였습니까? (¶6.96)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c6">
+          <label for="c6">패키지 계약·프랜차이즈 등 복합 거래에서 서면계약과 실제 수행 활동이 일치하는지 확인하고, 각 구성 요소의 이전가격을 검토하였습니까? (¶6.97–6.100)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c7">
+          <label for="c7">C.2 거래(상품·서비스에 무형자산 내재)에서 상품·서비스 가격에 무형자산의 기여 가치가 충분히 반영되어 있는지 분석하였습니까? (¶6.104–6.106)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c8">
+          <label for="c8">특수관계거래의 정상가격 분석 시 양도인과 양수인 양측의 "현실적으로 선택가능한 조건"을 모두 검토하여 정상가격 범위를 결정하였습니까? (¶6.111–6.112)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c9">
+          <label for="c9">양수인이 자체 개발 또는 제3자에게서 취득하는 비용을 산정하여 로열티 상한을 결정하였습니까? (¶6.113)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c10">
+          <label for="c10">M6-7(D.2 이전 거래 특화 지침)·M6-8(D.3~D.5 HTVI 및 상품·서비스 연계)에서 더 구체적인 보완 지침이 적용될 필요가 있는지 확인하였습니까? (¶6.109)</label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a href="M6-5_DEMPE_사례적용.html" class="btn-nav">← M6-5 DEMPE 사례 적용</a>
+      <a href="#" class="btn-nav secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">📋 목차로</a>
+      <a href="M6-7_양도_비교가능성_방법론.html" class="btn-nav">M6-7 양도·비교가능성·방법론 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.classList.contains('open');
+  btn.classList.toggle('open',!isOpen);
+  body.classList.toggle('open',!isOpen);
+  if(!isOpen&&!btn.classList.contains('viewed')){
+    btn.classList.add('viewed');
+    updateProgress();
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('accTotal').textContent=document.querySelectorAll('.acc-header').length;
+  updateProgress();
+});
+let quizCorrect=0;
+function updateProgress(){
+  const total=parseInt(document.getElementById('accTotal').textContent)||1;
+  const done=document.querySelectorAll('.acc-header.viewed').length;
+  document.getElementById('accDone').textContent=done;
+  const pct=Math.round((done/total*0.6+quizCorrect/5*0.4)*100);
+  document.getElementById('pctDisp').textContent=pct+'%';
+  document.getElementById('topBar').style.width=pct+'%';
+}
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+const answers={q1:'c',q2:'b',q3:'c',q4:'c',q5:'b'};
+const feedbacks={
+  q1:{
+    a:'❌ 무형자산 또는 권리의 양도·라이선스 거래는 ¶6.87의 2대 유형 중 하나(C.1)입니다.',
+    b:'❌ 상품 판매·서비스 수행에 연계된 무형자산 사용은 ¶6.87의 2대 유형 중 하나(C.2)입니다.',
+    c:'✅ 정답입니다! ¶6.87은 Section C의 2대 유형을 ①무형자산 권리 양도·라이선스(C.1)와 ②상품·서비스 연계 사용(C.2)으로 분류합니다. CCA(비용분담약정)는 Chapter VIII에서 별도로 다루는 거래 유형입니다.',
+    d:'✅ 정답입니다! (c와 d 중에서 c가 더 직접적인 정답이지만, d도 맞는 방향입니다.)'
+  },
+  q2:{
+    a:'❌ ¶6.89는 거래의 표면적 명칭이 정상가격 산출과 무관하다고 명시합니다. 명칭이 달라도 실질이 같으면 동일한 방법을 적용합니다.',
+    b:'✅ 정답입니다! ¶6.89의 핵심 원칙은 "거래의 표면적 명칭은 정상가격 산출과 관계없다"입니다. 특허를 "양도"한 거래와 "영구적으로 사용하게 하는" 라이선스 거래는 경제적 실질이 동일하다면 동일한 방법으로 정상가격을 산출합니다.',
+    c:'❌ 명칭이 아닌 경제적 실질에 따라 방법을 결정합니다. "라이선스"라고 해서 반드시 로열티 기준만 적용하는 것은 아닙니다.',
+    d:'❌ 가격의 높낮이는 거래의 실질, 조건, 기간 등에 따라 결정되며, 명칭에 따라 자동으로 결정되지 않습니다.'
+  },
+  q3:{
+    a:'❌ ¶6.94는 무형자산이 결합될 때 개별 합산 이상의 시너지 가치가 창출될 수 있다고 합니다. 결합 시와 단독 시의 가치는 다릅니다.',
+    b:'❌ ¶6.94는 "특허와 정부 승인 없이 상표만 있는 경우 제한된 가치만 가진다"고 명시합니다. 상표 단독으로는 충분한 경쟁 우위를 확보할 수 없습니다.',
+    c:'✅ 정답입니다! ¶6.94의 핵심은 무형자산들이 결합될 때 개별 합산 이상의 시너지가 창출될 수 있다는 것입니다. 따라서 각 무형자산의 상호작용과 어떤 당사자가 어떤 DEMPE 기능을 수행했는지를 고려한 종합 분석이 필요합니다.',
+    d:'❌ ¶6.95는 오히려 복수 무형자산도 이전가격 목적에서 개별적으로 검토하는 것이 중요하다고 합니다. 항상 통합 분석을 강제하지 않습니다.'
+  },
+  q4:{
+    a:'❌ 자동차 판매 가격이 특허 기여 가치를 이미 반영하고 있다면 별도 로열티가 필요 없습니다. ¶6.105는 별도 로열티 징수를 요구하지 않습니다.',
+    b:'❌ 특허는 이전되지 않아도 자동차의 가치 형성에 중대한 영향을 미치므로, 이전가격 분석에서 반드시 고려해야 합니다.',
+    c:'✅ 정답입니다! ¶6.105의 핵심은 특허가 직접 이전되지 않아도 자동차 판매 가격에 특허의 기여 가치가 충분히 반영되어야 한다는 것입니다. 단순 제조원가 기준 가격 설정은 무형자산 가치를 과소 반영할 수 있습니다.',
+    d:'❌ 특허가 이전되지 않더라도 특허 내재 상품의 거래는 이전가격 규제 대상입니다. 무형자산의 기여 가치가 거래 가격에 영향을 미치기 때문입니다.'
+  },
+  q5:{
+    a:'❌ ¶6.112는 현실적 선택가능조건 분석을 양 당사자(양도인과 양수인) 모두의 관점에서 수행해야 한다고 합니다.',
+    b:'✅ 정답입니다! ¶6.111–6.112의 핵심은 ①독립기업이 현실적으로 선택했을 조건의 범위가 정상가격 범위를 결정하고, ②이 분석은 양 당사자 모두의 관점에서 수행해야 한다는 것입니다.',
+    c:'❌ 현실적 선택가능조건은 정상가격 범위를 결정하는 핵심 요소입니다. 이를 무시하면 정상가격 원칙에 부합하지 않는 분석이 됩니다.',
+    d:'❌ 양수인의 자체 개발 비용이 없어도, 제3자로부터의 취득 비용, 포기하는 사업 기회 등 다른 현실적 선택지를 고려해야 합니다. 어떤 금액도 무조건 인정되지는 않습니다.'
+  }
+};
+function gradeQuiz(){
+  let correct=0;
+  ['q1','q2','q3','q4','q5'].forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    const fb=document.getElementById(`fb${i+1}`);
+    if(!sel){fb.style.display='block';fb.className='q-feedback wrong';fb.textContent='선택하지 않았습니다.';return;}
+    const v=sel.value;
+    const isC=(v===answers[q]);
+    if(isC) correct++;
+    fb.style.display='block';
+    fb.className='q-feedback '+(isC?'correct':'wrong');
+    fb.textContent=feedbacks[q][v]||'';
+  });
+  quizCorrect=correct;
+  document.getElementById('quizDone').textContent=correct;
+  const sb=document.getElementById('scoreBox');
+  sb.style.display='block';
+  document.getElementById('scoreVal').textContent=correct*20+'점';
+  document.getElementById('scoreMsg').textContent=correct>=4
+    ?'🎉 합격! 무형자산 거래 유형과 보완 지침의 핵심 원칙을 잘 이해하고 있습니다.'
+    :`아코디언을 다시 검토하고 재도전해 보세요. (${correct}/5 정답)`;
+  document.getElementById('qBtn').disabled=true;
+  updateProgress();
+}
+</script>
+</body>
+</html>

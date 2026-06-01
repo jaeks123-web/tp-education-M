@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M6-5: DEMPE 원칙의 사례 적용</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#b45309;--purple-light:#fef3c7;--purple-mid:#d97706;--purple-dark:#78350f;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --blue:#1d4ed8;--blue-light:#eff6ff;
+  --teal:#0f766e;--teal-light:#f0fdfa;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.blue-point{background:var(--blue-light);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e3a8a;line-height:1.75}
+.teal-point{background:var(--teal-light);border-left:4px solid var(--teal);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#134e4a;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#fde68a}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #fcd34d;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.col-box.blue{border-color:#93c5fd;background:#eff6ff}
+.col-box.blue h4{color:var(--blue)}
+.col-box.teal{border-color:#5eead4;background:#f0fdfa}
+.col-box.teal h4{color:var(--teal)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+/* ── DEMPE 흐름도 ── */
+.dempe-flow{display:flex;align-items:center;gap:.3rem;margin:.8rem 0;flex-wrap:wrap}
+.dempe-box{background:var(--purple-light);border:2px solid var(--purple);border-radius:8px;padding:.5rem .8rem;text-align:center;flex:1;min-width:80px}
+.dempe-box .d-letter{font-size:1.3rem;font-weight:900;color:var(--purple);line-height:1}
+.dempe-box .d-word{font-size:.65rem;color:var(--purple-dark);font-weight:600}
+.dempe-arrow{font-size:1.1rem;color:var(--gray);flex-shrink:0}
+/* ── 분석 흐름도 ── */
+.flow-box{display:flex;flex-direction:column;gap:.5rem;margin:.8rem 0}
+.flow-item{display:flex;gap:.8rem;align-items:flex-start}
+.flow-num{background:var(--purple);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.flow-content h4{font-size:.9rem;font-weight:700;color:var(--purple);margin-bottom:.2rem}
+.flow-content p{font-size:.85rem;color:var(--text2);margin:0;line-height:1.65}
+/* ── 사례 비교 ── */
+.case-compare{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.case-card{border-radius:10px;padding:1rem;border:2px solid var(--gray-border)}
+.case-card.no{border-color:#fca5a5;background:#fef2f2}
+.case-card.yes{border-color:#86efac;background:#f0fdf4}
+.case-card .cc-badge{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:.5rem}
+.case-card.no .cc-badge{background:#fecaca;color:#991b1b}
+.case-card.yes .cc-badge{background:#bbf7d0;color:#166534}
+.case-card h5{font-size:.9rem;font-weight:700;margin-bottom:.4rem}
+.case-card.no h5{color:var(--red)}
+.case-card.yes h5{color:var(--green)}
+.case-card p,.case-card ul{font-size:.83rem;color:var(--text2);line-height:1.55}
+.case-card ul{padding-left:1.1rem;margin:.3rem 0 0}
+/* ── 사례 박스 ── */
+.case-box{background:#fffbeb;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#78350f;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+/* ── 명칭 사용료 분류 ── */
+.name-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:.8rem 0}
+.name-table th{background:var(--purple-dark);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.name-table td{padding:.6rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.name-table tr:last-child td{border:none}
+.name-table tr:nth-child(even) td{background:var(--gray-light)}
+.name-table .badge-no{display:inline-block;background:#fecaca;color:#991b1b;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.name-table .badge-yes{display:inline-block;background:#bbf7d0;color:#166534;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+.name-table .badge-cond{display:inline-block;background:#fed7aa;color:#9a3412;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px}
+/* ── 종합 요약 ── */
+.summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.summary-box h4{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--purple-dark)}
+.summary-box ul{padding-left:1.3rem;font-size:.9rem;line-height:1.75;color:var(--text2)}
+.summary-box li{margin-bottom:.3rem;color:var(--text2)}
+.summary-box li strong{color:var(--purple-dark)}
+/* ── 퀴즈 ── */
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+/* ── 체크리스트 ── */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+/* ── 하단 네비게이션 ── */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.case-compare{grid-template-columns:1fr}
+  .dempe-flow{gap:.2rem}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VI Intangibles › M6-5 (5/8)</div>
+  <h1>M6-5. DEMPE 원칙의 사례 적용</h1>
+  <div class="sub">Section B.3·B.4 — 특수관계거래 파악, DEMPE 실제 적용(마케팅 무형자산·R&D·제조기능·그룹명칭 사용료) &nbsp;|&nbsp; ¶6.73 – ¶6.85 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 특수관계거래 파악과 정상가격 결정 (B.3)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. DEMPE 원칙 적용 개관 (B.4)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 마케팅 무형자산의 개발·개선 (B.4.1)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 연구·개발 및 공정개선 약정 (B.4.2)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 그룹명칭·상표 사용에 대한 대가 (B.4.3)</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>B.3의 특수관계거래 파악 원칙 — 계약 내용과 실제 거래사실이 다를 경우 실질에 따르는 원칙(¶6.73)을 이해하고, 정상가격 산출의 적용 방법(¶6.74)을 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>B.4 서론(¶6.75)에서 DEMPE 활동을 파악하는 2가지 핵심 요소(기능의 본질·대가의 종류와 금액)를 이해하고, 이를 제3자 거래와 비교하는 방법을 파악한다</span></li>
+        <li><span class="obj-num">3</span><span>B.4.1(¶6.76–6.78)에서 마케팅 무형자산의 창출 여부를 판단하는 기준 — 단순 도매활동와 무형자산 창출 활동의 구분 — 을 이해하고 The White Paper Lilly 판례의 의미를 파악한다</span></li>
+        <li><span class="obj-num">4</span><span>B.4.2(¶6.79–6.80)에서 R&D 기능을 관계회사가 수행하는 경우와 제조기능의 처리 방법을 이해한다</span></li>
+        <li><span class="obj-num">5</span><span>B.4.3(¶6.81–6.85)에서 그룹명칭·상표 사용에 대한 대가 지급 필요 여부의 판단 기준, 재정적 혜택의 귀속, 제3자 라이선스 비교가능거래 활용, 합병 이후 상표 사용 처리를 설명할 수 있다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: B.3 특수관계거래 파악 -->
+    <section class="card" id="s1">
+      <h2>1. 특수관계거래 파악과 정상가격 결정 (B.3) <span class="tag tag-para">¶6.73–6.74</span></h2>
+      <p>Section B.3는 B.1(소유권·계약조건)과 B.2(FAR 분석)를 통해 특수관계거래를 정확히 파악하고, 이를 기반으로 정상가격을 결정하는 방법을 제시합니다. 무형자산 분야에서 계약과 실질이 불일치하는 경우가 빈번하므로, 이 원칙은 실무적으로 매우 중요합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>계약 vs. 실제 거래사실: 실질 우선 원칙</span>
+          <span class="para">¶6.73</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.73은 Chapter I Section D의 특수관계거래 파악 원칙을 무형자산 분야에 적용합니다. 핵심은 <strong>"계약 내용과 실제 거래사실이 다를 경우 실제 거래사실에 따른다"</strong>는 실질 우선 원칙입니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>계약 내용이 출발점</h4>
+              <p>당사자 간 체결된 계약(IP 소유권 이전 계약, 라이선스 계약, R&D 용역 계약 등)은 특수관계거래 파악의 <strong>출발점</strong>입니다. 계약은 당사자의 의도를 보여주는 중요한 증거입니다.</p>
+            </div>
+            <div class="col-box orange">
+              <h4>실제 거래사실이 우선</h4>
+              <p>계약 내용이 당사자들의 실제 행동(conduct) 및 거래의 경제적 실질과 다른 경우, <strong>실제 거래사실을 기준</strong>으로 특수관계거래를 파악하여 정상가격을 산출합니다.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 의미:</strong> 계약서에 "A법인이 IP를 소유하고 모든 수익을 향유한다"고 되어 있더라도, A법인이 실제로 아무런 DEMPE 기능도 수행하지 않는다면 계약의 법률적 내용보다 실제 기능 수행에 따라 이익이 귀속됩니다. 이것이 B.1·B.2의 분석이 B.3로 연결되는 흐름입니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 적용 예시</div>
+            계약서: "A법인(저세율국)이 특허를 소유하고 R&D를 주도한다. B법인(고세율국)은 단순 계약 연구 역할"<br>
+            실제: B법인이 모든 R&D 인력을 보유하고 의사결정도 B법인이 주도. A법인은 단지 자금을 송금 업무만 수행.<br>
+            <strong>→ ¶6.73 적용:</strong> 계약이 아닌 실제 거래사실 기준으로 B법인이 핵심 R&D 기능 수행자로 파악되며, 그에 상응하는 보상을 받아야 합니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정상가격원칙 및 적용방법</span>
+          <span class="para">¶6.74</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.74는 B.3의 특수관계거래 파악을 완료한 후, 정상가격을 산출하는 방법론을 안내합니다.</p>
+          <div class="flow-box">
+            <div class="flow-item">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <h4>거래의 정확한 파악 (Accurate Delineation)</h4>
+                <p>B.1(계약·법률적 소유권)과 B.2(FAR 분석)를 종합하여 실제 경제적 거래를 정확하게 파악합니다.</p>
+              </div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <h4>비교가능성 분석</h4>
+                <p>파악된 특수관계거래와 비교가능한 독립 기업 간 거래를 탐색합니다. 무형자산의 고유성으로 인해 비교가능거래를 찾기 어려운 경우가 많습니다.</p>
+              </div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <h4>적합한 이전가격 방법 선택</h4>
+                <p>Chapter II의 5가지 방법(CUP, RPM, CPM, TNMM, PSM) 중 가장 적합한 방법을 선택합니다. 무형자산 거래에서는 이익분할법(PSM) 또는 거래 기반 가치평가방법이 자주 활용됩니다.</p>
+              </div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-num">4</div>
+              <div class="flow-content">
+                <h4>정상가격 범위 결정</h4>
+                <p>선택된 방법을 적용하여 정상가격 범위를 결정합니다. 이 범위 내에서 특수관계거래의 가격·조건을 평가합니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="blue-point">🔷 <strong>B.4와의 연결:</strong> ¶6.74에서 제시하는 정상가격 원칙은 B.4(¶6.75–6.85)의 구체적 사례 패턴에 적용됩니다. B.4는 마케팅 무형자산, R&D, 제조기능, 그룹명칭이라는 4가지 유형에 이 원칙을 구체적으로 어떻게 적용하는지를 보여줍니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: B.4 DEMPE 적용 개관 -->
+    <section class="card" id="s2">
+      <h2>2. DEMPE 원칙 적용 개관 (B.4) <span class="tag tag-para">¶6.75</span></h2>
+      <p>Section B.4는 B.1·B.2·B.3에서 확립한 원칙들을 구체적인 사실(fact patterns)에 적용하는 방법을 설명합니다. ¶6.75는 DEMPE 활동 파악의 핵심 방법론을 제시하고, B.4.1~B.4.3에서 주요 유형별 사례를 다룹니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>DEMPE 활동 파악의 2가지 핵심 요소</span>
+          <span class="para">¶6.75</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>무형자산 개발 활동을 수행하는지 여부는 각 DEMPE 단계별 활동을 <strong>누가</strong> 수행하는지에 따라 파악합니다.</p>
+
+          <div class="dempe-flow">
+            <div class="dempe-box"><div class="d-letter">D</div><div class="d-word">evelopment</div></div>
+            <div class="dempe-arrow">→</div>
+            <div class="dempe-box"><div class="d-letter">E</div><div class="d-word">nhancement</div></div>
+            <div class="dempe-arrow">→</div>
+            <div class="dempe-box"><div class="d-letter">M</div><div class="d-word">aintenance</div></div>
+            <div class="dempe-arrow">→</div>
+            <div class="dempe-box"><div class="d-letter">P</div><div class="d-word">rotection</div></div>
+            <div class="dempe-arrow">→</div>
+            <div class="dempe-box"><div class="d-letter">E</div><div class="d-word">xploitation</div></div>
+          </div>
+
+          <p>각 DEMPE 단계의 활동을 파악하기 위해 <strong>2가지 핵심 요소</strong>를 분석합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>① 수행한 기능의 본질적 요소</h4>
+              <p>각 DEMPE 기능을 실질적으로 수행한 것이 맞는지, 그 기능의 중요도는 어떠한지 파악합니다.</p>
+              <ul>
+                <li>어떤 법인의 직원이 실제 업무를 수행했는가?</li>
+                <li>의사결정 권한은 어디에 있는가?</li>
+                <li>전략적 방향을 누가 결정하는가?</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>② 대가의 종류와 금액의 크기</h4>
+              <p>각 DEMPE 기능 수행에 대해 어떤 종류의 대가가 얼마나 지급되었는지 파악합니다.</p>
+              <ul>
+                <li>로열티인가, 용역 대가인가?</li>
+                <li>대가의 금액이 기능의 중요도에 비례하는가?</li>
+                <li>독립기업 간 거래와 비교해 적정한가?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>제3자 거래와의 비교:</strong> 위 2가지 요소는 반드시 <strong>관련 기능이 정상가격원칙에 의해 수행되는지 확인하기 위하여 제3자 거래와 비교</strong>해야 합니다. 이를 통해 특수관계거래의 기능·대가가 정상범위 내에 있는지 판단합니다.</div>
+
+          <div style="margin-top:1rem">
+            <strong style="font-size:.9rem;color:var(--purple)">B.4의 3가지 구체적 사례 유형</strong>
+            <div class="three-col" style="margin-top:.6rem">
+              <div class="col-box">
+                <h4>B.4.1</h4>
+                <p>마케팅 무형자산의 개발·개선 (¶6.76–6.78)</p>
+              </div>
+              <div class="col-box">
+                <h4>B.4.2</h4>
+                <p>연구·개발 및 공정개선 약정 (¶6.79–6.80)</p>
+              </div>
+              <div class="col-box">
+                <h4>B.4.3</h4>
+                <p>그룹 명칭·상표 사용 대가 (¶6.81–6.85)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: B.4.1 마케팅 무형자산 -->
+    <section class="card" id="s3">
+      <h2>3. 마케팅 무형자산의 개발·개선 (B.4.1) <span class="tag tag-para">¶6.76–6.78</span></h2>
+      <p>B.4.1은 관계회사가 마케팅 활동을 수행할 때 <strong>마케팅 무형자산이 창출되는지 여부</strong>를 판단하는 기준을 제공합니다. 이는 유통자회사의 마케팅 비용 처리에서 가장 빈번하게 발생하는 이전가격 이슈 중 하나입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>마케팅 무형자산의 의의: The White Paper Lilly 판례</span>
+          <span class="para">¶6.76</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.76은 마케팅 무형자산의 이전가격적 의미를 소개합니다. The White Paper(1988)의 Lilly 판례는 마케팅 무형자산 분석의 역사적 근간을 제공합니다.</p>
+          <div class="key-point">💡 <strong>The White Paper(1988) — Lilly 판례:</strong><br>
+            미국 법원은 결합이익을 배분할 때 <strong>제조무형자산, 마케팅무형자산, 연구개발비용</strong>을 모두 고려해야 한다고 판시했습니다. 납세자(Lilly US)가 "마케팅 활동은 수익에 미미한 영향만 미친다"고 주장했지만 법원은 이를 배척하고, Lilly US가 창출한 마케팅무형자산을 인정하여 <strong>전체 소득의 45%</strong>를 Lilly US에 배분했습니다.
+          </div>
+          <div class="note-point">✅ <strong>실무 시사점:</strong> 유통·마케팅 자회사가 단순한 판매 대리인이 아니라 브랜드 가치를 실질적으로 높이는 마케팅 활동을 수행한다면, 그 기여에 상응하는 이익 귀속이 인정될 수 있습니다. 반대로, 소유권자가 통제하는 마케팅이라면 자회사에 마케팅 비용 보전 이상의 이익 귀속이 인정되지 않을 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>마케팅 무형자산이 창출되지 않는 경우: 소유권자 통제 하의 도매활동</span>
+          <span class="para">¶6.77</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.77은 관계회사의 마케팅 활동이 <strong>새로운 마케팅 무형자산을 창출하지 않는 경우</strong>를 제시합니다. 핵심은 마케팅 기능이 무형자산 소유권자의 통제 하에 있는지입니다.</p>
+          <div class="case-compare">
+            <div class="case-card no">
+              <span class="cc-badge">❌ 마케팅 무형자산 미창출</span>
+              <h5>단순 도매활동 + 소유권자 통제</h5>
+              <p>대행업자(유통자회사)가 단순한 도매활동을 수행하고, 그 마케팅 기능을 <strong>무형자산 소유권자(상표권자)가 통제</strong>하는 경우</p>
+              <ul>
+                <li>마케팅 전략·예산을 소유권자가 결정</li>
+                <li>유통자회사는 지시에 따라 단순 실행</li>
+                <li>브랜드 관련 의사결정권이 없음</li>
+              </ul>
+              <p style="margin-top:.5rem;color:var(--red);font-size:.82rem;font-weight:600">→ 유통자는 마케팅 비용 보전 + 합리적 이윤만 받음</p>
+            </div>
+            <div class="case-card yes">
+              <span class="cc-badge">✅ 마케팅 무형자산 창출</span>
+              <h5>실질적 마케팅 기능 수행</h5>
+              <p>관계회사가 독자적으로 <strong>마케팅 전략을 수립·실행</strong>하고, 브랜드 가치를 실질적으로 향상시키는 경우</p>
+              <ul>
+                <li>독자적 마케팅 전략 수립</li>
+                <li>고객 관계·유통망 구축 비용 부담</li>
+                <li>브랜드 인지도 향상에 기여</li>
+              </ul>
+              <p style="margin-top:.5rem;color:var(--green);font-size:.82rem;font-weight:600">→ 마케팅 무형자산 기여에 상응한 이익 귀속 인정</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>핵심 판단 기준 — "통제":</strong> 마케팅 활동의 통제권이 어느 법인에 있는가가 핵심입니다. 소유권자가 통제하는 마케팅이라면, 유통자회사가 마케팅 비용을 지출해도 무형자산을 창출하는 것이 아닙니다. 소유권자가 해당 비용을 사실상 부담하는 것으로 볼 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>마케팅 무형자산이 창출되는 경우: 독립적 마케팅 기능 수행</span>
+          <span class="para">¶6.78</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.78은 반대로 관계회사가 실질적 마케팅 기능을 수행하여 <strong>마케팅 무형자산이 창출되는 경우</strong>의 이전가격 처리를 다룹니다.</p>
+          <div class="flow-box">
+            <div class="flow-item">
+              <div class="flow-num">1</div>
+              <div class="flow-content">
+                <h4>마케팅 무형자산 창출 여부 판단</h4>
+                <p>관계회사가 수행하는 마케팅 활동이 실질적으로 새로운 마케팅 무형자산(브랜드 가치, 고객 관계, 판매 채널 등)을 창출하는지 FAR 분석으로 파악합니다.</p>
+              </div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-num">2</div>
+              <div class="flow-content">
+                <h4>창출된 무형자산의 소유권 귀속</h4>
+                <p>창출된 마케팅 무형자산이 계약상 누구에게 귀속되는지, 그리고 실질적으로 누가 DEMPE 기능을 수행했는지(¶6.71 기준)를 종합하여 이익 귀속을 결정합니다.</p>
+              </div>
+            </div>
+            <div class="flow-item">
+              <div class="flow-num">3</div>
+              <div class="flow-content">
+                <h4>정상가격 보상 결정</h4>
+                <p>창출에 기여한 정도에 따라 마케팅 무형자산으로부터 발생하는 이익의 일정 부분이 기능 수행 법인에게 귀속되어야 합니다. 로열티 감면, 이익 배분, 또는 별도 보상 방식으로 구현됩니다.</p>
+              </div>
+            </div>
+          </div>
+          <div class="case-box">
+            <div class="case-label">💼 실무 사례 — 해외 유통자회사의 마케팅 기여</div>
+            <strong>상황:</strong> A본사(미국)가 브랜드 소유. B자회사(한국)가 한국 시장에서 독자적으로 마케팅 전략 수립, 연간 수백억 원 마케팅 비용 지출, 한국 소비자 인지도를 0%→60%로 끌어올림.<br><br>
+            <strong>¶6.78 적용:</strong> B자회사는 단순 도매업자가 아니라 한국 마케팅 무형자산의 실질적 창출자로 볼 수 있습니다. 따라서 B자회사는 단순 유통 마진 이상의 보상을 받아야 하며, A본사에 지급하는 로열티율을 낮추거나 초과이익 중 일부를 B에 귀속시켜야 합니다.
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 쟁점 — 마케팅 비용의 중요성</div>
+            <p>한국 세무당국과 다국적기업 간 분쟁에서 가장 빈번한 쟁점 중 하나가 바로 이 마케팅 무형자산 문제입니다. 한국 자회사가 높은 마케팅 비용을 부담하면서도 본사에 높은 로열티를 지급하는 구조에서, 자회사가 창출한 마케팅 무형자산에 대한 보상이 충분히 이루어지고 있는지가 핵심 쟁점입니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: B.4.2 R&D·제조기능 -->
+    <section class="card" id="s4">
+      <h2>4. 연구·개발 및 공정개선 약정 (B.4.2) <span class="tag tag-para">¶6.79–6.80</span></h2>
+      <p>B.4.2는 R&D 기능과 제조기능이 관계회사를 통해 수행될 때의 이전가격 처리를 다룹니다. R&D와 제조는 무형자산 가치 창출에 가장 직접적으로 관련된 기능이므로, 이 부분의 DEMPE 분석이 특히 중요합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>관계회사가 R&D 기능을 수행하는 경우</span>
+          <span class="para">¶6.79</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.79는 다국적기업 그룹 내 관계회사가 연구·개발 기능을 수행하는 경우의 이전가격 분석 원칙을 제시합니다. Chapter VI Annex I Example 14를 참조합니다.</p>
+
+          <div class="compare-table">
+            <thead>
+              <tr>
+                <th>R&D 기능 수행 유형</th>
+                <th>기능·위험 분석</th>
+                <th>정상가격 처리</th>
+              </tr>
+            </thead>
+<ul>
+  <li>
+    <strong>계약 연구(Contract R&D)</strong>
+    <ul>
+      <li>소유권자 지시·통제 하에 단순 연구 수행</li>
+      <li>연구 기능만 수행</li>
+      <li>위험 부담 없음</li>
+      <li>통제권 없음</li>
+      <li>원가 + 합리적 이윤 (Cost-plus 방식)</li>
+      <li>무형자산 이익 귀속 없음</li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>위탁 연구(Commissioned R&D)</strong>
+    <ul>
+      <li>일정 범위 내 독자적 연구 수행</li>
+      <li>연구 기능 + 일부 위험</li>
+      <li>부분적 통제권</li>
+      <li>원가 + 위험 프리미엄</li>
+      <li>성과 기여도에 따른 부가 보상 가능</li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>독립적 R&D 수행</strong>
+    <ul>
+      <li>독자적 전략·의사결정·위험 부담</li>
+      <li>전체 DEMPE 기능 수행</li>
+      <li>모든 R&D 위험 부담</li>
+      <li>완전한 통제권</li>
+      <li>창출된 무형자산 이익의 실질적 귀속</li>
+      <li>PSM 등 이익분할 방법 적용 필요</li>
+    </ul>
+  </li>
+</ul>          
+
+</div>
+
+          <div class="key-point">💡 <strong>Example 14의 핵심 원리:</strong> R&D를 수행하는 관계회사가 단순한 "기능 수행자"(function provider)인지, 아니면 실질적 "위험 부담자"(risk bearer)인지에 따라 보상이 근본적으로 달라집니다. R&D 결과물에 대한 통제권과 위험 부담이 핵심 분기점입니다.</div>
+
+          <div class="case-box">
+            <div class="case-label">💼 한국 실무 — 연구소 자회사의 처리</div>
+            한국에서 외국계 다국적기업의 한국 R&D 자회사를 두는 경우가 많습니다. 이때 해당 자회사가 ①단순 계약 연구(Cost-plus 보상)인지, ②실질적 R&D 의사결정자(이익 귀속 필요)인지가 이전가격 리스크의 핵심입니다. 한국 과세당국은 점차 후자의 분석을 강화하고 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>제조기능과 무형자산의 관계</span>
+          <span class="para">¶6.80</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.80은 제조기능이 무형자산 가치 창출에 기여하는 경우의 이전가격 분석을 다룹니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>단순 계약 제조(Contract Manufacturing)</h4>
+              <p>소유권자의 설계·기술을 받아 단순 제조하는 경우</p>
+              <ul>
+                <li>제조 기능만 수행</li>
+                <li>기술적 위험 없음</li>
+                <li>원가 + 합리적 이윤</li>
+              </ul>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--text2)">→ 무형자산 이익 귀속 없음</p>
+            </div>
+            <div class="col-box orange">
+              <h4>공정개선 기여 제조</h4>
+              <p>독자적 공정개선(process improvement)으로 제조 무형자산을 창출하는 경우</p>
+              <ul>
+                <li>제조 노하우·공정 혁신</li>
+                <li>기술 개발 위험 일부 부담</li>
+                <li>창출된 무형자산 기여</li>
+              </ul>
+              <p style="margin-top:.4rem;font-size:.82rem;color:var(--orange)">→ 공정 무형자산 기여에 상응한 보상 필요</p>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>제조무형자산 창출 여부 판단:</strong> 제조자회사가 독자적 공정 개선, 수율 향상, 품질 혁신 등을 통해 제조 무형자산을 창출했다면 ¶6.77~6.78의 마케팅 무형자산과 동일한 논리로 해당 기여에 상응하는 이익이 귀속되어야 합니다. The White Paper Lilly 판례에서도 제조무형자산이 명시적으로 고려되었습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: B.4.3 그룹명칭 사용료 -->
+    <section class="card" id="s5">
+      <h2>5. 그룹명칭·상표 사용에 대한 대가 (B.4.3) <span class="tag tag-para">¶6.81–6.85</span></h2>
+      <p>B.4.3은 다국적기업 그룹의 명칭이나 상표를 사용하는 경우 <strong>대가 지급이 필요한지</strong>, 그리고 필요하다면 어떻게 산출하는지를 다룹니다. "그룹에 속해 있다는 이유"만으로 대가를 지급해야 하는가의 문제입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>원칙: 단순 그룹명 사용에는 대가 불필요</span>
+          <span class="para">¶6.81</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.81은 매우 중요한 원칙을 제시합니다 — <strong>단순히 그룹 이름 또는 상표를 사용하는 것 자체에는 대가 지급이 필요하지 않습니다.</strong></p>
+          <div class="key-point">💡 <strong>¶6.81 핵심 원칙:</strong> 그룹의 일원이라는 이유만으로 모회사에 명칭 사용료를 지급할 의무는 없습니다. 단순한 소속(affiliation)은 대가 지급 근거가 될 수 없습니다.</div>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>❌ 대가 불필요한 경우</h4>
+              <p>단순히 그룹에 속해 있기 때문에 그룹명을 회사명·제품명에 사용하는 경우</p>
+              <ul>
+                <li>예: "삼성전자"가 "삼성" 이름을 사용하는 것</li>
+                <li>그룹명 자체가 해당 자회사를 지칭하는 경우</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 대가 필요한 경우</h4>
+              <p>그룹명·상표 사용이 실질적인 경제적 혜택을 제공하는 경우 (¶6.82 이하)</p>
+              <ul>
+                <li>신용등급 향상 → 차입 비용 절감</li>
+                <li>브랜드 인지도 → 매출 증대</li>
+                <li>라이선스 계약으로 명시된 경우</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>그룹명이 재정적 혜택을 제공하는 경우</span>
+          <span class="para">¶6.82</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.82는 그룹명이 자회사에게 실질적인 재정적 혜택을 제공하는 경우 대가 지급을 고려해야 함을 제시합니다.</p>
+          <div class="case-box">
+            <div class="case-label">💼 ¶6.82 주요 사례: 신용등급 향상</div>
+            <strong>상황:</strong> C자회사(한국)가 독자적으로는 신용등급 BBB이지만, D모회사(미국)의 신용(AAA)으로 인해 실질적으로 AA 수준의 조건으로 차입이 가능한 경우.<br><br>
+            <strong>재정적 혜택:</strong> 연 차입비용이 3%가 아닌 1.5%로 절감됨 → 연간 수십억 원의 이자 절감<br><br>
+            <strong>¶6.82 적용:</strong> C자회사는 이 신용 향상 혜택에 대한 보상을 D모회사에 지급해야 할 수 있습니다. 단, 독립 기업 간 유사한 신용 보증(guarantee fee) 수준을 기준으로 산정합니다.
+          </div>
+          <div class="warn-point">⚠️ <strong>중요 원칙:</strong> 재정적 혜택이 존재하는 경우에도, 지급 대가는 <strong>실제 혜택의 범위</strong>로 한정됩니다. "그룹에 속해 있다"는 것에 대한 포괄적 대가 청구는 인정되지 않습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>제3자 라이선스 비교가능거래 & 합병 이후 상표 사용</span>
+          <span class="para">¶6.83–6.84</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.83과 ¶6.84는 그룹명칭 사용료 산정에서 활용할 수 있는 두 가지 중요한 참고 기준을 제시합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>¶6.83 — 제3자 라이선스를 비교가능거래로 활용</h4>
+              <p>모회사가 독립된 제3자에게 동일 또는 유사한 상표를 라이선스한 거래가 있다면, 이를 <strong>비교가능거래(Comparable Uncontrolled Transaction)</strong>로 활용할 수 있습니다.</p>
+              <p style="margin-top:.4rem;font-size:.83rem">이는 CUP(비교가능 제3자 가격) 방법의 적용으로, 무형자산 사용료 산정에서 가장 직접적인 비교 기준이 됩니다.</p>
+            </div>
+            <div class="col-box blue">
+              <h4>¶6.84 — 합병으로 같은 상표를 사용하는 경우</h4>
+              <p>법인 간 합병의 결과로 같은 상표를 사용하게 된 경우의 처리를 다룹니다.</p>
+              <p style="margin-top:.4rem;font-size:.83rem">합병 이전에는 별도의 상표가 있었으나 합병 후 통합 상표를 사용하게 된 경우, 이전가격 목적의 상표 사용료 지급 필요 여부와 금액을 별도로 분석해야 합니다.</p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 — 제3자 라이선스 데이터 활용</div>
+            <p>Royalty Source, ktMINE, RoyaltyStat 등의 데이터베이스에서 유사한 상표·브랜드의 제3자 라이선스 거래를 검색하여 비교가능거래로 활용합니다. 단, 무형자산의 고유성 때문에 완벽한 비교가능거래를 찾기 어려운 경우가 많아 비교가능성 조정이 필요할 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>합병법인의 사업 확장 능력과 무형자산 기여</span>
+          <span class="para">¶6.85</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶6.85는 합병을 통해 법인이 이전에 불가능했던 사업 확장 능력을 갖추게 된 경우의 처리를 다룹니다.</p>
+          <div class="key-point">💡 <strong>¶6.85의 핵심:</strong> 합병으로 인해 법인이 이전에는 없었던 사업 역량(예: 새로운 시장 진입 능력, 규제 승인, 판매 채널 등)을 갖추게 된 경우, 이 능력이 어디서 비롯되었는지 — 즉, 어떤 법인의 무형자산 또는 기능 기여로부터 온 것인지 — 를 분석해야 합니다.</div>
+          <div class="case-box">
+            <div class="case-label">💼 사례 — 합병 이후 사업 확장</div>
+            E법인(한국)과 F법인(미국)이 합병하여 EF법인이 됨. 합병 전 E법인은 한국 시장만, F법인은 미국 시장만 영업. 합병 후 EF는 양국 시장 모두에서 영업하며 규모의 경제 실현.<br><br>
+            <strong>¶6.85 적용:</strong> 이 글로벌 시장 접근 능력이 E와 F 각각의 시장 접근 무형자산에서 비롯된 것이라면, 합병 이후 이익 배분에서 각각의 기여도를 반영해야 합니다. 단순히 합병 법인의 단일 구조를 이유로 이익 귀속 분석을 생략해서는 안 됩니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- 종합 정리표: 그룹명칭 사용료 -->
+      <div style="margin-top:1.2rem">
+        <strong style="font-size:.95rem;color:var(--purple-dark)">그룹명칭·상표 사용료 지급 필요 여부 종합 판단표 (¶6.81–6.85)</strong>
+        <table class="name-table" style="margin-top:.6rem">
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>대가 지급</th>
+              <th>산정 방법</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>단순히 그룹에 소속되어 그룹명 사용 (¶6.81)</td>
+              <td><span class="badge-no">불필요</span></td>
+              <td>해당 없음</td>
+            </tr>
+            <tr>
+              <td>그룹명으로 신용등급 향상 → 차입비용 절감 (¶6.82)</td>
+              <td><span class="badge-yes">필요</span></td>
+              <td>독립기업 간 보증료(guarantee fee) 수준</td>
+            </tr>
+            <tr>
+              <td>그룹명이 매출·인지도에 실질적으로 기여 (¶6.82)</td>
+              <td><span class="badge-yes">필요</span></td>
+              <td>브랜드 로열티율 — 제3자 라이선스 비교 (¶6.83)</td>
+            </tr>
+            <tr>
+              <td>제3자에게 동일 상표 라이선스 거래 존재 (¶6.83)</td>
+              <td><span class="badge-cond">조건부</span></td>
+              <td>CUP — 제3자 라이선스율을 비교가능거래로 활용</td>
+            </tr>
+            <tr>
+              <td>합병으로 같은 상표 사용 (¶6.84)</td>
+              <td><span class="badge-cond">조건부</span></td>
+              <td>합병 전 상표의 가치, DEMPE 기여도 분석 필요</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- M6-5 종합 요약 -->
+      <div class="summary-box" style="margin-top:1.2rem">
+        <h4>📋 M6-5 핵심 정리 — DEMPE 원칙의 사례 적용</h4>
+        <ul>
+          <li><strong>실질 우선(¶6.73):</strong> 계약 내용보다 실제 거래사실과 당사자 행동(conduct)이 이전가격 분석의 기준</li>
+          <li><strong>DEMPE 파악 2요소(¶6.75):</strong> ①기능의 본질 + ②대가의 종류·금액 → 제3자 거래와 비교</li>
+          <li><strong>마케팅 무형자산(¶6.77–6.78):</strong> 소유권자 통제 하의 단순 도매는 무형자산 미창출; 독자적 마케팅으로 브랜드 가치 창출 시 이익 귀속 인정</li>
+          <li><strong>R&D 기능(¶6.79):</strong> 계약 연구 vs. 독자적 R&D 수행자의 구분이 보상 수준을 결정</li>
+          <li><strong>그룹명칭(¶6.81):</strong> 단순 소속에 따른 명칭 사용에는 대가 불필요; 실질적 재정·사업 혜택이 있을 때만 대가 지급</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 확인 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="margin-bottom:1.2rem;font-size:.93rem;color:var(--text2)">M6-5의 핵심 개념을 확인합니다. 5문항, 80점(4문항) 이상이면 합격입니다.</p>
+
+      <!-- Q1 -->
+      <div class="q-block" id="qb1">
+        <div class="q-text">Q1. ¶6.73에 따르면, 계약 내용과 실제 거래사실이 다른 경우 이전가격 분석에서 어느 것을 기준으로 특수관계거래를 파악해야 하는가?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q1" value="a"> a) 계약 내용을 항상 우선한다</label>
+          <label><input type="radio" name="q1" value="b"> b) 실제 거래사실(실질 행동)을 기준으로 파악한다</label>
+          <label><input type="radio" name="q1" value="c"> c) 납세자가 선택한 방법을 따른다</label>
+          <label><input type="radio" name="q1" value="d"> d) 계약 내용과 실제 거래사실의 평균값을 적용한다</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="q-block" id="qb2">
+        <div class="q-text">Q2. ¶6.75에서 DEMPE 활동을 파악하기 위해 분석해야 하는 2가지 핵심 요소는?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q2" value="a"> a) 법인의 설립국가 + 직원 수</label>
+          <label><input type="radio" name="q2" value="b"> b) 기능의 본질적 요소 + 대가의 종류와 금액의 크기</label>
+          <label><input type="radio" name="q2" value="c"> c) 무형자산의 등록일 + 잔존 특허 기간</label>
+          <label><input type="radio" name="q2" value="d"> d) 연구개발비 총액 + 특허 등록 국가 수</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="q-block" id="qb3">
+        <div class="q-text">Q3. ¶6.77에 따르면, 유통자회사가 마케팅 활동을 수행해도 마케팅 무형자산이 창출되지 않는 경우에 해당하는 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q3" value="a"> a) 자회사가 독자적 마케팅 전략을 수립하고 브랜드 인지도를 향상시킨 경우</label>
+          <label><input type="radio" name="q3" value="b"> b) 자회사가 마케팅 비용을 전액 부담하고 소비자 데이터베이스를 구축한 경우</label>
+          <label><input type="radio" name="q3" value="c"> c) 자회사가 단순 도매활동을 하며 마케팅 기능을 무형자산 소유권자가 통제하는 경우</label>
+          <label><input type="radio" name="q3" value="d"> d) 자회사가 새로운 유통 채널을 개발하여 시장 점유율을 높인 경우</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="q-block" id="qb4">
+        <div class="q-text">Q4. ¶6.79에 따르면, 관계회사가 R&D 기능을 수행하는 경우 단순 계약 연구(Contract R&D)에게 적합한 보상 방법은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q4" value="a"> a) 창출된 특허의 가치 전액</label>
+          <label><input type="radio" name="q4" value="b"> b) 이익분할법(PSM)에 의한 잔여이익 배분</label>
+          <label><input type="radio" name="q4" value="c"> c) 원가 + 합리적 이윤(Cost-plus) 수준</label>
+          <label><input type="radio" name="q4" value="d"> d) 무형자산 수익의 50% 배분</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="q-block" id="qb5">
+        <div class="q-text">Q5. ¶6.81에서 제시한 원칙으로 가장 올바른 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q5" value="a"> a) 다국적기업 그룹의 자회사는 항상 모회사에 그룹명 사용료를 지급해야 한다</label>
+          <label><input type="radio" name="q5" value="b"> b) 그룹명 사용료는 매출액의 일정 비율로 자동 산정된다</label>
+          <label><input type="radio" name="q5" value="c"> c) 단순히 그룹 이름을 사용하는 것 자체에는 대가 지급이 필요하지 않다</label>
+          <label><input type="radio" name="q5" value="d"> d) 그룹명 사용은 항상 마케팅 무형자산 창출에 해당한다</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="qBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreVal"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <p style="margin-bottom:1rem;font-size:.92rem;color:var(--text2)">DEMPE 원칙 사례 적용 시 확인해야 할 실무 항목입니다.</p>
+      <ul class="checklist">
+        <li>
+          <input type="checkbox" id="c1">
+          <label for="c1">계약 내용과 실제 거래 행동(conduct)이 일치하는지 비교하였습니까? 불일치 시 실제 거래사실을 기준으로 특수관계거래를 재파악하였습니까? (¶6.73)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c2">
+          <label for="c2">DEMPE 각 단계(개발·개선·유지·보호·사용)별로 ①수행 기능의 본질과 ②지급된 대가의 종류·금액을 파악하고 제3자 거래와 비교하였습니까? (¶6.75)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c3">
+          <label for="c3">유통자회사의 마케팅 활동이 마케팅 무형자산을 창출하는지 여부를 판단하였습니까? 특히 마케팅 기능의 통제권이 소유권자에게 있는지(미창출) 자회사에게 있는지(창출) 확인하였습니까? (¶6.77–6.78)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c4">
+          <label for="c4">마케팅 무형자산이 창출된 경우, 그 창출에 기여한 자회사가 단순 도매 마진 이상의 보상을 받고 있는지 또는 지급 로열티 수준이 적정한지 검토하였습니까? (¶6.78)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c5">
+          <label for="c5">관계회사가 수행하는 R&D 기능이 ①계약 연구(Cost-plus 보상), ②위탁 연구원(위험 프리미엄 포함), ③독립적 R&D 수행(이익 귀속 필요) 중 어느 유형인지 명확히 판단하였습니까? (¶6.79)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c6">
+          <label for="c6">제조자회사가 공정개선을 통해 제조 무형자산을 창출하는 경우, 단순 계약 제조 보상(Cost-plus)과 구별하여 추가적 기여 보상이 이루어지고 있는지 확인하였습니까? (¶6.80)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c7">
+          <label for="c7">그룹명칭·상표 사용에 대한 로열티 지급 여부를 검토할 때, 단순 소속 여부가 아닌 실질적인 재정적·사업적 혜택이 있는지를 기준으로 판단하였습니까? (¶6.81–6.82)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c8">
+          <label for="c8">그룹명 사용으로 인한 재정적 혜택(신용등급 향상 등)이 있는 경우, 그 혜택의 범위 내에서만 대가를 산정하였습니까? 독립기업 간 유사 보증료 수준을 참고하였습니까? (¶6.82)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c9">
+          <label for="c9">모회사가 제3자에게 동일·유사한 상표를 라이선스한 거래가 있다면, 이를 비교가능거래(CUP)로 활용하는 방안을 검토하였습니까? (¶6.83)</label>
+        </li>
+        <li>
+          <input type="checkbox" id="c10">
+          <label for="c10">합병으로 동일 상표를 사용하게 된 경우, 합병 전 각 법인의 무형자산 기여도를 분석하여 이전가격상 처리를 별도로 검토하였습니까? (¶6.84–6.85)</label>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a href="M6-4_기능_자산_위험분석.html" class="btn-nav">← M6-4 기능·자산·위험 분석</a>
+      <a href="#" class="btn-nav secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">📋 목차로</a>
+      <a href="M6-6_거래유형.html" class="btn-nav">M6-6 거래 유형 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 아코디언 ── */
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.classList.contains('open');
+  btn.classList.toggle('open',!isOpen);
+  body.classList.toggle('open',!isOpen);
+  if(!isOpen && !btn.classList.contains('viewed')){
+    btn.classList.add('viewed');
+    updateProgress();
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const headers=document.querySelectorAll('.acc-header');
+  document.getElementById('accTotal').textContent=headers.length;
+  updateProgress();
+});
+
+/* ── 진도 계산 ── */
+let quizCorrect=0;
+function updateProgress(){
+  const total=parseInt(document.getElementById('accTotal').textContent)||1;
+  const done=document.querySelectorAll('.acc-header.viewed').length;
+  document.getElementById('accDone').textContent=done;
+  const pct=Math.round((done/total*0.6 + quizCorrect/5*0.4)*100);
+  document.getElementById('pctDisp').textContent=pct+'%';
+  document.getElementById('topBar').style.width=pct+'%';
+}
+
+/* ── 스크롤 ── */
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+/* ── 퀴즈 채점 ── */
+const answers={q1:'b',q2:'b',q3:'c',q4:'c',q5:'c'};
+const feedbacks={
+  q1:{
+    a:'❌ 계약 내용이 출발점이 될 수 있지만, 실제 거래사실과 다를 경우 계약이 우선하지 않습니다.',
+    b:'✅ 정답입니다! ¶6.73은 계약 내용과 실제 거래사실(당사자들의 실제 행동)이 다른 경우 실제 거래사실을 기준으로 특수관계거래를 파악하도록 합니다. 이것이 "실질 우선 원칙"입니다.',
+    c:'❌ 납세자의 선택이 아닌 객관적인 거래사실을 기준으로 합니다.',
+    d:'❌ 평균값을 적용하는 방식은 OECD 지침에 없는 개념입니다.'
+  },
+  q2:{
+    a:'❌ 설립국가와 직원 수는 DEMPE 활동 파악의 핵심 요소가 아닙니다.',
+    b:'✅ 정답입니다! ¶6.75는 DEMPE 활동 파악을 위해 ①수행한 기능의 본질적 요소와 ②대가의 종류와 금액의 크기, 이 두 가지를 분석하고 제3자 거래와 비교하도록 합니다.',
+    c:'❌ 무형자산 등록일과 특허 기간은 비교가능성 분석 요소이지 DEMPE 활동 파악의 핵심 요소가 아닙니다.',
+    d:'❌ 연구개발비 총액은 참고 지표가 될 수 있지만 ¶6.75의 핵심 2요소가 아닙니다.'
+  },
+  q3:{
+    a:'❌ 자회사가 독자적 마케팅 전략을 수립하고 브랜드 인지도를 향상시킨 경우는 마케팅 무형자산 창출에 해당합니다(¶6.78).',
+    b:'❌ 마케팅 비용 부담 + 소비자 데이터베이스 구축은 자회사의 독자적 마케팅 기능 수행으로 무형자산 창출 가능성이 있습니다.',
+    c:'✅ 정답입니다! ¶6.77에 따르면, 대행업자가 단순 도매활동을 수행하며 마케팅 기능을 무형자산 소유권자(상표권자 등)가 통제하는 경우에는 마케팅 무형자산이 창출되지 않습니다. 핵심은 통제권의 소재입니다.',
+    d:'❌ 새로운 유통 채널 개발로 시장 점유율을 높인 경우는 마케팅 무형자산 창출로 볼 수 있습니다.'
+  },
+  q4:{
+    a:'❌ 계약 연구은 창출된 특허의 법률적·이전가격상 소유권이 없으므로 특허 가치 전액을 받지 않습니다.',
+    b:'❌ 이익분할법은 양 당사자가 모두 중요한 기능을 수행하는 경우에 적합합니다. 단순 계약 연구에게는 과도합니다.',
+    c:'✅ 정답입니다! 단순 계약 연구(Contract R&D)은 소유권자의 지시·통제 하에 연구를 수행하고 위험도 통제권도 없으므로, 원가 + 합리적 이윤(Cost-plus) 수준의 보상이 적합합니다.',
+    d:'❌ 무형자산 수익의 50% 배분은 계약 연구의 기여도에 비해 과도합니다.'
+  },
+  q5:{
+    a:'❌ ¶6.81은 명확히 "단순히 그룹에 속해 있다는 것만으로는 대가 지급이 필요하지 않다"고 합니다.',
+    b:'❌ 매출액 기반 자동 산정 방식은 ¶6.81의 원칙에 반합니다. 실질적 혜택이 있어야만 대가가 필요합니다.',
+    c:'✅ 정답입니다! ¶6.81의 핵심 원칙은 단순히 그룹 이름 또는 상표를 사용하는 것 자체에는 대가 지급이 필요하지 않다는 것입니다. 실질적인 재정적·사업적 혜택이 있을 때만 대가를 고려합니다(¶6.82).',
+    d:'❌ 그룹명 사용 자체가 마케팅 무형자산 창출로 연결되지 않습니다. 실질적 마케팅 활동의 수행 여부가 기준입니다.'
+  }
+};
+
+function gradeQuiz(){
+  let correct=0;
+  ['q1','q2','q3','q4','q5'].forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    const fb=document.getElementById(`fb${i+1}`);
+    if(!sel){fb.style.display='block';fb.className='q-feedback wrong';fb.textContent='선택하지 않았습니다.';return;}
+    const v=sel.value;
+    const isC=(v===answers[q]);
+    if(isC) correct++;
+    fb.style.display='block';
+    fb.className='q-feedback '+(isC?'correct':'wrong');
+    fb.textContent=feedbacks[q][v]||'';
+  });
+  quizCorrect=correct;
+  document.getElementById('quizDone').textContent=correct;
+  const sb=document.getElementById('scoreBox');
+  sb.style.display='block';
+  document.getElementById('scoreVal').textContent=correct*20+'점';
+  document.getElementById('scoreMsg').textContent=correct>=4
+    ?'🎉 합격! DEMPE 사례 적용의 핵심 원칙을 잘 이해하고 있습니다.'
+    :`아코디언을 다시 검토하고 재도전해 보세요. (${correct}/5 정답)`;
+  document.getElementById('qBtn').disabled=true;
+  updateProgress();
+}
+</script>
+</body>
+</html>

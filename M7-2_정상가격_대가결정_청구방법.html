@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M7-2: 정상가격 대가 결정 – 청구방법</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#15803d;--purple-light:#dcfce7;--purple-mid:#16a34a;--purple-dark:#14532d;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --blue:#1d4ed8;--blue-light:#eff6ff;
+  --teal:#0f766e;--teal-light:#f0fdfa;
+  --amber:#b45309;--amber-light:#fef3c7;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#14532d;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.blue-point{background:var(--blue-light);border-left:4px solid var(--blue);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e3a8a;line-height:1.75}
+.amber-point{background:var(--amber-light);border-left:4px solid var(--amber);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#78350f;line-height:1.75}
+.practice-note{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#15803d;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#14532d;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#bbf7d0}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #86efac;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.blue{border-color:#93c5fd;background:#eff6ff}
+.col-box.blue h4{color:var(--blue)}
+.col-box.amber{border-color:#fcd34d;background:var(--amber-light)}
+.col-box.amber h4{color:var(--amber)}
+/* ── 청구방법 흐름 ── */
+.charge-flow{display:flex;flex-direction:column;gap:.6rem;margin:.8rem 0}
+.cf-step{display:flex;gap:.8rem;align-items:flex-start;padding:.75rem 1rem;border-radius:8px;border-left:4px solid var(--purple);background:var(--purple-light)}
+.cf-step.q{background:var(--blue-light);border-left-color:var(--blue)}
+.cf-step.warn{background:var(--orange-light);border-left-color:var(--orange)}
+.cf-step .cf-num{background:var(--purple);color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.cf-step.q .cf-num{background:var(--blue)}
+.cf-step p{font-size:.9rem;color:var(--text2);margin:0;line-height:1.6}
+.cf-step strong{color:var(--text)}
+/* ── 배분 기준 카드 ── */
+.alloc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.alloc-card{border-radius:8px;padding:.9rem 1rem;border:1.5px solid #86efac;background:var(--purple-light)}
+.alloc-card h5{font-size:.87rem;font-weight:700;color:var(--purple-dark);margin-bottom:.35rem}
+.alloc-card p{font-size:.83rem;color:var(--text2);margin:0 0 .4rem;line-height:1.55}
+.alloc-card .basis{display:inline-block;background:#fff;border:1px solid #86efac;border-radius:20px;padding:2px 10px;font-size:.75rem;font-weight:700;color:var(--purple)}
+/* ── 정상가격 방법론 단계 ── */
+.method-steps{list-style:none;padding:0;counter-reset:step;margin:.8rem 0}
+.method-steps li{counter-increment:step;display:flex;gap:.8rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem;color:var(--text2);line-height:1.65}
+.method-steps li:last-child{border:none}
+.method-steps li::before{content:counter(step);background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:2px}
+/* ── 에이전트 사례 박스 ── */
+.case-box{background:#f0fdf4;border-left:4px solid var(--purple);padding:.7rem .9rem;border-radius:0 6px 6px 0;margin:.6rem 0;font-size:.87rem;color:#14532d;line-height:1.65}
+.case-box .case-label{font-weight:700;font-size:.75rem;color:var(--purple-dark);margin-bottom:.2rem}
+/* ── 한국 국조법 ── */
+.kr-law{background:#eff6ff;border:1.5px solid #93c5fd;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.kr-law .kl-label{font-size:.75rem;font-weight:700;color:#1d4ed8;margin-bottom:.4rem}
+.kr-law p{font-size:.85rem;color:#1e3a8a;margin-bottom:.3rem;line-height:1.65}
+.kr-law p:last-child{margin:0}
+/* ── 종합 요약 ── */
+.summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
+.summary-box h4{font-size:1rem;font-weight:700;margin-bottom:.6rem;color:var(--purple-dark)}
+.summary-box ul{padding-left:1.3rem;font-size:.9rem;line-height:1.75;color:var(--text2)}
+.summary-box li{margin-bottom:.3rem}
+.summary-box li strong{color:var(--purple-dark)}
+/* ── 퀴즈 ── */
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+/* ── 체크리스트 ── */
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--purple)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--purple);text-decoration:line-through;opacity:.7}
+/* ── 하단 네비 ── */
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.alloc-grid{grid-template-columns:1fr}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter VII Intra-Group Services › M7-2 (2/4)</div>
+  <h1>M7-2. 정상가격 대가 결정 &amp; 청구방법 (B.2)</h1>
+  <div class="sub">직접·간접청구방법, 배분 기준, 정상가격 산출, 에이전트 역할 &nbsp;|&nbsp; ¶7.19 – ¶7.34 &nbsp;|&nbsp; 예상 학습시간: 50분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 정상가격 원칙 적용 (B.2.1)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 청구 체계 파악 (B.2.2)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 직접청구방법 (B.2.2.1)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 간접청구방법 (B.2.2.2)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 대가 형태 (B.2.2.3)</button>
+      <button class="nav-item" onclick="goTo('s6')">6. 정상가격 계산 (B.2.3)</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>B.2.1의 핵심 원칙 — 서비스 거래에도 정상가격 원칙이 동일하게 적용되며, 관계회사 여부와 무관하게 독립기업 수준의 대가가 요구됨 — 을 이해하고 다른 거래 유형과의 공통점을 설명할 수 있다 (¶7.19)</span></li>
+        <li><span class="obj-num">2</span><span>청구 체계 파악(B.2.2)이 정상가격 분석의 전제 조건이며, 실제 청구 방식(직접·간접·내재)을 식별하는 것이 왜 중요한지 설명할 수 있다 (¶7.20)</span></li>
+        <li><span class="obj-num">3</span><span>직접청구방법(B.2.2.1)과 간접청구방법(B.2.2.2)의 개념·적용 우선순위·배분 기준 선택 원칙을 구분하고, 이중과세 및 이중공제 위험이 발생하는 상황을 파악한다 (¶7.21–7.26)</span></li>
+        <li><span class="obj-num">4</span><span>서비스 대가가 다른 거래 금액에 내재(embedded)되는 경우와 온콜 서비스의 대가 문제를 이해하고, 이중공제 위험을 식별할 수 있다 (¶7.27–7.28)</span></li>
+        <li><span class="obj-num">5</span><span>정상가격 산출 방법론(CUP 우선 → 비용기준방법), 단기·장기 효과 분석, 에이전트·중개 역할 수행 시 대가 산출 방법을 실무에 적용할 수 있다 (¶7.29–7.34)</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1 -->
+    <section class="card" id="s1">
+      <h2>1. 정상가격 원칙 적용 (B.2.1) <span class="tag tag-para">¶7.19</span></h2>
+      <p>M7-1에서 서비스가 <strong>실제로 제공되었다</strong>고 판단되면(요건 ①), 다음 단계로 그 대가가 <strong>정상가격 원칙(arm's length principle)에 부합하는지</strong> 평가해야 합니다. 이것이 B.2의 핵심 과제입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>서비스 거래의 정상가격 원칙 — 2가지 핵심 명제</span>
+          <span class="para">¶7.19</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>관계회사 간 서비스에 대한 정상가격 원칙 적용과 관련하여 두 가지 핵심 명제가 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>① 독립기업 수준의 대가</h4>
+              <p>제공된 서비스에 대한 대가는 <strong>독립된 기업 간 유사한 상황</strong>에서 수용될 수 있는 수준이어야 한다. 즉 시장에서 비교 가능한 독립기업 간 거래를 기준으로 평가한다.</p>
+            </div>
+            <div class="col-box">
+              <h4>② 관계회사 여부와 무관</h4>
+              <p>단지 기업들이 <strong>관계회사(associated enterprises)</strong>라는 이유만으로, 세무상 다른 방식으로 취급되어서는 안 된다. 서비스 거래라는 이유로 완화된 기준이 적용되지 않는다.</p>
+            </div>
+          </div>
+          <div class="blue-point">📌 <strong>타 거래 유형과의 비교:</strong> 무형자산 거래, 상품거래, 금융거래와 동일하게, <strong>서비스 거래도 독립기업 원칙에 따라 정당한 대가가 부과</strong>되어야 합니다. 서비스 거래에 특별한 완화 기준은 존재하지 않습니다.</div>
+          <p>B.2의 분석은 세 단계로 진행됩니다: ① 어떤 청구 체계(직접·간접·내재)가 사용되었는지 파악 → ② 대가의 형태 확인 → ③ 정상가격 산출 방법론 적용.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2 -->
+    <section class="card" id="s2">
+      <h2>2. 청구 체계 파악 (B.2.2) <span class="tag tag-para">¶7.20</span></h2>
+      <p>정상가격 분석을 시작하기 전에, 세무당국은 관련 계열회사들 간에 어떤 <strong>청구 체계(charging arrangements)</strong>가 마련되어 있는지 먼저 확인해야 합니다. 이것이 정상가격 분석의 전제 조건입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>청구 체계 식별이 필요한 이유와 세 가지 유형</span>
+          <span class="para">¶7.20</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>세무당국이 실제로 청구된 금액을 파악하기 위해서는, 관련 계열회사들 간에 어떤 청구 체계가 마련되어 있는지 먼저 확인해야 합니다.</p>
+          <div class="key-point">💡 <strong>핵심 원칙:</strong> "서비스가 제공되었는가?"(B.1)를 넘어서, <strong>"실제로 비용이 청구되었는가, 그 방식은 무엇인가"</strong>를 실증적으로 식별해야만 정상가격 분석이 가능합니다. 청구 체계가 확인되지 않으면 어떤 정상가격 방법론도 적용할 수 없습니다.</div>
+
+          <table class="compare-table">
+            <thead><tr><th>청구 체계 유형</th><th>특징</th><th>해당 조항</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>직접청구방법 (Direct Charge)</strong></td>
+                <td>서비스-대가 1:1 직접 연결, 개별 수령인 명확</td>
+                <td>B.2.2.1 ¶7.21–7.22</td>
+              </tr>
+              <tr>
+                <td><strong>간접청구방법 (Indirect Charge)</strong></td>
+                <td>전체 비용을 배분 기준에 따라 다수 수령인에게 안분</td>
+                <td>B.2.2.2 ¶7.23–7.26</td>
+              </tr>
+              <tr>
+                <td><strong>내재 대가 (Embedded Compensation)</strong></td>
+                <td>서비스 대가가 다른 거래 금액(라이선스료, 제품가격 등)에 포함</td>
+                <td>B.2.2.3 ¶7.27–7.28</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="warn-point">⚠️ <strong>실무 주의:</strong> 명시적 청구서나 계약이 없더라도 서비스 제공 사실이 인정될 수 있으며(¶7.18), 반대로 청구서가 있어도 서비스가 제공되지 않았으면 공제가 부인됩니다. 청구 체계와 실제 서비스 제공 여부를 독립적으로 검토해야 합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3 -->
+    <section class="card" id="s3">
+      <h2>3. 직접청구방법 (B.2.2.1) <span class="tag tag-para">¶7.21–7.22</span></h2>
+      <p><strong>직접청구방법(direct charge method)</strong>은 서비스와 대가를 1:1로 직접 연결하여 청구하는 방식으로, 정상가격 분석에서 가장 명확하고 선호되는 방법입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>직접청구방법의 특성과 적용 우선순위</span>
+          <span class="para">¶7.21</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>직접청구방법을 사용하는 경우 서비스 대가를 파악하는 것은 어렵지 않습니다.</p>
+          <ul>
+            <li>특정 서비스와 해당 대가를 <strong>1:1로 직접 연결(direct attribution)</strong>하여 청구</li>
+            <li>각 수령 법인에게 직접적으로 비용 <strong>귀속(attribution) 가능</strong></li>
+            <li>금액 산정이 명확하고 <strong>세무당국의 검토가 용이</strong></li>
+            <li>간접청구방법보다 <strong>이중과세 위험이 낮음</strong></li>
+          </ul>
+          <div class="key-point">💡 <strong>적용 원칙:</strong> 직접청구방법이 가능한 경우 우선 적용합니다. 직접청구가 어려운 경우에만 간접청구방법으로 전환합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>직접청구방법 적용 요건과 사례</span>
+          <span class="para">¶7.22</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>제3자가 제공하는 서비스와 유사한 경우 직접청구방법이 일반적으로 적용됩니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>✅ 직접청구방법 적합 서비스</h4>
+              <ul>
+                <li>특정 계열사를 위한 <strong>법률 자문</strong></li>
+                <li>개별 계열사 대상 <strong>IT 지원·소프트웨어 개발</strong></li>
+                <li>특정 계열사의 <strong>회계·감사 서비스</strong></li>
+                <li>프로젝트별로 제공되는 <strong>컨설팅 서비스</strong></li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>🔑 적합 요건</h4>
+              <ul>
+                <li>서비스 수령인이 <strong>명확히 특정</strong>될 것</li>
+                <li>서비스 내용과 대가가 <strong>개별 연결 가능</strong>할 것</li>
+                <li>시장에서 유사 서비스의 <strong>제3자 거래가 존재</strong>할 것</li>
+                <li>비용이 서비스별로 <strong>분리 계상 가능</strong>할 것</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4 -->
+    <section class="card" id="s4">
+      <h2>4. 간접청구방법 (B.2.2.2) <span class="tag tag-para">¶7.23–7.26</span></h2>
+      <p>직접청구방법 적용이 어려운 경우 <strong>간접청구방법(indirect charge method)</strong>을 적용합니다. 전체 비용을 합리적인 배분 기준에 따라 다수의 수령 법인에게 안분하는 방식입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>간접청구방법 적용 요건과 대표 사례</span>
+          <span class="para">¶7.23–7.24</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>직접청구방법 적용이 어려운 경우 간접청구방법을 적용하며, 이때 B.2.3에서 설명하는 원칙을 따릅니다.</p>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>❌ 직접청구방법 적용 어려운 경우</h4>
+              <ul>
+                <li>서비스가 다수 계열사에 <strong>동시에 제공</strong>됨</li>
+                <li>개별 수혜 법인별 비용을 <strong>분리 계상 불가</strong></li>
+                <li>그룹 전체를 위한 <strong>공통 서비스</strong></li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>✅ 간접청구방법 적용 사례 (¶7.24)</h4>
+              <ul>
+                <li>제3자 광고회사를 통한 <strong>전세계 제품 광고</strong></li>
+                <li>전세계 관계회사에 제공되는 <strong>공통 관리서비스</strong></li>
+                <li>지역본부가 복수 계열사에 제공하는 <strong>행정·금융·IT 지원</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>배분 기준 선택 원칙과 예시</span>
+          <span class="para">¶7.25</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>배분 기준은 서비스로부터 기대되는 <strong>편익을 가장 잘 반영하는 지표</strong>여야 합니다. 또한 연도 간 일관성을 유지해야 합니다.</p>
+
+          <div class="alloc-grid">
+            <div class="alloc-card">
+              <h5>💼 경리(Payroll) 서비스</h5>
+              <p>인원 관리 서비스의 혜택은 직원 규모에 비례합니다. 매출이 아닌 실제 수혜 인원을 기준으로 해야 합니다.</p>
+              <span class="basis">기준: 직원 수 (Head count)</span>
+            </div>
+            <div class="alloc-card">
+              <h5>💻 컴퓨터 백업 대기비용</h5>
+              <p>컴퓨터 자원 사용량에 비례하는 백업 용량이 서비스 혜택을 결정합니다.</p>
+              <span class="basis">기준: 컴퓨터 관련 비용</span>
+            </div>
+            <div class="alloc-card">
+              <h5>📢 글로벌 광고 비용</h5>
+              <p>각 사업부의 매출 또는 판매량에 비례하여 광고 효과가 귀속된다고 볼 수 있습니다.</p>
+              <span class="basis">기준: 매출액 또는 판매량</span>
+            </div>
+          </div>
+
+          <div class="blue-point">📌 <strong>배분 기준 일관성:</strong> 선택된 배분 기준은 연도 간 일관성을 유지해야 하며, 정당한 이유 없이 변경해서는 안 됩니다. 기준 변경 시에는 이유를 문서화해야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>이중과세 위험과 실무 대응</span>
+          <span class="para">¶7.26</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>청구된 비용과 서비스를 구분하기 어려운 경우 이중과세 위험이 있을 수 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>🚨 이중과세 발생 원인</h4>
+              <ul>
+                <li>배분 방법이 불투명하여 세무당국 간 해석 차이 발생</li>
+                <li>비용 청구와 서비스 범위가 불명확하게 연결된 경우</li>
+                <li>A국에서 비용 처리 + B국에서도 동일 비용 별도 부과</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>🛡️ 예방 실무 포인트</h4>
+              <ul>
+                <li>배분 방법·기준을 <strong>명확히 문서화</strong></li>
+                <li>그룹 차원의 <strong>일관된 배분 방식</strong> 유지</li>
+                <li>MAP 또는 APA를 통한 <strong>사전 합의</strong> 고려</li>
+                <li>이전가격 정책문서에 배분 정책 <strong>명시</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5 -->
+    <section class="card" id="s5">
+      <h2>5. 대가의 형태 (B.2.2.3) <span class="tag tag-para">¶7.27–7.28</span></h2>
+      <p>서비스 대가가 항상 독립된 청구 항목으로 존재하는 것은 아닙니다. 경우에 따라 서비스 대가가 다른 거래 금액에 <strong>내재(embedded)</strong>되어 있거나, 온콜 서비스처럼 특수한 형태를 취하기도 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>서비스 대가가 다른 거래에 내재(Embedded)되는 경우</span>
+          <span class="para">¶7.27</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스 대가가 독립된 청구 항목이 아니라, 다른 거래 금액에 내재되어 함께 청구되는 경우가 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📄 무형자산 라이선스 + 기술서비스</h4>
+              <p>무형자산 라이선스 비용 속에 기술지원 서비스가 포함됩니다. 예: 특허 라이선스료에 기술 교육, 기술 문제 해결 지원이 내재.</p>
+            </div>
+            <div class="col-box">
+              <h4>🏭 제품 판매가격 + 중앙관리서비스</h4>
+              <p>제품 판매가격에 마케팅, 공급망 관리, 중앙행정 서비스가 내재됩니다. 예: 완제품 공급가에 글로벌 마케팅 지원 포함.</p>
+            </div>
+          </div>
+
+          <div class="warn-point">⚠️ <strong>이중공제(Double Deduction) 위험:</strong> 서비스 대가가 다른 거래에 <strong>이미 포함되어 있는데</strong>, 별도 청구서로 한 번 더 비용처리하면 이중공제가 발생합니다. 이전가격 분석 시 다른 관련 거래와의 연계성을 반드시 함께 검토해야 합니다.</div>
+
+          <div class="practice-note">
+            <div class="pn-label">🔎 실무 포인트</div>
+            <p>내재 서비스가 포함된 라이선스료 또는 제품가격의 정상가격 적합성을 검토할 때는, 내재된 서비스 가치를 분리하여 전체 대가의 합리성을 평가합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>온콜(On-Call) 서비스의 대가 특수성</span>
+          <span class="para">¶7.28</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>온콜 서비스(M7-1에서 다룬)의 대가 결정에서는 주의할 사항이 있습니다.</p>
+          <ul>
+            <li>서비스 제공량이 <strong>일정 수준에 미치지 못하는 경우</strong> 대가가 청구되지 않을 수 있음</li>
+            <li>대기(standby) 비용 자체에 대한 대가 청구의 합리성 — 실제 서비스 없이 대기비용만 청구 가능한지 여부 검토</li>
+            <li>특약 없이 수시로 서비스를 요청할 수 있는 경우 — 별도 온콜 계약 없이 제공 가능 여부</li>
+          </ul>
+          <div class="amber-point">🔎 <strong>B.1.6과의 연계:</strong> M7-1에서 다룬 온콜 서비스의 <em>실제 제공 여부(B.1.6)</em>와, 본 섹션에서 다루는 <em>대가 형태(B.2.2.3)</em>를 명확히 분리하여 분석해야 합니다. 서비스 존재 여부(B.1)와 대가 결정(B.2)은 독립적으로 검토합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6 -->
+    <section class="card" id="s6">
+      <h2>6. 정상가격 계산 (B.2.3) <span class="tag tag-para">¶7.29–7.34</span></h2>
+      <p>청구 체계와 대가 형태를 파악한 후, 그 금액이 정상가격 원칙에 부합하는지 평가합니다. 정상가격 산출은 <strong>제공자와 수령자 양측의 관점</strong>을 모두 고려해야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정상가격 계산 일반 원칙 — 양측 관점의 고려</span>
+          <span class="para">¶7.29–7.30</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>정상가격 산출 시 서비스 <strong>제공자와 피제공자(수령자) 양측의 사업상 측면 모두</strong>를 고려해야 합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>👤 수령자(Recipient) 관점</h4>
+              <ul>
+                <li>독립기업이라면 이 서비스에 <strong>지급할 의사(willingness to pay)</strong>가 있는가?</li>
+                <li>서비스로 인한 <strong>경제적 이익</strong>이 대가를 정당화하는가?</li>
+                <li>동일 서비스를 <strong>더 낮은 비용으로 외부에서 조달</strong>할 수 있었는가?</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>🏢 제공자(Provider) 관점</h4>
+              <ul>
+                <li>청구 가격이 <strong>발생 비용을 회수</strong>하기에 충분한가?</li>
+                <li>독립기업이라면 이 대가에 서비스를 제공할 <strong>인센티브</strong>가 있는가?</li>
+                <li>서비스 제공에 따른 <strong>기회비용</strong>은 무엇인가?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>지급 의사만으로는 부족 (¶7.30):</strong> 시장에서 제3자가 지급할 용의가 있는 가격으로 서비스를 제공하는 경우라도, 그 사실만으로 정상가격으로 인정되지 않습니다. 제공자 입장에서 청구가격이 발생 비용 대비 적정한지도 함께 검토해야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>정상가격 산출 방법론 (B.2.3.1)</span>
+          <span class="para">¶7.31</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스 정상가격 산출은 Chapter I, II, III에서 제시된 방법을 적용합니다. 아래 3단계 순서에 따라 방법론을 선택합니다.</p>
+
+          <div class="key-point">
+            <strong>① CUP 우선 적용</strong><br>
+            회계·감사·법률·컴퓨터 서비스 등 시장에서 유사 서비스가 거래되는 경우, 비교가능 제3자 가격방법(Comparable Uncontrolled Price Method, CUP)을 우선 적용합니다. 비교가능 독립거래 가격이 가장 신뢰도 높은 정상가격 지표이기 때문입니다.
+          </div>
+
+          <div class="blue-point">
+            <strong>② 비교가능 거래가 없는 경우 → 비용기준방법</strong><br>
+            CUP를 적용할 수 있는 비교가능 거래가 없다면, 원가가산방법(Cost-Plus Method) 또는 비용기준 거래순이익률방법(TNMM)을 적용합니다. 서비스 거래의 특성에 따라 두 가지 방법을 병행 적용하는 것도 가능합니다.
+          </div>
+
+          <div class="amber-point">
+            <strong>③ 비용기준방법 적용 시 — 비용처리 일관성 요건</strong><br>
+            비용기준방법 적용 시에는 분석대상회사와 비교가능 거래 간에 <strong>비용처리방법(accounting for costs)이 동일하거나 유사</strong>해야 합니다. 직접비·간접비의 정의와 처리 방식, 포함 범위가 일치해야 비교가능성이 확보됩니다. 양측의 비용 범위가 다르다면 조정이 필요합니다.
+          </div>
+
+          <div class="kr-law">
+            <div class="kl-label">한국 국조법 시행령 제12조 (용역거래의 정상가격 산출방법)</div>
+            <p>제2항: <strong>저부가가치 서비스(LVA) 세이프하버</strong> — 원가에 5% 가산하는 간편법 허용 (M7-4에서 상세 학습)</p>
+            <p>제7항: 용역이 실제로 제공되었는지 여부 규정</p>
+            <p>정상가격 판단: §7(원가가산방법)·§8(TNMM)의 "통상의 이윤" 또는 "통상의 거래순이익률" 기준 충족 필요</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>단기·장기 효과 비교 및 비용 분석 (B.2.3.1 계속)</span>
+          <span class="para">¶7.32–7.33</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>단기에 비용이 집중되고 효과는 장기에 발생하는 서비스(예: 마케팅 준비비용)의 경우, 장기적 효과를 고려한 비용 분담이 중요합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>⏱️ 단기·장기 효과 분석 (¶7.32)</h4>
+              <ul>
+                <li>한 법인이 단독 부담하는 것이 비합리적이라면 → <strong>모회사 또는 관계회사들이 분산 부담</strong></li>
+                <li>비용 분담 구조가 <strong>기대 장기 편익(expected future benefit)</strong>과 합리적으로 연결되어야 함</li>
+                <li><strong>다년도(multi-year) 데이터</strong>를 활용하여 장기 영향 평가</li>
+              </ul>
+            </div>
+            <div class="col-box">
+              <h4>💰 비용기준방법의 비용 범위 (¶7.33)</h4>
+              <ul>
+                <li><strong>직접 비용:</strong> 서비스에 직접 귀속되는 인건비, 재료비 등</li>
+                <li><strong>간접 비용:</strong> 합리적으로 배분 가능한 공통 운영비</li>
+                <li>비용 범위·처리 방식의 <strong>일관성 유지</strong>가 핵심</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>에이전트·중개 역할 수행 시 대가 산출</span>
+          <span class="para">¶7.34</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>서비스를 제공하는 관계회사가 <strong>에이전트(agent) 또는 중개(intermediary) 역할만을 수행</strong>하는 경우, 각 개별 서비스가 아닌 에이전트·중개 서비스 자체의 대가를 산출하는 것이 합리적입니다.</p>
+
+          <table class="compare-table">
+            <thead><tr><th>구분</th><th>처리 방법</th><th>근거</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>기본 대여비용·원가</strong></td>
+                <td>마진 없이(at cost) 관련비용을 관계회사에게 배분</td>
+                <td>에이전트는 해당 비용의 최종 부담자가 아님</td>
+              </tr>
+              <tr>
+                <td><strong>에이전트·중개 기능</strong></td>
+                <td>에이전트 서비스에 대한 별도 대가(fee) 산출</td>
+                <td>에이전트 기능 자체가 가치 창출 활동</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="case-box">
+            <div class="case-label">📋 사례: 광고 장소 대여</div>
+            그룹 내 A사가 여러 계열사를 위해 글로벌 광고 장소 대여비용을 일괄 부담하는 경우 →
+            <strong>①</strong> 광고 대여비용 자체는 마진 없이(at cost) 각 계열사에 배분 +
+            <strong>②</strong> 광고 장소 섭외·계약·조율 등 에이전트 활동에 대한 대가는 별도 수수료(fee)로 산출.
+            모든 비용에 동일한 마진을 부가하면 기능과 수익의 불일치가 발생한다.
+          </div>
+
+          <div class="key-point">💡 <strong>에이전트 대가 산출의 의의:</strong> 에이전트는 서비스의 실질적 제공자가 아닌 <strong>조달·중개 기능</strong>을 수행하므로, 실제 서비스 원가 전체에 마진을 부가하는 것은 경제적 실질에 부합하지 않습니다. 에이전트 기능에만 적정 마진을 적용해야 합니다.</div>
+        </div>
+      </div>
+
+      <!-- 종합 요약 -->
+      <div class="summary-box">
+        <h4>📋 M7-2 핵심 정리: 정상가격 대가 결정 &amp; 청구방법 (¶7.19–7.34)</h4>
+        <ul>
+          <li><strong>정상가격 원칙 (B.2.1):</strong> 서비스 거래도 무형자산·상품거래와 동일하게 정상가격 원칙 적용 — 관계회사라는 이유만으로 다른 기준 적용 불가</li>
+          <li><strong>청구 체계 파악 (B.2.2):</strong> 직접청구·간접청구·내재 대가 중 어떤 방식인지 먼저 식별 — 정상가격 분석의 전제 조건</li>
+          <li><strong>직접청구방법 (B.2.2.1):</strong> 서비스-대가 1:1 연결, 제3자 유사 서비스 있으면 우선 적용 — 가장 명확하고 선호되는 방식</li>
+          <li><strong>간접청구방법 (B.2.2.2):</strong> 편익을 가장 잘 반영하는 배분 기준 선택(경리→직원수, 컴퓨터백업→비용), 연도 간 일관성 유지, 이중과세 위험 관리</li>
+          <li><strong>내재 대가 (B.2.2.3):</strong> 라이선스료·제품가격에 내재된 서비스의 이중공제 위험 검토, 온콜 서비스 대가의 특수성</li>
+          <li><strong>정상가격 산출 (B.2.3):</strong> CUP 우선 → 비교불가 시 비용기준방법, 제공자·수령자 양측 관점, 비용처리 일관성, 에이전트 기능 별도 대가 산출</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈 <span class="tag tag-para">¶7.19–7.34</span></h2>
+
+      <div class="q-block" id="q1">
+        <div class="q-text">Q1. OECD ¶7.19가 제시하는 서비스 거래의 정상가격 원칙에 관한 설명으로 <u>옳지 않은</u> 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q1" value="a"> a) 제공된 서비스 대가는 독립된 기업 간 유사 상황에서 수용 가능한 수준이어야 한다</label>
+          <label><input type="radio" name="q1" value="b"> b) 관계회사라는 이유만으로 세무상 다른 방식으로 취급해서는 안 된다</label>
+          <label><input type="radio" name="q1" value="c"> c) 서비스 거래에는 무형자산·상품거래와 다른 완화된 정상가격 기준이 별도로 존재한다</label>
+          <label><input type="radio" name="q1" value="d"> d) 서비스 거래도 상품·무형자산 거래와 동일하게 독립기업 원칙이 적용된다</label>
+        </div>
+        <div class="q-feedback" id="f1a" data-type="wrong">❌ 서비스 대가는 독립기업 간 수용 가능한 수준이어야 합니다. 옳은 설명입니다.</div>
+        <div class="q-feedback" id="f1b" data-type="wrong">❌ 관계회사라는 이유만으로 세무상 다른 방식으로 취급되어서는 안 됩니다. 옳은 설명입니다.</div>
+        <div class="q-feedback" id="f1c" data-type="correct">✅ 정답! 서비스 거래에도 다른 통제거래와 동일하게 정상가격 원칙이 적용됩니다. 서비스라는 이유로 완화된 별도 기준이 존재하지 않습니다.</div>
+        <div class="q-feedback" id="f1d" data-type="wrong">❌ 서비스 거래에도 무형자산·상품거래와 동일한 정상가격 원칙이 적용됩니다. 옳은 설명입니다.</div>
+      </div>
+
+      <div class="q-block" id="q2">
+        <div class="q-text">Q2. ¶7.25에 따른 경리(Payroll) 서비스의 간접청구방법 배분 기준으로 가장 적합한 것은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q2" value="a"> a) 각 법인의 매출액</label>
+          <label><input type="radio" name="q2" value="b"> b) 각 법인의 자산 가치</label>
+          <label><input type="radio" name="q2" value="c"> c) 각 법인의 직원 수</label>
+          <label><input type="radio" name="q2" value="d"> d) 각 법인의 컴퓨터 관련 비용</label>
+        </div>
+        <div class="q-feedback" id="f2a" data-type="wrong">❌ 매출액은 경리 서비스 혜택을 반영하는 기준으로 적합하지 않습니다. 경리 서비스는 직원 수에 비례하여 수행됩니다.</div>
+        <div class="q-feedback" id="f2b" data-type="wrong">❌ 자산 가치는 경리 서비스 배분 기준으로 적합하지 않습니다. 경리 서비스의 혜택은 직원 규모와 관련됩니다.</div>
+        <div class="q-feedback" id="f2c" data-type="correct">✅ 정답! 경리(Payroll) 서비스의 배분 기준으로는 직원 수가 가장 적합합니다. 경리 업무는 직원 수에 비례하여 발생하므로, 매출이 아닌 직원 수가 편익을 가장 잘 반영합니다.</div>
+        <div class="q-feedback" id="f2d" data-type="wrong">❌ 컴퓨터 관련 비용은 컴퓨터 백업 대기비용의 배분 기준입니다. 경리 서비스의 배분 기준은 직원 수입니다.</div>
+      </div>
+
+      <div class="q-block" id="q3">
+        <div class="q-text">Q3. ¶7.27에 따라 무형자산 라이선스 비용에 기술서비스 대가가 내재(embedded)된 경우 주요 위험은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q3" value="a"> a) 이중과세(Double Taxation) — 두 국가에서 동일 소득에 과세</label>
+          <label><input type="radio" name="q3" value="b"> b) 이중공제(Double Deduction) — 이미 포함된 서비스를 별도로 또 비용처리</label>
+          <label><input type="radio" name="q3" value="c"> c) 비용 미산입(Cost Omission) — 서비스 대가가 누락되는 문제</label>
+          <label><input type="radio" name="q3" value="d"> d) 마진 과소계상 — 서비스 마진이 너무 낮게 설정되는 문제</label>
+        </div>
+        <div class="q-feedback" id="f3a" data-type="wrong">❌ 이중과세는 주로 간접청구방법에서 배분이 불명확할 때 발생합니다. 내재 대가의 주요 위험은 이중공제입니다.</div>
+        <div class="q-feedback" id="f3b" data-type="correct">✅ 정답! 서비스 대가가 라이선스료 등에 이미 포함(내재)되어 있는데, 별도 청구서로 한 번 더 비용처리하면 <strong>이중공제(double deduction)</strong>가 발생함을 경고합니다. 이 위험을 방지하기 위해 관련 거래들을 함께 검토해야 합니다.</div>
+        <div class="q-feedback" id="f3c" data-type="wrong">❌ 내재 대가 상황에서는 비용이 누락되는 것이 아니라, 오히려 이중으로 공제될 위험이 있습니다.</div>
+        <div class="q-feedback" id="f3d" data-type="wrong">❌ 내재 대가의 주요 위험은 마진 수준의 문제가 아니라, 이미 내재된 서비스를 별도로 또 청구하는 이중공제 위험입니다.</div>
+      </div>
+
+      <div class="q-block" id="q4">
+        <div class="q-text">Q4. ¶7.31이 서비스 정상가격 산출 시 CUP 비교가능 거래가 없는 경우 제시하는 대체 방법은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q4" value="a"> a) 이익분할법(PSM)</label>
+          <label><input type="radio" name="q4" value="b"> b) 재판매가격방법(RPM)</label>
+          <label><input type="radio" name="q4" value="c"> c) 비용기준방법 — 원가가산법 또는 비용기준 TNMM</label>
+          <label><input type="radio" name="q4" value="d"> d) 내부비교가격방법(Internal CUP)</label>
+        </div>
+        <div class="q-feedback" id="f4a" data-type="wrong">❌ 이익분할법은 고도로 통합된 거래 등 특수한 상황에서 적용되며, ¶7.31이 CUP 대체로 제시하는 방법이 아닙니다.</div>
+        <div class="q-feedback" id="f4b" data-type="wrong">❌ 재판매가격방법은 주로 유형자산 재판매 상황에서 적용되며, 서비스 거래에서 ¶7.31이 제시하는 CUP 대체 방법이 아닙니다.</div>
+        <div class="q-feedback" id="f4c" data-type="correct">✅ 정답! CUP 비교가능 거래가 없는 경우 <strong>비용기준방법(원가가산법 또는 비용기준 TNMM)</strong>을 적용한다고 규정합니다. 이때 분석대상과 비교대상 간 비용처리방법의 일관성이 요구됩니다.</div>
+        <div class="q-feedback" id="f4d" data-type="wrong">❌ 내부비교가격방법은 CUP의 하위 개념으로, CUP를 적용할 수 없는 경우의 대체 방법이 아닙니다.</div>
+      </div>
+
+      <div class="q-block" id="q5">
+        <div class="q-text">Q5. ¶7.34에 따라 관계회사가 에이전트 역할만 수행할 때 올바른 대가 처리 방법은?</div>
+        <div class="q-options">
+          <label><input type="radio" name="q5" value="a"> a) 모든 비용에 동일한 마진을 부가하여 청구한다</label>
+          <label><input type="radio" name="q5" value="b"> b) 기본 비용은 마진 없이(at cost) 배분하고, 에이전트 기능에 대해서만 별도 대가를 산출한다</label>
+          <label><input type="radio" name="q5" value="c"> c) 에이전트 활동에 대해서는 어떠한 대가도 청구할 수 없다</label>
+          <label><input type="radio" name="q5" value="d"> d) 에이전트 역할은 서비스 제공이 아니므로 정상가격 분석 대상이 아니다</label>
+        </div>
+        <div class="q-feedback" id="f5a" data-type="wrong">❌ 기본 비용 전체에 마진을 부가하면 에이전트 기능이 아닌 원가에도 마진이 붙어 경제적 실질과 맞지 않습니다.</div>
+        <div class="q-feedback" id="f5b" data-type="correct">✅ 정답! 에이전트·중개 역할만 수행하는 경우, 기본 대여비용 등 원가는 <strong>마진 없이(at cost) 배분</strong>하고, 에이전트·중개 기능 자체에 대해서는 <strong>별도의 대가를 산출</strong>해야 한다고 규정합니다. 에이전트 광고 장소 대여 사례가 대표적입니다.</div>
+        <div class="q-feedback" id="f5c" data-type="wrong">❌ 에이전트 활동 자체는 가치 창출 행위이므로 별도 대가 청구 대상이 됩니다. 다만 기본 원가와 에이전트 대가를 분리해야 합니다.</div>
+        <div class="q-feedback" id="f5d" data-type="wrong">❌ 에이전트·중개 기능도 관계회사간 서비스이며 정상가격 분석 대상입니다. 에이전트 기능에 대한 정상가격 대가를 별도로 산출해야 합니다.</div>
+      </div>
+
+      <button class="quiz-btn" id="quizBtn" onclick="gradeQuiz()">📊 채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트 <span class="tag tag-para">정상가격 대가 결정 검증</span></h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">서비스 거래에도 무형자산·상품 거래와 동일한 정상가격 원칙이 적용됨을 확인하고, 완화된 별도 기준을 적용하지 않았습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">정상가격 분석 전에 실제 청구 체계(직접청구·간접청구·내재 대가)를 먼저 파악하고 문서화하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">직접청구방법을 우선 검토하였고, 직접청구가 불가능한 경우에만 간접청구방법을 적용하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">간접청구방법 적용 시 서비스 편익을 가장 잘 반영하는 합리적인 배분 기준을 선택하고, 그 이유를 문서화하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">간접청구방법의 배분 기준을 연도 간 일관성 있게 적용하였고, 변경이 있는 경우 이유를 기록하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">서비스 대가가 라이선스료·제품가격 등에 내재된 경우, 이중공제 위험을 검토하고 관련 거래들을 함께 분석하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">정상가격 산출 시 CUP를 우선 검토하였고, 비교가능 거래가 없는 경우 비용기준방법으로 전환하면서 비용처리 일관성을 확인하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">정상가격 산출 시 서비스 제공자와 수령자 양측의 관점(지급 의사 및 비용 회수 가능성)을 모두 고려하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">단기에 비용이 집중되고 효과가 장기에 발생하는 서비스(예: 마케팅 준비비)의 경우 다년도 데이터를 분석하였습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">에이전트·중개 역할만 수행하는 경우, 기본 원가는 마진 없이 배분하고 에이전트 기능에 대해서만 별도 대가를 산출하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M7-1_서비스_식별_주주활동.html">← M7-1. 서비스 식별 &amp; 주주활동</a>
+      <a class="btn-nav secondary" href="#">📋 목차로</a>
+      <a class="btn-nav" href="M7-3_마진_적용_사례.html">M7-3. 마진 적용 &amp; 사례 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 아코디언 ── */
+const allAcc=document.querySelectorAll('.acc-header');
+document.getElementById('accTotal').textContent=allAcc.length;
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=body.classList.contains('open');
+  btn.classList.toggle('open',!isOpen);
+  body.classList.toggle('open',!isOpen);
+  if(!isOpen){btn.classList.add('viewed');updatePct();}
+}
+/* ── 네비 ── */
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+  document.querySelectorAll('.nav-item').forEach(b=>{
+    b.classList.toggle('active',b.getAttribute('onclick')===`goTo('${id}')`);
+  });
+}
+/* ── 진도 ── */
+function updatePct(){
+  const viewed=document.querySelectorAll('.acc-header.viewed').length;
+  const total=allAcc.length;
+  document.getElementById('accDone').textContent=viewed;
+  const qc=parseInt(document.getElementById('quizDone').textContent)||0;
+  const pct=Math.round((viewed/total*0.7+qc/5*0.3)*100);
+  document.getElementById('pctDisp').textContent=pct+'%';
+  document.getElementById('topBar').style.width=pct+'%';
+}
+/* ── 퀴즈 ── */
+const answers={q1:'c',q2:'c',q3:'b',q4:'c',q5:'b'};
+const feedbacks={
+  q1:{a:'f1a',b:'f1b',c:'f1c',d:'f1d'},
+  q2:{a:'f2a',b:'f2b',c:'f2c',d:'f2d'},
+  q3:{a:'f3a',b:'f3b',c:'f3c',d:'f3d'},
+  q4:{a:'f4a',b:'f4b',c:'f4c',d:'f4d'},
+  q5:{a:'f5a',b:'f5b',c:'f5c',d:'f5d'}
+};
+function gradeQuiz(){
+  let score=0;
+  document.querySelectorAll('.q-feedback').forEach(f=>f.style.display='none');
+  ['q1','q2','q3','q4','q5'].forEach(q=>{
+    const sel=document.querySelector(`input[name=${q}]:checked`);
+    if(!sel)return;
+    const fid=feedbacks[q][sel.value];
+    const fb=document.getElementById(fid);
+    if(fb){
+      fb.style.display='block';
+      fb.className='q-feedback '+(sel.value===answers[q]?'correct':'wrong');
+    }
+    if(sel.value===answers[q])score++;
+  });
+  const pct=score*20;
+  document.getElementById('scoreNum').textContent=pct+'점 ('+score+'/5)';
+  const msg=pct>=80?'🎉 합격! B.2 정상가격 대가 결정의 핵심을 이해하셨습니다.':'📚 다시 한번 검토해 보세요. 각 정답 해설을 참고하세요.';
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('scoreBox').style.display='block';
+  document.getElementById('quizBtn').disabled=true;
+  document.getElementById('quizDone').textContent=score;
+  updatePct();
+}
+/* ── 스크롤 감지 ── */
+window.addEventListener('scroll',()=>{
+  const sections=['obj','s1','s2','s3','s4','s5','s6','quiz','check'];
+  sections.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const rect=el.getBoundingClientRect();
+    if(rect.top<160&&rect.bottom>0){
+      document.querySelectorAll('.nav-item').forEach(b=>{
+        b.classList.toggle('active',b.getAttribute('onclick')===`goTo('${id}')`);
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>

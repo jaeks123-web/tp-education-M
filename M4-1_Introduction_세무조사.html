@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M4-1: Introduction & 세무조사 관행</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple:#3730a3;--purple-light:#eef2ff;--purple-mid:#4f46e5;--purple-dark:#1e1b4b;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#1e1b4b;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#e0e7ff}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #c7d2fe;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.pillar-card{border-radius:10px;padding:1rem 1.1rem;border:1.5px solid var(--purple);background:var(--purple-light)}
+.pillar-card .pl-num{display:inline-block;background:var(--purple);color:#fff;width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;font-size:.78rem;font-weight:800;margin-bottom:.4rem}
+.pillar-card h4{font-size:.92rem;font-weight:700;color:var(--purple-dark);margin-bottom:.35rem}
+.pillar-card p{font-size:.82rem;color:var(--text2);margin:0;line-height:1.6}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--purple);margin:.5rem 0}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col{grid-template-columns:1fr}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter IV 분쟁 회피·해결 행정적 접근 › M4-1 (1/6)</div>
+  <h1>M4-1. Introduction & 세무조사 관행 (Examination Practices)</h1>
+  <div class="sub">A. Introduction & B.1. Examination Practices — Chapter IV 개관, 이중과세 방지, 과세관청의 의무, 세무조사 원칙 &nbsp;|&nbsp; ¶4.1 – ¶4.10 &nbsp;|&nbsp; 예상 학습시간: 40분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. Chapter IV 개관 (A)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. 과세관청의 의무 (B 도입)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. 세무조사 관행 개요 (B.1)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. 상업적 판단의 존중</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 과세관청의 한계와 가격결정 절차</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>OECD 지침서 Chapter IV의 전체 구조(Sections A–G)와 분쟁 회피·해결 절차의 체계를 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>이전가격 행정에서 과세관청이 부담하는 두 가지 핵심 의무 — 공평한 과세배분과 이중과세 방지 — 를 이해한다</span></li>
+        <li><span class="obj-num">3</span><span>이전가격 행정의 3대 이슈(조사관행 · 입증책임 · 가산세 제도)이 왜 별도로 다루어지는지 설명할 수 있다</span></li>
+        <li><span class="obj-num">4</span><span>이전가격 세무조사의 특수성(사실집약성, 범위, 시간)과 납세자의 상업적 판단(commercial judgment) 존중 원칙을 적용할 수 있다</span></li>
+        <li><span class="obj-num">5</span><span>과세관청의 자료요구 한계와 가격결정 절차(price-setting process)에 초점을 둔 조사방식을 실무에 연결한다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: Chapter IV 개관 -->
+    <section class="card" id="s1">
+      <h2>1. Chapter IV 개관 (A. Introduction) <span class="tag tag-para">¶4.1–¶4.3</span></h2>
+      <p>Chapter IV는 <strong>이전가격 분쟁을 회피하고 해결하기 위한 행정적 접근방식</strong>을 다루고 있습니다. 정상가격원칙을 아무리 정교하게 적용하더라도 다국적 거래의 복잡성과 각 국가의 해석 차이로 인해 분쟁은 불가피하게 발생할 수 있으며, 따라서 분쟁의 사전 회피와 사후 해결을 위한 체계적 절차가 필요합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>왜 분쟁 회피·해결 절차가 필요한가? <span class="para">¶4.1–¶4.2</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>이전가격 문제는 본질적으로 <strong>두 개 이상의 과세관할이 동일한 소득에 과세할 위험</strong>을 내포하고 있습니다. A국 과세관청이 자국 자회사의 이전가격을 조정해 추가과세하면, B국 모회사의 이미 신고된 소득과 중복되어 <strong>경제적 이중과세(economic double taxation)</strong>가 발생하게 됩니다.</p>
+          <div class="key-point">💡 <strong>핵심:</strong> 정상가격원칙은 정답이 하나가 아닌 "허용 가능한 범위(arm's length range)"이므로, 양국 과세관청이 동일 거래를 검토하더라도 결론이 달라질 수 있습니다. 분쟁을 줄이는 행정 절차가 정상가격원칙의 효과성을 보강할 수 있습니다.</div>
+          <p>OECD는 이러한 이중과세를 방지하기 위해 다음의 행정 메커니즘을 Chapter IV에서 단계적으로 제시하고 있습니다.</p>
+          <ul>
+            <li><strong>사전적 분쟁 회피:</strong> Safe Harbours (Section E), Advance Pricing Arrangements (Section F)</li>
+            <li><strong>분쟁 발생 시 행정 대응:</strong> Compliance Practices (Section B), Simultaneous Tax Examinations (Section D)</li>
+            <li><strong>분쟁 해결 절차:</strong> Mutual Agreement Procedure (MAP, Section C), Arbitration (Section G)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Chapter IV 전체 구조 한눈에 보기 <span class="para">¶4.3</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>Section</th><th>주제</th><th>범위(¶)</th><th>본 모듈</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>A</strong></td><td>Introduction (개요)</td><td>4.1–4.3</td><td>M4-1</td></tr>
+              <tr><td><strong>B</strong></td><td>Compliance Practices (조사·입증·가산세)</td><td>4.4–4.28</td><td>M4-1, M4-2</td></tr>
+              <tr><td><strong>C</strong></td><td>Corresponding Adjustments & MAP (대응조정·상호합의)</td><td>4.29–4.78</td><td>M4-3, M4-4</td></tr>
+              <tr><td><strong>D</strong></td><td>Simultaneous Tax Examinations (동시세무조사)</td><td>4.79–4.94</td><td>M4-5</td></tr>
+              <tr><td><strong>E</strong></td><td>Safe Harbours (안전항)</td><td>4.95–4.133</td><td>M4-5</td></tr>
+              <tr><td><strong>F</strong></td><td>Advance Pricing Arrangements (APA)</td><td>4.134–4.169</td><td>M4-6</td></tr>
+              <tr><td><strong>G</strong></td><td>Arbitration (중재)</td><td>4.177–4.179</td><td>M4-6</td></tr>
+            </tbody>
+          </table>
+          <div class="note-point">📚 <strong>중급과정 Chapter IV 학습 순서:</strong> M4-1(본 모듈) → M4-2(입증책임·가산세) → M4-3(MAP 절차) → M4-4(MAP 운영·2차처분) → M4-5(동시조사·Safe Harbours) → M4-6(APA·중재). 총 6개 모듈로 ¶4.1–¶4.179 전 구간을 다루게 됩니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: 과세관청의 의무 -->
+    <section class="card" id="s2">
+      <h2>2. 과세관청의 의무와 행정 운영기준 (B 도입) <span class="tag tag-para">¶4.4–¶4.5</span></h2>
+      <p>Section B는 이전가격 행정의 출발점으로 <strong>과세관청이 부담하는 의무</strong>를 명확히 하고 있습니다. 단순히 자국의 세수를 극대화하는 것이 아니라, 국제적 공평성과 이중과세 방지가 행정의 핵심 가치가 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>과세관청의 2대 의무 <span class="para">¶4.4</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>일방 국가의 이전가격 과세가 타국 회사에 이중과세 문제를 야기할 때, 정상가격원칙 적용 과정에서 과세관청이 다음 두 가지에 노력해야 한다고 규정하고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>⚖️ ① 공평한 세금 배분</h4>
+              <p>국가 간 소득과 세원이 정상가격원칙에 따라 <strong>공평하게(fairly) 배분</strong>되도록 합니다. 자국 세수만을 우선시하여 정상가격을 왜곡하는 조정은 허용되지 않습니다.</p>
+            </div>
+            <div class="col-box green">
+              <h4>🛡️ ② 이중과세 방지</h4>
+              <p>일방의 조정이 타방에서 대응조정(corresponding adjustment)을 받지 못하면 동일 소득이 두 번 과세됩니다. 과세관청은 이러한 결과를 <strong>적극적으로 회피</strong>할 의무가 있습니다.</p>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>의의:</strong> 이 의무는 단순한 권고가 아니라 OECD 모델협약 제9조 및 제25조(상호합의)의 법적 기초가 됩니다. M4-3·M4-4에서 다룰 MAP과 대응조정은 모두 이 의무의 구체적 실행 메커니즘이라고 볼 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>이전가격 행정의 3대 이슈 <span class="para">¶4.5</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>이전가격 세제를 공정하고 효과적으로 운영하기 위해 다음 3가지 요소에 특별한 고려가 필요하다고 제시하고 있습니다. 이 3가지가 Section B의 하부구조(B.1·B.2·B.3)를 이루게 됩니다.</p>
+          <div class="three-col">
+            <div class="pillar-card">
+              <span class="pl-num">1</span>
+              <h4>B.1 조사관행<br>(Examination Practices)</h4>
+              <p>이전가격 세무조사의 특수성을 반영한 조사방식입니다. 사실집약적·다층적 검토가 필요합니다.<br><strong>¶4.6–4.10 (본 모듈)</strong></p>
+            </div>
+            <div class="pillar-card">
+              <span class="pl-num">2</span>
+              <h4>B.2 입증책임<br>(Burden of Proof)</h4>
+              <p>이전가격 적정성의 입증을 누가 부담하는가의 문제입니다. 국가별 차이가 큽니다.<br><strong>¶4.11–4.17 (M4-2)</strong></p>
+            </div>
+            <div class="pillar-card">
+              <span class="pl-num">3</span>
+              <h4>B.3 가산세<br>(Penalties)</h4>
+              <p>과소신고·자료미제출에 대한 제재입니다. 비례성과 합리성 원칙이 적용됩니다.<br><strong>¶4.18–4.28 (M4-2)</strong></p>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 왜 3개 영역이 함께 묶이는가?</div>
+            <p>이전가격 분쟁의 대다수는 ① 어떻게 조사를 진행하느냐, ② 누가 무엇을 입증해야 하느냐, ③ 어느 정도의 가산세가 부과되느냐의 3가지 단계에서 발생합니다. 이 세 요소의 운영방식이 납세자의 예측가능성과 세제 신뢰성을 결정하게 됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: 세무조사 관행 개요 -->
+    <section class="card" id="s3">
+      <h2>3. 이전가격 세무조사의 특수성 (B.1) <span class="tag tag-para">¶4.6–¶4.7</span></h2>
+      <p>B.1은 이전가격 세무조사가 일반 세무조사와 어떻게 다른지, 그리고 그 차이가 조사관행에 어떤 영향을 미치는지를 설명하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>이전가격 세무조사의 5대 특성 <span class="para">¶4.6–¶4.7</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>이전가격 조사가 <strong>사실관계의 심도 있는 분석(fact-intensive)</strong>을 요구하며 다음과 같은 어려움이 따른다고 설명하고 있습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>특성</th><th>일반 세무조사</th><th>이전가격 세무조사</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>사실 집약성</strong></td>
+                <td>거래 증빙·계산 검증 중심</td>
+                <td>사업모델·기능·위험·자산 전반의 분석 필요</td>
+              </tr>
+              <tr>
+                <td><strong>비교가능성</strong></td>
+                <td>국내 거래·시세 기준</td>
+                <td>전 세계 비교가능회사·거래 검색·조정 필요</td>
+              </tr>
+              <tr>
+                <td><strong>정보 범위</strong></td>
+                <td>당해 법인 자료 중심</td>
+                <td>그룹 전체, 해외 관계회사, 산업·시장 정보 포함</td>
+              </tr>
+              <tr>
+                <td><strong>판단의 모호성</strong></td>
+                <td>대체로 명확한 정답</td>
+                <td>"정상가격 범위" — 단일 정답 없음</td>
+              </tr>
+              <tr>
+                <td><strong>소요 시간</strong></td>
+                <td>수개월</td>
+                <td>1–3년+ (사실관계·비교가능성 분석)</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>4.6의 함의:</strong> 이러한 특수성 때문에 이전가격 조사관행에는 일반 세무조사와는 다른 원칙 — 유연성, 상호 존중, 비례원칙 — 이 요구됩니다. B.1의 ¶4.7–4.10은 이 원칙들을 구체화하고 있습니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: 상업적 판단의 존중 -->
+    <section class="card" id="s4">
+      <h2>4. 납세자의 상업적 판단 존중 <span class="tag tag-para">¶4.8</span></h2>
+      <p>이전가격 조사관행의 가장 중요한 철학적 기반을 제시하고 있습니다 — <strong>이전가격은 "정확한 과학(exact science)"이 아닙니다.</strong></p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>"이전가격은 정확한 과학이 아니다" — 무엇을 의미하나요? <span class="para">¶4.8</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>OECD는 이전가격 결정 과정의 본질적 모호성을 인정하면서, 과세관청이 납세자의 방법론과 다른 결론에 도달했더라도 그것이 곧 납세자의 잘못을 의미하지 않는다는 점을 강조하고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>📊 정상가격의 본질</h4>
+              <ul>
+                <li>단일한 정답(point)이 아니라 <strong>허용 가능한 범위(range)</strong>입니다</li>
+                <li>여러 방법론이 동시에 적용 가능 — 가장 적합한 방법 선택의 문제입니다</li>
+                <li>비교가능회사의 선정·조정에 평가적 판단이 개입됩니다</li>
+                <li>시장·산업·전략에 따라 결론이 달라질 수 있습니다</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>⚠️ 과세관청이 다른 방법론을 제시했을 때</h4>
+              <ul>
+                <li>이는 납세자의 <strong>오류가 아닐 수 있습니다</strong></li>
+                <li>방법론 선택의 모호성·해석 차이가 원인일 수 있습니다</li>
+                <li>이전가격의 본질적 특성에서 기인합니다</li>
+                <li>유연하고 상호 존중적 접근이 필요합니다</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>실무 적용:</strong> 과세관청이 거래이익기반방법(TNMM)을 적용하여 납세자의 CUP·RPM 결과와 다른 결론에 도달했더라도, 이것만으로 납세자가 정상가격원칙을 위반한 것은 아닙니다. 다른 방법론이 가져온 차이일 수 있습니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 한국 실무 적용</div>
+            <p><strong>국세청 vs. 납세자 방법론 불일치 사례:</strong> 국세청이 TNMM을 기준으로 추가과세를 했지만 납세자는 RPM을 선택한 경우, 조세심판원·법원은 어느 방법이 더 적합한지를 판단하면서 ¶4.8의 논리를 반영하게 됩니다. 즉 단순히 방법이 다르다는 이유로 추가과세를 인정하지 않고, 양 방법의 적합성을 종합 평가하는 경향이 있습니다.</p>
+            <p><strong>대법원 판례 경향:</strong> 정상가격은 "허용 가능한 범위"라는 인식이 정착되면서, 납세자가 선택한 방법이 합리적인인 경우 과세관청의 다른 방법론 적용만으로는 위법으로 보지 않는 경향이 강화되고 있습니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: 과세관청의 한계와 가격결정 절차 -->
+    <section class="card" id="s5">
+      <h2>5. 과세관청의 한계 & 가격결정 절차에 초점 <span class="tag tag-para">¶4.9–¶4.10</span></h2>
+      <p>¶4.9와 ¶4.10은 과세관청이 조사 과정에서 지켜야 할 행동기준과, 조사의 초점을 어디에 두어야 하는지를 구체적으로 제시하고 있습니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>과세관청의 2대 한계 <span class="para">¶4.9</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶4.9는 과세관청이 조사 과정에서 <strong>지켜야할 두 가지 기준</strong>을 명확히 제시하고 있습니다.</p>
+          <div class="two-col">
+            <div class="col-box red">
+              <h4>🚫 ① 과도한 정확성 요구 금지</h4>
+              <p>과세관청은 납세자에게 <strong>관련 사실과 현실에 비추어 과도하게 정확한 이전가격 설정방법</strong>을 요구해서는 안 됩니다. 이전가격은 추정의 영역이며, 비현실적 정확성을 요구하는 것은 부당합니다.</p>
+              <p style="margin-top:.5rem"><em>예시:</em> 비교가능회사 100개 모두에 대한 완전한 재무자료, 모든 가능한 비교가능성 조정의 정량화 등은 과도한 요구가 될 수 있습니다.</p>
+            </div>
+            <div class="col-box red">
+              <h4>🚫 ② 상업적 판단 무시 금지</h4>
+              <p>납세자의 <strong>commercial judgment(상업상 판단)을 존중</strong>해야 합니다. 실제 사업운영상 합리적인 의사결정을 사후적 결과만으로 부정해서는 안 됩니다.</p>
+              <p style="margin-top:.5rem"><em>예시:</em> 시장 진입 초기의 손실 전략, 시장점유율 확보를 위한 가격 인하 등은 정상적인 상업적 판단으로 인정될 수 있습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>조사의 초점: 납세자의 가격결정 절차 <span class="para">¶4.10</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>과세관청이 이전가격 조사 시 <strong>"결과(price outcome)"보다 "절차(price-setting process)"에 집중</strong>해야 한다고 명시하고 있습니다.</p>
+          <div class="flow-arrow">▼ 조사의 초점 전환 ▼</div>
+          <div class="two-col">
+            <div class="col-box orange">
+              <h4>❌ 결과 중심 조사</h4>
+              <ul>
+                <li>가격·이익이 일정 범위에 들어가는지만 검증합니다</li>
+                <li>사후적 비교가능회사 결과로 평가합니다</li>
+                <li>납세자의 실제 사업 맥락을 무시할 수 있습니다</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>✅ 절차 중심 조사 (OECD 권고)</h4>
+              <ul>
+                <li>납세자가 <strong>어떻게 가격을 결정했는가</strong>를 검증합니다</li>
+                <li>MNE의 실제 비즈니스 운영방식(이익중심 운영 등)을 고려합니다</li>
+                <li>사업 모델과 의사결정 메커니즘을 이해합니다</li>
+                <li>조사 자원을 효율적으로 배분합니다</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>"이익중심(profit centre) 운영"의 의미:</strong> 다국적기업이 각 사업부·자회사를 독립적 이익중심으로 운영하는 경우, 그 운영방식 자체가 이미 시장 메커니즘에 가까운 가격결정을 유도하게 됩니다. 과세관청은 이러한 운영구조를 이해하고 조사자원을 배분해야 합니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 실무 함의 — 납세자 입장</div>
+            <p><strong>가격결정 절차의 문서화가 핵심입니다:</strong> ¶4.10의 지침을 효과적으로 적용하려면 납세자도 "결과 자료(이익률)"뿐 아니라 "절차 자료(가격 어떻게 결정했는지)"를 체계적으로 문서화해야 합니다. 가격 정책서, 의사결정 메모, 시장조사 자료, 내부 승인절차 등이 모두 가격결정 절차의 증빙이 됩니다.</p>
+            <p><strong>Chapter V 문서화와의 연계:</strong> 이러한 절차 자료는 Local file의 "가격결정 정책" 항목으로 정리되어 있으며, 사전적(ex-ante) 의사결정 증빙의 중요성을 강조하고 있습니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M4-1 핵심 정리 — Chapter IV 진입을 위한 5가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>키워드</th><th>의미</th><th>관련 ¶</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>분쟁 회피·해결</strong></td><td>Chapter IV의 통합 주제 — 사전 회피와 사후 해결의 행정 메커니즘</td><td>4.1–4.3</td></tr>
+              <tr><td><strong>이중과세 방지</strong></td><td>과세관청의 의무이자 정상가격원칙의 실효성 기반</td><td>4.2, 4.4</td></tr>
+              <tr><td><strong>3대 이슈</strong></td><td>조사관행(B.1) · 입증책임(B.2) · 가산세(B.3)</td><td>4.5</td></tr>
+              <tr><td><strong>상업적 판단 존중</strong></td><td>이전가격은 정확한 과학이 아님 — 방법론 차이 ≠ 납세자 오류</td><td>4.8</td></tr>
+              <tr><td><strong>절차 중심 조사</strong></td><td>가격결정 절차(price-setting process)에 집중하는 효율적 조사</td><td>4.10</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. OECD 지침서 <strong>Chapter IV가 다루는 통합 주제</strong>로 가장 적절한 것은?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) 정상가격산출방법의 선택과 적용</label>
+          <label><input type="radio" name="q1" value="b"> (B) 비교가능성 분석의 절차와 조정</label>
+          <label><input type="radio" name="q1" value="c"> (C) 이전가격 분쟁의 사전적 회피와 사후적 해결을 위한 행정적 접근</label>
+          <label><input type="radio" name="q1" value="d"> (D) 무형자산 거래의 정상가격 결정</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. ¶4.4가 제시하는 <strong>과세관청의 두 가지 의무</strong>는?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) 세수 극대화와 효율적 조사</label>
+          <label><input type="radio" name="q2" value="b"> (B) 국가 간 공평한 세금 배분과 이중과세 방지</label>
+          <label><input type="radio" name="q2" value="c"> (C) 가산세 부과와 자료 요구</label>
+          <label><input type="radio" name="q2" value="d"> (D) 추정과세권과 입증책임 면제</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. ¶4.5가 제시하는 <strong>이전가격 행정의 3대 이슈</strong>이 아닌 것은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) 조사관행 (Examination Practices)</label>
+          <label><input type="radio" name="q3" value="b"> (B) 입증책임 (Burden of Proof)</label>
+          <label><input type="radio" name="q3" value="c"> (C) 가산세 제도 (Penalties)</label>
+          <label><input type="radio" name="q3" value="d"> (D) 사전가격승인 (APA)</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. ¶4.8 — "이전가격은 정확한 과학이 아니다"는 표현이 가장 직접적으로 의미하는 바는?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 이전가격은 학문이 아니므로 임의로 결정해도 된다</label>
+          <label><input type="radio" name="q4" value="b"> (B) 정상가격은 단일한 정답이 아니라 허용 가능한 범위이며, 과세관청과 납세자의 방법론 차이가 곧 납세자의 오류를 의미하지 않는다</label>
+          <label><input type="radio" name="q4" value="c"> (C) 과세관청은 항상 납세자의 방법론을 그대로 수용해야 한다</label>
+          <label><input type="radio" name="q4" value="d"> (D) 이전가격에는 가산세를 부과할 수 없다</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. ¶4.10은 과세관청이 이전가격 조사 시 <strong>어디에 집중</strong>해야 한다고 제시하는가?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 결과 자료(이익률, 가격)만 검증</label>
+          <label><input type="radio" name="q5" value="b"> (B) 비교가능회사의 절대적 일치 여부</label>
+          <label><input type="radio" name="q5" value="c"> (C) 납세자의 가격결정 절차(price-setting process)와 MNE의 실제 비즈니스 운영방식</label>
+          <label><input type="radio" name="q5" value="d"> (D) 본사 모회사의 전 세계 손익만을 기준으로 평가</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">Chapter IV의 전체 구조(A–G)를 이해하고 각 Section이 다루는 분쟁 회피·해결 메커니즘을 구분할 수 있습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">자국 세무조사가 타국에서 이중과세를 야기할 가능성을 사전에 평가하고, 필요 시 MAP·APA 활용 가능성을 검토하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">이전가격 행정의 3대 이슈(조사관행·입증책임·가산세)이 자사 거래에 어떻게 적용되는지 점검하였습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">이전가격 조사 시 단순한 결과(이익률) 비교가 아니라, 사실집약적 분석과 비교가능성 검토가 이루어질 것을 예상하고 자료를 준비하였습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">납세자의 가격결정 방법론(CUP, RPM, CPM, TNMM, PSM 중 선택)에 대한 선정 근거를 문서화하였습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">과세관청이 다른 방법론(예: TNMM)을 제시할 가능성에 대비하여, 자사 방법론의 합리성·적합성을 입증할 자료를 준비하였습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">납세자의 상업적 판단(시장 진입 전략, 손실 감수, 가격 인하 등)에 대한 사전적 의사결정 기록을 보관하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">과세관청의 자료요구가 "관련 사실과 현실에 비추어 과도하게 정확한" 수준인지 판단하고, 합리적 범위 내 대응 전략을 수립하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">가격결정 절차(price-setting process)를 문서화하였습니까? (가격 정책서, 의사결정 메모, 시장조사, 내부 승인 등)</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">MNE의 사업 운영구조(이익중심 운영, 사업부별 자율성 등)를 설명할 수 있는 조직도·운영도식을 준비하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="#" onclick="alert('M4-1은 Chapter IV의 첫 모듈입니다. (이전 모듈 없음)');return false;">← 이전 모듈</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter IV 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M4-2는 다음 단계에서 작성됩니다.');return false;">M4-2 입증책임·가산세 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;          // 페이지 로드 시 자동 계산
+const accOpened = new Set(); // 한 번이라도 열린 아코디언 id
+let quizCorrect = 0;       // 정답 수
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0; // 아코디언 60%
+  const quizPct = (quizCorrect / totalQuiz) * 40;                       // 퀴즈 40%
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+/* ── 사이드바 활성 항목(스크롤 위치) ── */
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ── 아코디언 토글 — 열 때 진도 카운트 ── */
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+/* ── 페이지 로드 시 아코디언 자동 인덱스 부여 ── */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+/* ── 퀴즈 ── */
+const answers={q1:'c',q2:'b',q3:'d',q4:'b',q5:'c'};
+const feedbacks={
+  q1:{
+    a:'❌ 정상가격산출방법 선택과 적용은 Chapter II의 주제입니다. Chapter IV는 행정적 분쟁 회피·해결을 다룹니다.',
+    b:'❌ 비교가능성 분석은 Chapter III의 주제입니다. Chapter IV는 행정 절차에 초점을 둡니다.',
+    c:'✅ 정답! Chapter IV는 분쟁의 사전적 회피(Safe Harbours, APA)와 사후적 해결(MAP, 중재) 등 행정적 접근방식을 종합적으로 다룹니다 (¶4.1–4.3).',
+    d:'❌ 무형자산은 Chapter VI의 주제입니다.'
+  },
+  q2:{
+    a:'❌ 세수 극대화는 OECD가 제시하는 과세관청의 의무가 아닙니다. 오히려 정상가격원칙에 따른 공평성이 강조됩니다.',
+    b:'✅ 정답! ¶4.4는 과세관청이 정상가격원칙 적용 시 (1) 국가 간 공평한 세금 배분과 (2) 이중과세 방지에 노력해야 한다고 명시합니다.',
+    c:'❌ 가산세 부과와 자료 요구는 과세관청의 권한이지 의무로 제시된 것이 아닙니다.',
+    d:'❌ 추정과세권과 입증책임 면제는 ¶4.13의 별도 주제이며, ¶4.4의 핵심 의무는 아닙니다.'
+  },
+  q3:{
+    a:'❌ B.1 조사관행은 3대 이슈 중 하나입니다 (¶4.6–4.10).',
+    b:'❌ B.2 입증책임은 3대 이슈 중 하나입니다 (¶4.11–4.17).',
+    c:'❌ B.3 가산세 제도는 3대 이슈 중 하나입니다 (¶4.18–4.28).',
+    d:'✅ 정답! ¶4.5의 3대 이슈은 (1) 조사관행, (2) 입증책임, (3) 가산세입니다. APA는 Section F의 별도 주제이며 3대 이슈에 포함되지 않습니다.'
+  },
+  q4:{
+    a:'❌ ¶4.8은 임의 결정을 정당화하지 않습니다. 오히려 합리적 방법론 적용을 전제로 한 표현입니다.',
+    b:'✅ 정답! ¶4.8의 핵심입니다. 정상가격은 단일 정답이 아니라 허용 가능한 범위이며, 과세관청이 다른 방법론(예: TNMM)을 제시했더라도 그것이 곧 납세자의 오류가 아닐 수 있습니다. 방법론 선택의 모호성과 해석 차이에서 비롯된 것일 수 있습니다.',
+    c:'❌ 과세관청이 납세자 방법론을 그대로 수용해야 한다는 의미가 아닙니다. 오히려 양측이 유연하고 상호 존중적으로 접근해야 한다는 의미입니다.',
+    d:'❌ ¶4.8은 가산세 적용 자체를 부정하지 않습니다. 가산세 적용은 ¶4.18–4.28에서 별도로 다뤄지며, 비합리적 적용은 금지됩니다.'
+  },
+  q5:{
+    a:'❌ 결과 자료만 검증하는 것은 ¶4.10이 비판하는 접근입니다.',
+    b:'❌ 비교가능회사의 절대적 일치는 ¶4.9가 금지하는 "과도한 정확성 요구"에 해당할 수 있습니다.',
+    c:'✅ 정답! ¶4.10은 과세관청이 납세자의 가격결정 절차(price-setting process)에 집중하고, MNE의 실제 비즈니스 운영방식(이익중심 운영 등)을 고려하여 조사 자원을 배분해야 한다고 명시합니다.',
+    d:'❌ 본사 손익만 기준으로 평가하는 것은 개별 거래의 정상가격원칙 적용과 거리가 있습니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M4-1을 완료하셨습니다. 다음은 M4-2 입증책임·가산세입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M5-2: 3계층 접근 — Master file & Local file & CbCR</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Chapter V — Teal 색조 */
+  --purple:#0f766e;--purple-light:#f0fdfa;--purple-mid:#14b8a6;--purple-dark:#115e59;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --red:#b02020;--red-light:#fdecea;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.75;font-size:16px}
+a{color:var(--purple);text-decoration:none}
+.mod-header{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,var(--purple-mid) 100%);color:#fff;padding:1.5rem 2rem}
+.mod-header .breadcrumb{font-size:.8rem;opacity:.7;margin-bottom:.4rem}
+.mod-header h1{font-size:1.4rem;font-weight:700}
+.mod-header .sub{font-size:.9rem;opacity:.85;margin-top:.3rem}
+.prog-strip{background:rgba(255,255,255,.2);height:6px;margin-top:1rem;border-radius:99px;overflow:hidden}
+.prog-strip-inner{height:100%;background:#fff;border-radius:99px;transition:width .4s}
+.layout{display:flex;max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;gap:1.5rem}
+.sidebar{width:230px;flex-shrink:0;position:sticky;top:1rem;align-self:flex-start;max-height:calc(100vh - 2rem);overflow-y:auto}
+.content{flex:1;min-width:0}
+.nav-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin-bottom:1rem}
+.nav-card h4{font-size:.85rem;color:var(--gray);margin-bottom:.8rem;letter-spacing:.04em}
+.nav-item{display:block;padding:.45rem .75rem;border-radius:6px;font-size:.84rem;color:var(--text2);margin-bottom:3px;cursor:pointer;border:none;width:100%;text-align:left;background:none;transition:background .12s;font-family:inherit}
+.nav-item:hover{background:var(--purple-light);color:var(--purple)}
+.nav-item.active{background:var(--purple);color:#fff;font-weight:600}
+.prog-detail{font-size:.72rem;color:var(--gray);margin-top:.4rem;line-height:1.5}
+.prog-detail span{font-weight:700;color:var(--purple)}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:1.5rem}
+.card h2{font-size:1.15rem;font-weight:700;color:var(--purple);margin-bottom:1rem;padding-bottom:.6rem;border-bottom:2px solid var(--purple-light)}
+.card p{font-size:.95rem;color:var(--text2);margin-bottom:.7rem}
+.card ul,.card ol{padding-left:1.4rem;font-size:.93rem;color:var(--text2);margin-bottom:.7rem}
+.card li{margin-bottom:.35rem;line-height:1.75}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.75rem;font-weight:600;margin-left:.4rem}
+.tag-para{background:var(--purple-light);color:var(--purple)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--gray-border);font-size:.93rem}
+.obj-list li:last-child{border:none}
+.obj-num{background:var(--purple);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;margin-top:2px}
+.key-point{background:var(--purple-light);border-left:4px solid var(--purple);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#115e59;line-height:1.75}
+.warn-point{background:var(--orange-light);border-left:4px solid var(--orange);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#6b3a00;line-height:1.75}
+.note-point{background:var(--green-light);border-left:4px solid var(--green);padding:.75rem 1rem;border-radius:0 6px 6px 0;margin:.8rem 0;font-size:.9rem;color:#0d3d25;line-height:1.75}
+.practice-note{background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:.9rem 1.1rem;margin:.8rem 0}
+.practice-note .pn-label{font-weight:700;font-size:.78rem;color:#92400e;margin-bottom:.35rem}
+.practice-note p{font-size:.88rem;color:#78350f;margin-bottom:.35rem}
+.practice-note p:last-child{margin-bottom:0}
+.accordion{border:1px solid var(--gray-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.acc-header{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.2rem;cursor:pointer;background:var(--gray-light);font-weight:600;font-size:.95rem;border:none;width:100%;text-align:left;transition:background .12s;font-family:inherit}
+.acc-header:hover{background:#ebebeb}
+.acc-header.viewed{background:#ccfbf1}
+.acc-header .para{font-size:.75rem;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;margin-left:.5rem;font-weight:500;white-space:nowrap}
+.acc-header .arrow{font-size:1rem;color:var(--gray);transition:transform .2s;margin-left:.5rem;flex-shrink:0}
+.acc-header.open .arrow{transform:rotate(180deg)}
+.acc-body{display:none;padding:1.1rem 1.3rem;background:#fff;font-size:.93rem;color:var(--text2);line-height:1.85;border-top:1px solid var(--gray-border)}
+.acc-body.open{display:block}
+.acc-body ul,.acc-body ol{padding-left:1.3rem;margin:.5rem 0 .7rem}
+.acc-body li{margin-bottom:.35rem;line-height:1.75}
+.compare-table{width:100%;border-collapse:collapse;font-size:.88rem;margin:.8rem 0}
+.compare-table th{background:var(--purple);color:#fff;padding:.6rem .9rem;text-align:left;font-weight:600}
+.compare-table td{padding:.55rem .9rem;border-bottom:1px solid var(--gray-border);color:var(--text2);vertical-align:top}
+.compare-table tr:last-child td{border:none}
+.compare-table tr:nth-child(even) td{background:var(--gray-light)}
+.compare-table td strong{color:var(--text)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0}
+.col-box{border-radius:8px;padding:1rem 1.1rem;border:1.5px solid #5eead4;background:var(--purple-light)}
+.col-box h4{font-size:.88rem;font-weight:700;color:var(--purple);margin-bottom:.4rem}
+.col-box p{font-size:.85rem;margin:0;color:var(--text2);line-height:1.65}
+.col-box ul{font-size:.84rem;color:var(--text2);padding-left:1.2rem;margin:.3rem 0 0}
+.col-box li{margin-bottom:.2rem}
+.col-box.green{border-color:#86efac;background:#f0fdf4}
+.col-box.green h4{color:var(--green)}
+.col-box.orange{border-color:#fdba74;background:#fff7ed}
+.col-box.orange h4{color:var(--orange)}
+.col-box.red{border-color:#fca5a5;background:#fef2f2}
+.col-box.red h4{color:var(--red)}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin:.8rem 0}
+.num-pill{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-weight:700;font-size:.85rem;margin:0 .2rem}
+/* ── 3-tier 피라미드 ── */
+.tier-pyramid{display:flex;flex-direction:column;gap:.4rem;margin:1rem 0;align-items:center}
+.tier-row{display:flex;align-items:center;gap:.6rem;width:100%;justify-content:center}
+.tier-box{border-radius:10px;padding:.9rem 1.2rem;border:2px solid var(--purple);background:var(--purple-light);text-align:center;flex:0 1 auto}
+.tier-box h4{font-size:.92rem;font-weight:700;color:var(--purple-dark);margin-bottom:.2rem}
+.tier-box p{font-size:.78rem;color:var(--text2);margin:0;line-height:1.5}
+.tier-box .tier-label{display:inline-block;background:var(--purple);color:#fff;padding:2px 10px;border-radius:99px;font-size:.7rem;font-weight:700;margin-bottom:.4rem}
+.tier-1{width:90%}
+.tier-2{width:60%}
+.tier-3{width:40%}
+.tier-arrow{align-self:center;color:var(--purple);font-size:.9rem;font-weight:700;writing-mode:horizontal-tb}
+/* ── 항목 그리드 ── */
+.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.6rem 0}
+.item-cell{background:#fff;border:1px solid #5eead4;border-radius:6px;padding:.55rem .7rem;font-size:.83rem;line-height:1.55}
+.item-cell strong{color:var(--purple);display:block;margin-bottom:.15rem;font-size:.85rem}
+/* ── CbCR 표 시뮬레이션 ── */
+.cbcr-sim{background:#f0fdfa;border:1px solid #5eead4;border-radius:8px;padding:.8rem;margin:.6rem 0;font-size:.78rem;overflow-x:auto}
+.cbcr-sim table{width:100%;font-size:.74rem;border-collapse:collapse}
+.cbcr-sim th{background:var(--purple);color:#fff;padding:.3rem .4rem;font-weight:600;font-size:.7rem}
+.cbcr-sim td{border:1px solid #c7e7e2;padding:.3rem .4rem;text-align:right;background:#fff}
+.cbcr-sim td.country{text-align:left;font-weight:600}
+.cbcr-sim caption{font-size:.78rem;color:var(--purple-dark);font-weight:600;margin-bottom:.3rem;text-align:left}
+.q-block{background:var(--gray-light);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1rem}
+.q-block .q-text{font-weight:600;font-size:.93rem;margin-bottom:.7rem;color:var(--text);line-height:1.65}
+.q-options label{display:flex;align-items:flex-start;gap:.5rem;padding:.4rem .5rem;border-radius:6px;cursor:pointer;font-size:.91rem;color:var(--text2);transition:background .1s;margin-bottom:3px;line-height:1.55}
+.q-options label:hover{background:#e8e8e8}
+.q-options input[type=radio]{margin-top:3px;flex-shrink:0;accent-color:var(--purple)}
+.q-feedback{display:none;margin-top:.7rem;padding:.6rem .9rem;border-radius:6px;font-size:.88rem;font-weight:500;line-height:1.6}
+.q-feedback.correct{background:var(--green-light);color:var(--green);border-left:3px solid var(--green)}
+.q-feedback.wrong{background:var(--red-light);color:var(--red);border-left:3px solid var(--red)}
+.quiz-btn{background:var(--purple);color:#fff;border:none;padding:.7rem 2rem;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;margin-top:.5rem;transition:background .15s;font-family:inherit}
+.quiz-btn:hover{background:var(--purple-mid)}
+.quiz-btn:disabled{background:#aaa;cursor:default}
+.score-box{display:none;background:var(--purple-light);border:2px solid var(--purple);border-radius:10px;padding:1.2rem;text-align:center;margin-top:1rem}
+.score-box .big{font-size:2rem;font-weight:800;color:var(--purple)}
+.score-box p{font-size:.92rem;color:var(--text2);margin-top:.3rem}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;gap:.8rem;align-items:flex-start;padding:.55rem 0;border-bottom:1px solid var(--gray-border);font-size:.92rem}
+.checklist li:last-child{border:none}
+.checklist input[type=checkbox]{width:18px;height:18px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:var(--green)}
+.checklist label{cursor:pointer;color:var(--text2);line-height:1.65}
+.checklist input:checked+label{color:var(--green);text-decoration:line-through;opacity:.7}
+.nav-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:.5rem}
+.btn-nav{background:var(--purple);color:#fff;padding:.65rem 1.4rem;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;border:none;transition:background .15s;text-decoration:none;display:inline-block;font-family:inherit}
+.btn-nav:hover{background:var(--purple-mid)}
+.btn-nav.secondary{background:#fff;color:var(--purple);border:2px solid var(--purple)}
+.btn-nav.secondary:hover{background:var(--purple-light)}
+@media(max-width:720px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static}
+  .two-col,.three-col,.item-grid{grid-template-columns:1fr}
+  .tier-1,.tier-2,.tier-3{width:100%}
+}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<header class="mod-header">
+  <div class="breadcrumb">중급과정 › Chapter V Documentation › M5-2 (2/4)</div>
+  <h1>M5-2. 3계층 접근 — Master file & Local file & CbCR</h1>
+  <div class="sub">C. A Three-tiered Approach — BEPS Action 13 표준, Master file (Annex I) · Local file (Annex II) · CbCR (Annex III) &nbsp;|&nbsp; ¶5.16 – ¶5.26 &nbsp;|&nbsp; 예상 학습시간: 55분</div>
+  <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="nav-card">
+      <h4>📑 목차</h4>
+      <button class="nav-item" onclick="goTo('obj')">🎯 학습목표</button>
+      <button class="nav-item" onclick="goTo('s1')">1. 3계층 접근 개요 (C)</button>
+      <button class="nav-item" onclick="goTo('s2')">2. Master file (Annex I)</button>
+      <button class="nav-item" onclick="goTo('s3')">3. Local file (Annex II)</button>
+      <button class="nav-item" onclick="goTo('s4')">4. Country-by-Country Report (Annex III)</button>
+      <button class="nav-item" onclick="goTo('s5')">5. 3계층의 상호작용·일관성</button>
+      <button class="nav-item" onclick="goTo('s6')">6. 한국 국조법 운영</button>
+      <button class="nav-item" onclick="goTo('quiz')">📝 확인 퀴즈</button>
+      <button class="nav-item" onclick="goTo('check')">☑ 실무 체크리스트</button>
+    </div>
+    <div class="nav-card">
+      <h4>📊 모듈 진도</h4>
+      <div style="text-align:center;padding:.5rem 0">
+        <div style="font-size:1.6rem;font-weight:800;color:var(--purple)" id="pctDisp">0%</div>
+        <div style="font-size:.8rem;color:var(--gray);margin-top:.2rem">학습 완료율</div>
+        <div class="prog-detail">
+          📂 아코디언 <span id="accDone">0</span> / <span id="accTotal">0</span><br>
+          📝 퀴즈 정답 <span id="quizDone">0</span> / 5
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- 학습 목표 -->
+    <section class="card" id="obj">
+      <h2>🎯 학습 목표</h2>
+      <ul class="obj-list">
+        <li><span class="obj-num">1</span><span>BEPS Action 13의 3계층 문서화 표준(Master file · Local file · CbCR)이 가지는 정책적 의미와 각 자료의 역할 분담을 설명할 수 있다</span></li>
+        <li><span class="obj-num">2</span><span>Master file의 5대 구성 항목(조직구조·사업개요·무형자산·금융거래·재무세무 항목)을 파악하고 그룹 전체 정보의 문서화 방식을 이해한다</span></li>
+        <li><span class="obj-num">3</span><span>Local file의 3대 구성 항목(현지법인 정보·관계회사거래·재무정보)을 파악하고 거래별 상세 분석의 문서화 방식을 이해한다</span></li>
+        <li><span class="obj-num">4</span><span>CbCR의 3개 표(국가별 손익·구성기업·추가설명) 구조와 BEPS 위험 식별 메커니즘을 설명할 수 있다</span></li>
+        <li><span class="obj-num">5</span><span>한국 국조법 시행령 제33조~제35조의 통합·개별·국가별보고서 작성 항목과 면제 요건을 실무에 적용한다</span></li>
+      </ul>
+    </section>
+
+    <!-- 섹션 1: 3계층 개요 -->
+    <section class="card" id="s1">
+      <h2>1. 3계층 접근(Three-tiered Approach)의 개요 <span class="tag tag-para">¶5.16–¶5.17</span></h2>
+      <p>Section C는 OECD가 <strong>BEPS Action 13(2015)</strong>을 통해 정착시킨 이전가격 문서화의 표준 체계인 <strong>3계층 접근(three-tiered approach)</strong>을 다룹니다. 이는 그룹 전체 관점(Master file), 현지 거래 관점(Local file), 국가별 분포 관점(CbCR)의 3가지 시각으로 다국적 기업의 이전가격을 입체적으로 조망하는 체계입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>3계층 접근의 구조와 정책적 의의 <span class="para">¶5.16</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶5.16은 이전가격 문서화의 3계층 구성을 다음과 같이 정의합니다.</p>
+          <div class="tier-pyramid">
+            <div class="tier-row">
+              <div class="tier-box tier-1">
+                <span class="tier-label">Tier 1 — 그룹 전체</span>
+                <h4>🌐 Master file (통합기업보고서)</h4>
+                <p>다국적 그룹의 사업·이전가격 정책 전반 — Annex I to Chapter V</p>
+              </div>
+            </div>
+            <div class="tier-arrow">▼</div>
+            <div class="tier-row">
+              <div class="tier-box tier-2">
+                <span class="tier-label">Tier 2 — 현지 거래</span>
+                <h4>📋 Local file (개별기업보고서)</h4>
+                <p>현지 법인의 관계회사 거래 상세 — Annex II to Chapter V</p>
+              </div>
+            </div>
+            <div class="tier-arrow">▼</div>
+            <div class="tier-row">
+              <div class="tier-box tier-3">
+                <span class="tier-label">Tier 3 — 국가별 분포</span>
+                <h4>📊 CbCR</h4>
+                <p>국가별 매출·이익·세금·인력 — Annex III to Chapter V</p>
+              </div>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>3계층의 입체적 시각:</strong> 어느 하나만으로는 다국적 기업의 이전가격을 완전히 평가하기 어렵습니다. Master file은 "큰 그림"을, Local file은 "세부 거래"를, CbCR은 "국가별 분포"를 제공함으로써 과세관청은 다각도에서 이전가격 위험을 평가할 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>문서화의 3가지 핵심 효과 <span class="para">¶5.17</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>¶5.17은 3계층 문서화가 단순한 보고요건 충족을 넘어 다음과 같은 실질적 효과를 가진다고 명시합니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>🎯 ① 세무리스크 분석 정밀도 향상</h4>
+              <p>그룹 전체·현지·국가별 정보를 종합하여 위험 평가의 정확성을 높입니다. M5-1에서 다룬 "위험 평가(B.2)" 기능의 구체적 구현입니다.</p>
+            </div>
+            <div class="col-box green">
+              <h4>⚡ ② 세무조사의 신속화·체계화</h4>
+              <p>표준화된 자료 형식 덕분에 과세관청이 자료를 신속히 이해·분석할 수 있어 조사 기간이 단축됩니다.</p>
+            </div>
+            <div class="col-box orange">
+              <h4>✅ ③ 자발적 준수 유도</h4>
+              <p>납세자가 자료 작성 과정에서 자신의 이전가격을 점검하게 되어 자발적 정상가격 준수를 유도합니다.</p>
+            </div>
+          </div>
+          <div class="note-point">✅ <strong>BEPS Action 13의 핵심 내용:</strong> 단순한 자료 양 증가가 아니라 <strong>표준화·체계화</strong>를 통한 효율성 향상이 핵심입니다. 3계층 접근은 전 세계 회원국이 같은 형식으로 정보를 공유함으로써 국제 협력을 강화합니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 2: Master file -->
+    <section class="card" id="s2">
+      <h2>2. Master file (통합기업보고서) — Annex I to Chapter V <span class="tag tag-para">C.1</span></h2>
+      <p>Master file은 <strong>다국적 그룹 전체에 대한 거시적·전략적 정보</strong>를 담는 문서입니다. 그룹의 사업 구조, 이전가격 정책, 무형자산, 금융거래, 재무·세무 항목 등 그룹 전체를 검토할 수 있는 자료를 한 곳에 정리합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Master file의 5대 구성 항목 <span class="para">Annex I</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>BEPS Action 13 Annex I은 Master file의 구성을 다음 5가지 카테고리로 표준화합니다.</p>
+          <div class="item-grid">
+            <div class="item-cell">
+              <strong>① 조직구조 (Organisational Structure)</strong>
+              그룹의 법적·소유 구조도, 주요 자회사들의 지리적 위치
+            </div>
+            <div class="item-cell">
+              <strong>② 사업 개요 (Description of MNE's Business)</strong>
+              주요 매출원, 가치사슬 분석(value chain), 주요 사업부·제품·서비스, 사업재편(business restructuring) 내역
+            </div>
+            <div class="item-cell">
+              <strong>③ 무형자산 (Intangibles)</strong>
+              그룹의 무형자산 전략, 주요 무형자산 목록·소유자, R&D 시설·관리 정책, 무형자산 거래의 이전가격 정책
+            </div>
+            <div class="item-cell">
+              <strong>④ 그룹내 금융거래 (Intercompany Financial Activities)</strong>
+              자금조달 구조, 그룹내 금융중심지(financial hub), 주요 그룹내 대여 거래의 정상가격 정책
+            </div>
+            <div class="item-cell" style="grid-column:1/-1">
+              <strong>⑤ 재무·세무 항목 (Financial and Tax Positions)</strong>
+              연결재무제표, APA 현황, 진행 중인 MAP·세무조사 내역, 주요 세제 혜택·세금 우대 적용 현황
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>Master file의 핵심 내용:</strong> Master file은 다국적 그룹의 <strong>"이전가격 정책의 일관된 내용"</strong>을 보여줍니다. 과세관청은 Master file을 통해 그룹이 어떤 사업모델·가치사슬을 가지고 있고, 그 안에서 한국 자회사의 역할·기여도가 어떻게 평가되는지를 이해합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국 국조법 시행령 제33조 — 통합기업보고서 작성 항목 <span class="para">한국 실무</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>한국은 국조법 시행령 제33조에서 통합기업보고서의 구체적 작성 항목을 OECD Annex I과 일치시켜 규정하고 있습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>OECD Annex I 항목</th><th>한국 시행령 §33 대응 항목</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>조직구조</strong></td><td>다국적기업그룹의 조직도, 소속 기업의 명칭·소재지</td></tr>
+              <tr><td><strong>사업 개요</strong></td><td>주요 사업부문, 사업의 종류·매출원, 가치사슬 분석, 주요 사업재편</td></tr>
+              <tr><td><strong>무형자산</strong></td><td>주요 무형자산 목록, R&D 시설·관리 전략, 무형자산 이전 내역, 사용료 정책</td></tr>
+              <tr><td><strong>그룹내 금융거래</strong></td><td>그룹 자금조달 방식, 금융 중심 기업, 주요 그룹내 대출의 정상가격 정책</td></tr>
+              <tr><td><strong>재무·세무 입장</strong></td><td>연결재무제표, 적용 중인 APA·MAP 현황, 주요 세제 혜택</td></tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 Master file 작성의 실무적 도전</div>
+            <p><strong>① 그룹 본사 협력 필수:</strong> Master file의 내용은 본질적으로 그룹 본사가 보유하는 정보입니다. 한국 자회사가 단독으로 작성할 수 없으며, 본사의 자료 제공·승인이 필요합니다.</p>
+            <p><strong>② 일관성 확보:</strong> 동일한 Master file이 그룹이 진출한 모든 국가에 제출되므로, 국가별로 다른 내용을 담을 수 없습니다. 따라서 그룹 본사가 단일 버전을 작성·관리해야 합니다.</p>
+            <p><strong>③ 영업비밀 보호 균형:</strong> 무형자산 전략·금융 정책 등 민감 정보가 포함되므로, 비밀유지 조항·제한적 공개 등의 보호장치가 중요합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 3: Local file -->
+    <section class="card" id="s3">
+      <h2>3. Local file (개별기업보고서) — Annex II to Chapter V <span class="tag tag-para">C.2</span></h2>
+      <p>Local file은 <strong>특정 국가에 소재하는 현지 법인의 관계회사 거래에 대한 상세한 분석 자료</strong>입니다. Master file이 그룹 전체의 큰 그림이라면, Local file은 한국에 있는 자회사의 구체적 거래·기능·위험·정상가격 분석을 담는 미시적 문서입니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>Local file의 3대 구성 항목 <span class="para">Annex II</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>BEPS Action 13 Annex II는 Local file의 구성을 다음 3가지 카테고리로 표준화합니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>① 현지법인 정보 (Local Entity)</h4>
+              <ul>
+                <li>경영 구조 및 보고체계</li>
+                <li>주요 사업 활동·전략</li>
+                <li>핵심 경쟁자</li>
+                <li>주요 사업재편·구조조정 내역</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>② 관계회사 거래 (Controlled Transactions)</h4>
+              <ul>
+                <li>거래 유형별 명세·규모</li>
+                <li>거래 상대방(국가·법인)</li>
+                <li>거래 계약서·약정서</li>
+                <li>FAR(기능·자산·위험) 분석</li>
+                <li>정상가격산출방법 선정·적용</li>
+                <li>비교가능거래 분석</li>
+                <li>경제분석 결과</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>③ 재무정보 (Financial Information)</h4>
+              <ul>
+                <li>현지법인 재무제표</li>
+                <li>관계회사거래 별 재무 데이터</li>
+                <li>비교가능회사 재무 데이터</li>
+                <li>조정 사항 명세</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-point">💡 <strong>Local file의 핵심 내용:</strong> Local file은 한국 자회사의 모든 관계회사 거래가 <strong>왜 정상가격에 부합하는지를 거래별로 입증</strong>하는 문서입니다. 과세관청은 Local file을 통해 거래의 실질, 가격결정 절차, 정상가격산출방법의 합리성을 평가합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국 국조법 시행령 제34조 — 개별기업보고서 작성 항목 <span class="para">한국 실무</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>한국은 국조법 시행령 제33조에서 개별기업보고서의 구체적 작성 항목을 OECD Annex II와 일치시켜 규정하고 있습니다. 주요 항목은 다음과 같습니다.</p>
+          <div class="item-grid">
+            <div class="item-cell">
+              <strong>① 현지법인 정보</strong>
+              한국 법인의 조직도, 경영 구조, 주요 사업 활동, 사업 전략, 주요 경쟁자, 사업재편 내역
+            </div>
+            <div class="item-cell">
+              <strong>② 관계회사 거래 명세</strong>
+              거래 유형별(상품·서비스·무형자산·금융 등) 거래 규모, 상대방, 거래 조건
+            </div>
+            <div class="item-cell">
+              <strong>③ 정상가격산출방법</strong>
+              선정된 방법(CUP·RPM·CPM·TNMM·PSM)과 선정 근거, 적용 결과
+            </div>
+            <div class="item-cell">
+              <strong>④ FAR 분석</strong>
+              한국 자회사와 거래상대방의 기능·자산·위험 분석
+            </div>
+            <div class="item-cell">
+              <strong>⑤ 비교가능거래 분석</strong>
+              비교가능회사 검색 기준·결과, 정량적·정성적 선정 과정, 조정 사항
+            </div>
+            <div class="item-cell">
+              <strong>⑥ 재무정보</strong>
+              한국 법인 재무제표, 관계회사 거래별 재무 데이터, 비교가능회사 재무 데이터
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 Local file 작성의 실무 포인트</div>
+            <p><strong>① 매년 갱신:</strong> Local file은 매년 새 회계연도의 거래를 반영하여 갱신해야 합니다. 비교가능회사 검색은 OECD 권고에 따라 통상 3년 주기로 재실시합니다 (¶5.37–5.38, M5-3에서 다룸).</p>
+            <p><strong>② 거래별 상세도:</strong> 모든 관계회사 거래를 유형별로 분리하여 분석하되, 소규모 거래는 통합하여 작성할 수 있습니다 (비례성 원칙).</p>
+            <p><strong>③ 정상가격산출방법 선정 근거 명확화:</strong> 왜 CUP가 아닌 TNMM을 사용했는지, 왜 RPM이 아닌 CPM을 사용했는지 등 방법론 선정의 근거를 명확히 기록해야 합니다.</p>
+            <p><strong>④ 그룹 정책과의 일관성:</strong> Local file의 정책은 Master file에 기재된 그룹 정책과 일관되어야 합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 4: CbCR -->
+    <section class="card" id="s4">
+      <h2>4. Country-by-Country Report (국가별보고서) — Annex III to Chapter V <span class="tag tag-para">C.3</span></h2>
+      <p>CbCR은 BEPS Action 13의 가장 혁신적 산물 중 하나로, 다국적 그룹의 <strong>국가별 손익·세금·인력·자산 정보</strong>를 표준화된 형식으로 보고하는 자료입니다. 이는 과세관청이 BEPS 위험(저세율 국가로의 이익 이전)을 효과적으로 식별할 수 있는 핵심 도구가 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>CbCR의 3개 표 구조 <span class="para">Annex III</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>BEPS Action 13 Annex III에 따라 CbCR은 다음 3개 표로 구성됩니다.</p>
+          <div class="three-col">
+            <div class="col-box">
+              <h4>📊 표 1 — 국가별 손익·세금</h4>
+              <p>다음 정보를 국가별로 보고:</p>
+              <ul>
+                <li>매출액 (제3자·관계회사 별도)</li>
+                <li>세전이익(손실)</li>
+                <li>법인세 (당기 납부·발생주의)</li>
+                <li>자본금</li>
+                <li>이익잉여금</li>
+                <li>종업원 수</li>
+                <li>유형자산 (현금·현금성자산 제외)</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>🏢 표 2 — 구성기업 정보</h4>
+              <p>다음 정보를 구성기업별로 보고:</p>
+              <ul>
+                <li>법인명</li>
+                <li>소재 국가</li>
+                <li>설립지가 다른 경우 설립지 국가</li>
+                <li>주요 사업활동 (체크박스 형식)</li>
+              </ul>
+            </div>
+            <div class="col-box orange">
+              <h4>📝 표 3 — 추가 설명</h4>
+              <p>다음과 같은 보충 설명:</p>
+              <ul>
+                <li>표 1·2의 정보에 대한 자유 형식 설명</li>
+                <li>국가별 차이의 사유</li>
+                <li>회계 기준 차이 설명</li>
+                <li>기타 명확화 필요 사항</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>CbCR 표 1 — 가상 시뮬레이션 예시 <span class="para">실무 시각화</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>가상 다국적 그룹 "ABC Group"의 CbCR 표 1 예시입니다. 과세관청이 어떤 정보를 보게 되는지 직관적으로 확인할 수 있습니다.</p>
+          <div class="cbcr-sim">
+            <caption>📊 ABC Group — CbCR 표 1 (단위: 백만 달러)</caption>
+            <table>
+              <thead>
+                <tr>
+                  <th>국가</th>
+                  <th>매출<br>(제3자)</th>
+                  <th>매출<br>(관계회사)</th>
+                  <th>세전이익</th>
+                  <th>법인세<br>(납부)</th>
+                  <th>자본금</th>
+                  <th>종업원수</th>
+                  <th>유형자산</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="country">한국</td><td>800</td><td>200</td><td>50</td><td>11</td><td>100</td><td>500</td><td>150</td></tr>
+                <tr><td class="country">미국</td><td>1,200</td><td>300</td><td>120</td><td>25</td><td>500</td><td>800</td><td>400</td></tr>
+                <tr><td class="country">독일</td><td>600</td><td>150</td><td>60</td><td>18</td><td>200</td><td>300</td><td>200</td></tr>
+                <tr><td class="country">싱가포르</td><td>50</td><td>2,000</td><td>800</td><td>40</td><td>5,000</td><td>20</td><td>10</td></tr>
+                <tr><td class="country">아일랜드</td><td>100</td><td>1,500</td><td>1,200</td><td>15</td><td>3,000</td><td>30</td><td>5</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="warn-point">⚠️ <strong>위험 신호 분석:</strong> 위 가상 사례를 보면 한눈에 다음과 같은 BEPS 위험 신호가 보입니다.</div>
+          <ul>
+            <li><strong>싱가포르·아일랜드의 비대칭:</strong> 매출 대부분이 관계회사 거래이고, 인력·자산이 매우 적은데 이익은 매우 큽니다 → 무형자산 IP holding company 가능성</li>
+            <li><strong>실효세율의 비대칭:</strong> 싱가포르 5%(40/800), 아일랜드 1.25%(15/1,200) → 저세율 국가로의 이익 집중 신호</li>
+            <li><strong>한국의 실효세율:</strong> 22%(11/50) → 정상 수준이지만 그룹 차원에서 과대 부담 여부 검토 가능</li>
+          </ul>
+          <div class="key-point">💡 <strong>CbCR의 효과:</strong> CbCR이 도입되기 전에는 과세관청이 이러한 그룹 차원의 분포를 한눈에 보기 어려웠습니다. CbCR 표 1 하나로 BEPS 위험이 즉시 시각화되며, 이는 과세관청의 위험 평가·조사 대상 선정의 가장 강력한 도구가 되었습니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>CbCR의 교환 메커니즘과 한국 국조법 시행령 제35조 <span class="para">한국 실무</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>CbCR은 단순한 보고가 아니라 <strong>국가 간 자동 교환(automatic exchange)</strong>되는 자료라는 점이 특별합니다.</p>
+          <div class="two-col">
+            <div class="col-box">
+              <h4>🌐 CbCR 자동 교환 메커니즘</h4>
+              <ul>
+                <li>최종모회사 소재국에 제출</li>
+                <li>OECD Multilateral Competent Authority Agreement (MCAA) 또는 양자 협약을 통해 자동 교환</li>
+                <li>그룹이 진출한 모든 국가의 과세관청이 동일한 CbCR 정보를 보유하게 됨</li>
+                <li>매년 정기적으로 교환</li>
+              </ul>
+            </div>
+            <div class="col-box green">
+              <h4>📌 한국 국조법 시행령 제35조</h4>
+              <ul>
+                <li>국내 최종모회사: 직전 과세연도 연결재무제표 매출액 <strong>1조 원 이상</strong>인 경우 CbCR 제출 의무</li>
+                <li>1조 원 미만은 면제</li>
+                <li>모회사가 외국 법인인 경우 한국 자회사는 CbCR을 직접 제출하지 않으나, 모회사 소재국이 CbCR을 교환 협약을 통해 한국 과세관청에 제공</li>
+              </ul>
+            </div>
+          </div>
+          <div class="practice-note">
+            <div class="pn-label">💼 CbCR 작성·관리의 실무 포인트</div>
+            <p><strong>① 데이터의 정합성:</strong> CbCR 표 1의 데이터는 그룹 연결재무제표·각국 법인 재무제표와 일치하거나 합리적 차이가 설명되어야 합니다.</p>
+            <p><strong>② 표 3 활용:</strong> 표 1·2만 보면 오해의 소지가 있는 경우, 표 3에 적극적인 설명을 추가하여 과세관청의 잘못된 해석을 사전 방지해야 합니다.</p>
+            <p><strong>③ 그룹 단일 작성:</strong> CbCR은 그룹 본사가 단일 버전으로 작성하여 자동 교환되므로, 한국 자회사의 입력에 영향을 미치기 어렵습니다. 본사와 사전 협의가 필수적입니다.</p>
+            <p><strong>④ 위험 자체 진단:</strong> CbCR 제출 전 그룹 차원에서 위험 신호를 자체 분석하여, 표 3에 미리 설명을 추가하거나 그룹 이전가격 정책을 조정하는 등의 사전 대응이 필요합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 5: 3계층의 상호작용 -->
+    <section class="card" id="s5">
+      <h2>5. 3계층 자료의 상호작용과 일관성 <span class="tag tag-para">¶5.18–¶5.26</span></h2>
+      <p>3계층 자료는 독립적으로 작성되는 것이 아니라 <strong>상호 보완·일관성을 유지</strong>해야 합니다. 한 자료의 내용이 다른 자료와 모순되면 과세관청의 신뢰를 잃고 추가 조사·의문의 대상이 됩니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>3계층 자료의 역할 분담과 보완 관계 <span class="para">¶5.18 흐름</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>각 자료의 역할 분담과 상호 보완 관계는 다음과 같습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>자료</th><th>관점</th><th>주요 사용자</th><th>핵심 정보</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Master file</strong></td>
+                <td>그룹 전체 — 거시</td>
+                <td>모든 과세관청 (그룹 전체 이해)</td>
+                <td>가치사슬, 이전가격 정책, 무형자산 전략</td>
+              </tr>
+              <tr>
+                <td><strong>Local file</strong></td>
+                <td>현지 거래 — 미시</td>
+                <td>현지 과세관청 (거래 검증)</td>
+                <td>거래별 FAR, 비교가능거래, 정상가격 분석</td>
+              </tr>
+              <tr>
+                <td><strong>CbCR</strong></td>
+                <td>국가별 분포 — 위험</td>
+                <td>모든 과세관청 (위험 평가)</td>
+                <td>국가별 손익·세금·인력 분포</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="key-point">💡 <strong>3계층의 상호 보완:</strong> 과세관청은 CbCR로 위험을 식별하고 → Master file로 그룹 맥락을 이해하고 → Local file로 구체적 거래의 정상가격성을 검증합니다. 이 흐름이 효과적으로 작동하려면 3개 자료의 내용이 서로 일관되어야 합니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>일관성 유지의 실무 — 위반 사례와 위험 <span class="para">실무 분석</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>3계층 자료 간 일관성이 깨지는 대표적 사례와 그 결과는 다음과 같습니다.</p>
+          <div class="item-grid">
+            <div class="item-cell">
+              <strong>❌ Master file과 Local file의 모순</strong>
+              Master file에는 "한국 자회사가 단순 판매기능"으로 기술되어 있는데, Local file에서는 "마케팅·R&D 등 부가가치 활동"을 강조하는 경우 → 과세관청의 즉각적 의심
+            </div>
+            <div class="item-cell">
+              <strong>❌ CbCR과 Local file의 모순</strong>
+              CbCR 표 1에서 한국 법인 종업원 수가 500명인데 Local file에서는 200명만 다루는 경우 → 자료의 신뢰성 의심
+            </div>
+            <div class="item-cell">
+              <strong>❌ 거래 규모 불일치</strong>
+              Local file의 관계회사 거래 총액과 CbCR 표 1의 관계회사 매출이 다른 경우 → 데이터 무결성 문제
+            </div>
+            <div class="item-cell">
+              <strong>❌ 이전가격 정책 모순</strong>
+              Master file에서 "전 그룹이 TNMM 적용"이라고 했는데 Local file에서는 RPM을 적용한 경우 → 정책 일관성 결여
+            </div>
+          </div>
+          <div class="warn-point">⚠️ <strong>일관성 위반의 결과:</strong> 자료 간 모순은 ① 과세관청의 추가 자료 요청 유발, ② 세무조사 대상 선정 가능성 증가, ③ 가산세 특례(국조법 §17) 적용 불가, ④ MAP·APA 절차에서 입장의 신뢰성 손상 등으로 이어질 수 있습니다.</div>
+          <div class="practice-note">
+            <div class="pn-label">💼 일관성 확보를 위한 그룹 차원의 체계</div>
+            <p><strong>① 단일 책임 부서:</strong> 그룹 본사의 이전가격 부서가 3개 자료의 통합 관리를 담당</p>
+            <p><strong>② 작성 순서 표준화:</strong> Master file → Local file → CbCR 순서로 작성하여 그룹 정책이 일관되게 반영되도록 함</p>
+            <p><strong>③ 사전 일관성 검토:</strong> 제출 전 3개 자료의 핵심 수치·정책을 교차 검증</p>
+            <p><strong>④ 정기적 업데이트:</strong> 사업재편·이전가격 정책 변경 시 3개 자료를 동시에 갱신</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 섹션 6: 한국 국조법 운영 -->
+    <section class="card" id="s6">
+      <h2>6. 한국 국조법상 3계층 보고 운영 <span class="tag tag-para">국조법 §16, 시행령 §33~§35</span></h2>
+      <p>한국은 BEPS Action 13의 3계층 접근을 국조법과 시행령에 정확히 반영하여 운영하고 있습니다. 다만 각 자료의 면제 요건과 제출 시기에 차이가 있어 실무에서 명확히 구별해야 합니다.</p>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국의 3계층 보고 제출 의무 — 면제 요건 비교 <span class="para">국조법·시행령 종합</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>한국의 3계층 보고 제출 의무와 면제 요건을 종합 비교하면 다음과 같습니다.</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>자료</th><th>근거</th><th>제출 의무자</th><th>면제 요건</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Master file<br>(통합기업보고서)</strong></td>
+                <td>국조법 §16①, 시행령 §34</td>
+                <td>일정 규모 이상 납세자</td>
+                <td>매출액 1천억 원 이하 또는 용역·무형자산·대차거래 규모 500억 원 이하인 경우 면제</td>
+              </tr>
+              <tr>
+                <td><strong>Local file<br>(개별기업보고서)</strong></td>
+                <td>국조법 §16①, 시행령 §34</td>
+                <td>위와 동일</td>
+                <td>위와 동일</td>
+              </tr>
+              <tr>
+                <td><strong>CbCR<br>(국가별보고서)</strong></td>
+                <td>국조법 §16①, 시행령 §35</td>
+                <td>국내 최종모회사</td>
+                <td>직전 과세연도 연결재무제표 매출액 <strong>1조 원 이하</strong>인 경우 면제</td>
+              </tr>
+              <tr>
+                <td><strong>국제거래명세서</strong></td>
+                <td>국조법 §16②1호</td>
+                <td>특수관계인과 국제거래하는 납세자</td>
+                <td>§16① 자료 제출자는 면제</td>
+              </tr>
+              <tr>
+                <td><strong>요약손익계산서</strong></td>
+                <td>국조법 §16②2호</td>
+                <td>위와 동일</td>
+                <td>위와 동일</td>
+              </tr>
+              <tr>
+                <td><strong>정상가격산출방법</strong></td>
+                <td>국조법 §16②3호</td>
+                <td>위와 동일</td>
+                <td>위와 동일</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-point">✅ <strong>한국 면제 요건의 의미:</strong> 한국은 OECD 권고에 따라 중소·중견기업에 대한 합리적 면제 요건을 두고 있습니다. 다만 면제 요건을 만족하더라도 일반 자료(국제거래명세서·요약손익계산서·정상가격산출방법)는 제출해야 하므로, 완전한 면제는 아닙니다.</div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>한국의 3계층 보고 제출 시기 — Master/Local vs CbCR <span class="para">실무 관리</span></span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <p>한국에서의 3계층 보고 제출 시기는 다음과 같이 다릅니다 (¶5.30–5.31, 상세는 M5-3에서 다룹니다).</p>
+          <table class="compare-table">
+            <thead>
+              <tr><th>자료</th><th>제출 시기</th><th>OECD 권고</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Local file</strong></td>
+                <td>사업연도 종료일이 속하는 달의 말일부터 12개월 이내</td>
+                <td>해당 회계연도 세무자료 제출 시기</td>
+              </tr>
+              <tr>
+                <td><strong>Master file</strong></td>
+                <td>사업연도 종료일이 속하는 달의 말일부터 12개월 이내</td>
+                <td>모회사 세무자료 제출 시기</td>
+              </tr>
+              <tr>
+                <td><strong>CbCR</strong></td>
+                <td>모회사 회계연도 종료 후 12개월 이내</td>
+                <td>모회사 회계연도 말 마지막 날에서 1년 연장</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="practice-note">
+            <div class="pn-label">💼 3계층 보고의 작성 우선순위 (실무 권고)</div>
+            <p>3계층 자료는 작성 시기가 다르고 의존 관계도 있어, 다음과 같은 순서로 진행하는 것이 효율적입니다.</p>
+            <p><strong>1단계 (회계연도 종료 직후):</strong> CbCR 자료 수집 — 모든 구성기업의 손익·세금·인력·자산 데이터 확보</p>
+            <p><strong>2단계 (그룹 본사 정리):</strong> Master file 작성 — 그룹 차원의 정책·전략을 단일 버전으로 정리</p>
+            <p><strong>3단계 (각국 작성):</strong> Local file 작성 — Master file과의 일관성을 유지하며 현지 거래 분석</p>
+            <p><strong>4단계 (일관성 검토):</strong> 3개 자료의 핵심 수치·정책·기능 분석 등을 교차 검증</p>
+            <p><strong>5단계 (제출):</strong> 각 자료의 제출 시기에 맞춰 순차적으로 제출</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <button class="acc-header" onclick="toggleAcc(this)">
+          <span>M5-2 핵심 정리 — 3계층 접근 5가지 키워드</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div class="acc-body">
+          <table class="compare-table">
+            <thead>
+              <tr><th>키워드</th><th>의미</th><th>관련</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>BEPS Action 13</strong></td><td>3계층 문서화 표준의 국제적 정착 (2015)</td><td>¶5.16</td></tr>
+              <tr><td><strong>Master file 5대 항목</strong></td><td>조직구조·사업개요·무형자산·금융거래·재무세무</td><td>Annex I</td></tr>
+              <tr><td><strong>Local file 3대 항목</strong></td><td>현지법인·관계회사거래·재무정보</td><td>Annex II</td></tr>
+              <tr><td><strong>CbCR 3개 표 + 자동교환</strong></td><td>국가별 손익·구성기업·추가설명, MCAA 자동 교환</td><td>Annex III</td></tr>
+              <tr><td><strong>한국 면제 요건</strong></td><td>Master/Local: 1천억/500억, CbCR: 1조 원</td><td>시행령 §34·§35</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section class="card" id="quiz">
+      <h2>📝 확인 퀴즈</h2>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:1.2rem">5문항 · 각 20점 · 80점 이상 통과</p>
+
+      <div class="q-block">
+        <div class="q-text">1. <strong>BEPS Action 13의 3계층 문서화 표준</strong>에서 "그룹 전체의 사업·이전가격 정책 개요"를 담는 자료는?</div>
+        <div class="q-options" id="q1">
+          <label><input type="radio" name="q1" value="a"> (A) Local file (개별기업보고서)</label>
+          <label><input type="radio" name="q1" value="b"> (B) Master file (통합기업보고서) — Annex I to Chapter V</label>
+          <label><input type="radio" name="q1" value="c"> (C) CbCR (Country-by-Country Report)</label>
+          <label><input type="radio" name="q1" value="d"> (D) 국제거래명세서</label>
+        </div>
+        <div class="q-feedback" id="fb1"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">2. <strong>Master file의 5대 구성 항목</strong>(BEPS Action 13 Annex I)에 해당하지 않는 것은?</div>
+        <div class="q-options" id="q2">
+          <label><input type="radio" name="q2" value="a"> (A) 그룹의 조직구조</label>
+          <label><input type="radio" name="q2" value="b"> (B) MNE 그룹의 사업 개요(가치사슬 분석 포함)</label>
+          <label><input type="radio" name="q2" value="c"> (C) 그룹의 무형자산·금융거래·재무세무 입장</label>
+          <label><input type="radio" name="q2" value="d"> (D) 현지법인 거래별 FAR 분석과 비교가능회사 검색 결과</label>
+        </div>
+        <div class="q-feedback" id="fb2"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">3. <strong>CbCR 표 1</strong>이 보여주는 정보로 가장 정확한 것은?</div>
+        <div class="q-options" id="q3">
+          <label><input type="radio" name="q3" value="a"> (A) 모든 관계회사 거래의 거래별 가격</label>
+          <label><input type="radio" name="q3" value="b"> (B) 다국적 그룹의 국가별 매출(제3자·관계회사 분리)·세전이익·법인세·자본금·이익잉여금·종업원수·유형자산을 한눈에 비교 가능하도록 표시 → BEPS 위험 식별의 핵심 도구</label>
+          <label><input type="radio" name="q3" value="c"> (C) 그룹 전체의 가치사슬 분석</label>
+          <label><input type="radio" name="q3" value="d"> (D) 비교가능회사의 재무 데이터</label>
+        </div>
+        <div class="q-feedback" id="fb3"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">4. <strong>한국 국조법 시행령 제35조</strong>에 따른 CbCR 제출 의무 면제 기준은?</div>
+        <div class="q-options" id="q4">
+          <label><input type="radio" name="q4" value="a"> (A) 매출액 1천억 원 이하</label>
+          <label><input type="radio" name="q4" value="b"> (B) 국내 최종모회사의 직전 과세연도 <strong>연결재무제표 매출액 1조 원 이하</strong>인 경우 면제</label>
+          <label><input type="radio" name="q4" value="c"> (C) 모든 다국적 기업은 의무적으로 제출</label>
+          <label><input type="radio" name="q4" value="d"> (D) 종업원 수 100명 이하</label>
+        </div>
+        <div class="q-feedback" id="fb4"></div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-text">5. <strong>3계층 자료 간 일관성</strong>이 깨졌을 때 발생할 수 있는 결과로 가장 적절하지 않은 것은?</div>
+        <div class="q-options" id="q5">
+          <label><input type="radio" name="q5" value="a"> (A) 과세관청의 추가 자료 요청 유발</label>
+          <label><input type="radio" name="q5" value="b"> (B) 세무조사 대상 선정 가능성 증가</label>
+          <label><input type="radio" name="q5" value="c"> (C) 가산세 특례(국조법 §17) 적용 불가, MAP·APA에서 입장 신뢰성 손상</label>
+          <label><input type="radio" name="q5" value="d"> (D) 자동적으로 본세(추가과세) 면제</label>
+        </div>
+        <div class="q-feedback" id="fb5"></div>
+      </div>
+
+      <button class="quiz-btn" id="submitBtn" onclick="gradeQuiz()">채점하기</button>
+      <div class="score-box" id="scoreBox">
+        <div class="big" id="scoreNum"></div>
+        <p id="scoreMsg"></p>
+      </div>
+    </section>
+
+    <!-- 실무 체크리스트 -->
+    <section class="card" id="check">
+      <h2>☑ 실무 체크리스트</h2>
+      <ul class="checklist">
+        <li><input type="checkbox" id="c1"><label for="c1">자사가 한국 국조법상 Master file·Local file·CbCR 제출 의무에 해당하는지 시행령 §34·§35의 면제 요건에 비추어 정확히 파악하였습니까?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">Master file의 5대 구성 항목(조직구조·사업개요·무형자산·금융거래·재무세무 입장)이 모두 충실히 포함되어 있는지 확인하였습니까?</label></li>
+        <li><input type="checkbox" id="c3"><label for="c3">Master file이 그룹 본사가 단일 버전으로 작성·관리되고 있으며, 모든 진출 국가에 동일한 내용이 제출되도록 그룹 차원의 체계를 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">Local file의 3대 구성 항목(현지법인 정보·관계회사거래·재무정보)이 거래 유형별로 상세히 분석되어 있으며, 정상가격산출방법 선정 근거가 명확히 기술되었습니까?</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">Local file의 비교가능거래 검색·선정·조정 과정이 비례성 원칙에 맞게 거래 규모·이전가격 위험에 비례하여 수행되었습니까?</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">CbCR 표 1·2·3이 그룹 연결재무제표·각국 법인 재무제표와 일치하거나 합리적 차이가 표 3에 설명되어 있습니까?</label></li>
+        <li><input type="checkbox" id="c7"><label for="c7">CbCR에서 한국 자회사 또는 그룹 차원의 BEPS 위험 신호(저세율 국가 이익 집중, 인력·자산 대비 과대 이익, 실효세율 비대칭 등)를 자체 분석하여 사전 대응 방안을 수립하였습니까?</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">Master file·Local file·CbCR의 핵심 수치(매출·이익·종업원 수·관계회사 거래 규모)와 정책(이전가격 방법론·기능 분석)이 일관되도록 교차 검증하였습니까?</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">3계층 자료의 작성 순서(CbCR 자료 수집 → Master file → Local file → 일관성 검토 → 순차 제출)에 따라 그룹 본사 협력 체계를 갖추었습니까?</label></li>
+        <li><input type="checkbox" id="c10"><label for="c10">3계층 자료의 영업비밀 보호 범위(특히 Master file의 무형자산·금융 정책)를 사전에 검토하여 redaction·비밀유지 조항 등 보호 장치를 마련하였습니까?</label></li>
+      </ul>
+    </section>
+
+    <!-- 하단 네비게이션 -->
+    <div class="nav-bottom">
+      <a class="btn-nav secondary" href="M5-1_문서화_개요_목적.html">← M5-1 문서화 개요·목적</a>
+      <button class="btn-nav secondary" onclick="alert('Chapter V 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav" href="#" onclick="alert('M5-3는 다음 단계에서 작성됩니다.');return false;">M5-3 Compliance & 비밀 →</a>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── 진도 계산: 아코디언 열기 + 퀴즈 정답 기반 ── */
+const totalQuiz = 5;
+let totalAcc = 0;
+const accOpened = new Set();
+let quizCorrect = 0;
+let quizSubmitted = false;
+
+function calcProgress(){
+  const accPct  = totalAcc > 0 ? (accOpened.size / totalAcc) * 60 : 0;
+  const quizPct = (quizCorrect / totalQuiz) * 40;
+  return Math.round(accPct + quizPct);
+}
+
+function refreshProgressUI(){
+  const pct = calcProgress();
+  document.getElementById('topBar').style.width = pct + '%';
+  document.getElementById('pctDisp').textContent = pct + '%';
+  document.getElementById('accDone').textContent = accOpened.size;
+  document.getElementById('accTotal').textContent = totalAcc;
+  document.getElementById('quizDone').textContent = quizCorrect;
+}
+
+function updateSidebar(){
+  const secs = ['obj','s1','s2','s3','s4','s5','s6','quiz','check'];
+  let cur = 'obj';
+  secs.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.getBoundingClientRect().top < 160) cur = id;
+  });
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.remove('active');
+    if(btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'"+cur+"'"))
+      btn.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateSidebar);
+
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleAcc(btn){
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  body.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if(!isOpen){
+    btn.classList.add('viewed');
+    const accId = btn.dataset.accid;
+    accOpened.add(accId);
+    refreshProgressUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  const headers = document.querySelectorAll('.acc-header');
+  headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
+  totalAcc = headers.length;
+  refreshProgressUI();
+  updateSidebar();
+});
+
+const answers={q1:'b',q2:'d',q3:'b',q4:'b',q5:'d'};
+const feedbacks={
+  q1:{
+    a:'❌ Local file은 현지 법인의 거래별 상세 분석을 다루며, 그룹 전체 정책의 개요가 아닙니다.',
+    b:'✅ 정답! Master file (통합기업보고서, Annex I to Chapter V)이 다국적 그룹 전체의 사업·이전가격 정책 개요를 담는 자료입니다. 5대 항목은 ① 조직구조, ② 사업 개요(가치사슬), ③ 무형자산, ④ 그룹내 금융거래, ⑤ 재무·세무 입장입니다.',
+    c:'❌ CbCR은 국가별 손익·세금·인력 분포를 표 형식으로 보여주며, 정책 개요는 아닙니다.',
+    d:'❌ 국제거래명세서는 한국 국조법 §16②의 일반 자료로 3계층 문서화 표준의 일부가 아닙니다.'
+  },
+  q2:{
+    a:'❌ 조직구조는 Master file의 1번째 항목입니다.',
+    b:'❌ 사업 개요(가치사슬 분석 포함)는 Master file의 2번째 항목입니다.',
+    c:'❌ 무형자산·금융거래·재무세무 입장은 Master file의 3·4·5번째 항목입니다.',
+    d:'✅ 정답! 현지법인 거래별 FAR 분석과 비교가능회사 검색 결과는 Master file이 아니라 Local file의 핵심 내용입니다. Master file은 그룹 전체의 거시적 정보를, Local file은 현지의 미시적 거래 분석을 담당하는 역할 분담이 BEPS Action 13의 핵심입니다.'
+  },
+  q3:{
+    a:'❌ 거래별 가격은 Local file에서 다루며, CbCR은 국가별 집계 정보를 다룹니다.',
+    b:'✅ 정답! CbCR 표 1은 국가별로 (1) 매출(제3자·관계회사 분리), (2) 세전이익, (3) 법인세(납부·발생주의), (4) 자본금, (5) 이익잉여금, (6) 종업원수, (7) 유형자산을 한눈에 비교할 수 있도록 표시합니다. 이는 과세관청이 BEPS 위험(저세율 국가 이익 집중, 인력·자산 대비 과대 이익 등)을 신속하게 식별하는 핵심 도구가 됩니다.',
+    c:'❌ 가치사슬 분석은 Master file의 사업 개요 항목입니다.',
+    d:'❌ 비교가능회사 데이터는 Local file의 비교가능거래 분석 부분입니다.'
+  },
+  q4:{
+    a:'❌ 매출액 1천억 원은 Master/Local file의 면제 기준입니다 (시행령 §34).',
+    b:'✅ 정답! 한국 국조법 시행령 제35조에 따르면 국내 최종모회사의 직전 과세연도 연결재무제표 매출액이 1조 원 이하인 경우 CbCR 제출 의무가 면제됩니다. 이는 BEPS Action 13의 권고(연결매출 EUR 7.5억 = 약 1조 원) 기준을 한국 법에 반영한 것입니다.',
+    c:'❌ 1조 원 이하 면제 요건이 있어 모든 기업이 제출하는 것은 아닙니다.',
+    d:'❌ 종업원 수 기준은 한국 CbCR 면제 요건에 사용되지 않습니다.'
+  },
+  q5:{
+    a:'❌ 자료 간 모순은 과세관청의 추가 자료 요청을 유발할 수 있는 결과입니다.',
+    b:'❌ 자료 간 모순은 세무조사 대상 선정 가능성을 높이는 결과입니다.',
+    c:'❌ 자료 간 모순은 가산세 특례 적용 불가, MAP·APA에서 입장 신뢰성 손상으로 이어질 수 있습니다.',
+    d:'✅ 정답! "자동적으로 본세 면제"는 자료 간 모순의 결과가 아닙니다. 오히려 자료 간 일관성 결여는 모든 측면에서 납세자에게 불리한 결과를 초래합니다. 본세 면제와는 무관합니다.'
+  }
+};
+
+function gradeQuiz(){
+  let score=0, correct=0;
+  const keys=Object.keys(answers);
+  let allAnswered=true;
+  keys.forEach(q=>{
+    const sel=document.querySelector(`input[name="${q}"]:checked`);
+    if(!sel){allAnswered=false;return;}
+    const fbEl=document.getElementById('fb'+q.slice(1));
+    const isCorrect=sel.value===answers[q];
+    if(isCorrect){score+=20;correct++;}
+    fbEl.textContent=feedbacks[q][sel.value];
+    fbEl.className='q-feedback '+(isCorrect?'correct':'wrong');
+    fbEl.style.display='block';
+  });
+  if(!allAnswered){alert('모든 문항에 답해 주세요.');return;}
+  quizCorrect = correct;
+  quizSubmitted = true;
+  refreshProgressUI();
+
+  const box=document.getElementById('scoreBox');
+  document.getElementById('scoreNum').textContent=score+'점';
+  document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M5-2를 완료하셨습니다. 다음은 M5-3 Compliance & 비밀입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+  box.style.display='block';
+  document.getElementById('submitBtn').disabled=true;
+  box.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

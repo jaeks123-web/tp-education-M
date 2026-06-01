@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OECD 이전가격 지침서 — 중급과정</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --indigo:#3730a3;--indigo-light:#eef2ff;--indigo-mid:#4f46e5;--indigo-dark:#1e1b4b;
+  --teal:#0f7a7a;--teal-light:#e0f5f5;--teal-mid:#1a9a9a;
+  --violet:#7c3aed;--violet-light:#f5f3ff;
+  --rose:#be123c;--rose-light:#fff1f2;
+  --green:#1a7a4a;--green-light:#e6f5ee;
+  --orange:#c06000;--orange-light:#fff3e0;
+  --gray:#555;--gray-light:#f5f5f5;--gray-border:#ddd;
+  --text:#222;--text2:#555;--white:#fff;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,.10);
+}
+body{font-family:'Noto Sans KR',Arial,sans-serif;background:#f0f4f8;color:var(--text);line-height:1.7;font-size:16px}
+a{color:var(--indigo);text-decoration:none}
+
+/* 헤더 */
+.page-header{background:linear-gradient(135deg,var(--indigo-dark) 0%,var(--indigo) 60%,var(--indigo-mid) 100%);color:#fff;padding:2rem 2.5rem 1.5rem;border-bottom:4px solid var(--indigo-mid)}
+.page-header h1{font-size:1.6rem;font-weight:700;margin-bottom:.3rem}
+.page-header p{font-size:.95rem;opacity:.85}
+.badge{display:inline-block;font-size:.75rem;padding:3px 10px;border-radius:20px;font-weight:600;margin-left:8px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)}
+
+.main{max-width:980px;margin:2.5rem auto;padding:0 1.5rem 4rem}
+
+/* 소개 박스 */
+.intro-box{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.8rem 2rem;margin-bottom:2rem;border-left:5px solid var(--indigo)}
+.intro-box h2{font-size:1.1rem;color:var(--indigo);margin-bottom:.8rem}
+.intro-box p{font-size:.95rem;color:var(--text2);margin-bottom:.5rem}
+
+/* 챕터 네비 버튼 */
+.chapter-nav{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+.chapter-btn{flex:1;min-width:180px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem 1.2rem;border:2px solid var(--gray-border);text-decoration:none;color:var(--text);display:block;transition:all .15s;cursor:pointer}
+.chapter-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+.chapter-btn.active-ch4{border-color:var(--indigo);background:var(--indigo-light)}
+.chapter-btn.active-ch5{border-color:var(--teal);background:var(--teal-light)}
+.chapter-btn.active-ch6{border-color:var(--violet);background:var(--violet-light)}
+.chapter-btn.active-ch7{border-color:var(--rose);background:var(--rose-light)}
+.chapter-btn .ch-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.25rem}
+.chapter-btn .ch-title{font-size:.98rem;font-weight:700;margin-bottom:.15rem}
+.chapter-btn .ch-desc{font-size:.8rem;color:var(--text2)}
+
+/* 섹션 헤더 */
+.ch-section-header{font-size:1rem;font-weight:700;color:#333;margin:2.5rem 0 1rem;padding:.6rem 1rem;border-radius:8px;display:flex;align-items:center;gap:.6rem}
+.ch-section-header.ch4{background:var(--indigo-light);border-left:4px solid var(--indigo)}
+.ch-section-header.ch5{background:var(--teal-light);border-left:4px solid var(--teal)}
+.ch-section-header.ch6{background:var(--violet-light);border-left:4px solid var(--violet)}
+.ch-section-header.ch7{background:var(--rose-light);border-left:4px solid var(--rose)}
+
+/* 진도 박스 */
+.overall-progress{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem 1.8rem;margin-bottom:1.2rem}
+.overall-progress h3{font-size:.9rem;color:var(--gray);margin-bottom:.8rem}
+.prog-outer{background:#e9ecef;border-radius:99px;height:10px;overflow:hidden;margin-bottom:.4rem}
+.prog-inner{height:100%;border-radius:99px;transition:width .5s}
+.prog-inner.ch4{background:linear-gradient(90deg,var(--indigo-dark),var(--indigo-mid))}
+.prog-inner.ch5{background:linear-gradient(90deg,var(--teal),var(--teal-mid))}
+.prog-inner.ch6{background:linear-gradient(90deg,var(--violet),#9b4de0)}
+.prog-inner.ch7{background:linear-gradient(90deg,var(--rose),#f43f5e)}
+.prog-label{display:flex;justify-content:space-between;font-size:.83rem;color:var(--gray)}
+
+/* 팁 박스 */
+.tips-box{background:var(--orange-light);border:1px solid #f5c060;border-radius:var(--radius);padding:1rem 1.4rem;margin-bottom:1.5rem}
+.tips-box h4{color:var(--orange);font-size:.9rem;margin-bottom:.4rem}
+.tips-box ul{padding-left:1.2rem;font-size:.85rem;color:#6b4700}
+.tips-box li{margin-bottom:.25rem}
+
+/* 모듈 카드 */
+.module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:.5rem}
+.module-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.3rem 1.4rem;border-top:4px solid var(--gray-border);transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.module-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.module-card .num{font-size:.75rem;font-weight:700;color:var(--gray);margin-bottom:.3rem;letter-spacing:.04em}
+.module-card h3{font-size:.95rem;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.module-card p{font-size:.82rem;color:var(--text2);margin-bottom:.8rem;flex:1}
+.module-card .para-range{font-size:.75rem;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:.6rem}
+.status-tag{position:absolute;top:10px;right:10px;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.tag-done{background:var(--green-light);color:var(--green)}
+.tag-pending{background:var(--gray-light);color:var(--gray)}
+
+/* Chapter IV 카드 */
+.module-card.ch4.done{border-top-color:var(--green)}
+.module-card.ch4 .para-range{color:var(--indigo);background:var(--indigo-light)}
+.module-card.ch4 .btn-mod{background:var(--indigo);color:#fff}
+.module-card.ch4 .btn-mod:hover{background:var(--indigo-dark)}
+/* Chapter V 카드 */
+.module-card.ch5.done{border-top-color:var(--green)}
+.module-card.ch5 .para-range{color:var(--teal);background:var(--teal-light)}
+.module-card.ch5 .btn-mod{background:var(--teal);color:#fff}
+.module-card.ch5 .btn-mod:hover{background:var(--teal-mid)}
+/* Chapter VI 카드 */
+.module-card.ch6.done{border-top-color:var(--green)}
+.module-card.ch6 .para-range{color:var(--violet);background:var(--violet-light)}
+.module-card.ch6 .btn-mod{background:var(--violet);color:#fff}
+.module-card.ch6 .btn-mod:hover{background:#6d28d9}
+/* Chapter VII 카드 */
+.module-card.ch7.done{border-top-color:var(--green)}
+.module-card.ch7 .para-range{color:var(--rose);background:var(--rose-light)}
+.module-card.ch7 .btn-mod{background:var(--rose);color:#fff}
+.module-card.ch7 .btn-mod:hover{background:#9f1239}
+
+/* 버튼 */
+.btn-mod{display:inline-block;padding:.5rem 1.2rem;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;transition:all .15s;text-align:center;margin-top:auto;text-decoration:none}
+.btn-mod-done{background:var(--green);color:#fff}
+.btn-mod-done:hover{background:#155f38}
+
+/* 전체 진도 요약 */
+.summary-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.summary-card{flex:1;min-width:140px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1rem 1.2rem;text-align:center}
+.summary-card .s-num{font-size:1.6rem;font-weight:800;margin-bottom:.2rem}
+.summary-card .s-label{font-size:.8rem;color:var(--gray)}
+.s-num.ch4{color:var(--indigo)}
+.s-num.ch5{color:var(--teal)}
+.s-num.ch6{color:var(--violet)}
+.s-num.ch7{color:var(--rose)}
+</style>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+  <script src="tp-firebase.js"></script>
+</head>
+<body>
+
+<div id="tpLoading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:var(--indigo);display:flex;align-items:center;justify-content:center;z-index:9999;color:#fff;font-family:'Noto Sans KR',Arial,sans-serif">
+  <div style="text-align:center">
+    <div style="font-size:2.5rem;margin-bottom:.8rem">📗</div>
+    <div style="font-size:1rem;font-weight:600">대주 이전가격 교육</div>
+    <div style="font-size:.82rem;opacity:.75;margin-top:.4rem">로딩 중...</div>
+  </div>
+</div>
+
+<header class="page-header">
+  <h1>OECD 이전가격 지침서 <span class="badge">중급과정</span></h1>
+  <p>Chapter IV · V · VI · VII — 세무조사·문서화·무형자산·그룹내서비스 · 자기주도 학습 프로그램</p>
+  <div style="display:flex;justify-content:flex-end;align-items:center;gap:.7rem;margin-top:.5rem;font-size:.82rem">
+    <span id="topUserName" style="color:rgba(255,255,255,.85)"></span>
+    <button onclick="tpSignOut()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:3px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:inherit">로그아웃</button>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- 소개 -->
+  <div class="intro-box">
+    <h2>📗 이 과정에 대하여</h2>
+    <p>OECD 이전가격 지침서 <strong>Chapter IV~VII</strong>의 핵심 내용을 실무자가 스스로 이해하고 업무에 바로 적용할 수 있도록 설계된 <strong>자기주도 학습 프로그램</strong>입니다.</p>
+    <p>개념 학습 → 사례 탐구 → 자가 퀴즈 → 실무 체크리스트 4단계로 완전한 이해에 도달할 수 있습니다. 학습 진도는 Google 계정으로 자동 저장됩니다.</p>
+    <p style="margin-top:.6rem;font-size:.86rem;color:var(--gray)">⏱ Ch.IV: 6모듈 · Ch.V: 4모듈 · Ch.VI: 8모듈 · Ch.VII: 4모듈 — 총 22개 모듈</p>
+  </div>
+
+  <!-- 챕터 퀵 네비 -->
+  <div class="chapter-nav">
+    <a href="#ch4-section" class="chapter-btn active-ch4">
+      <div class="ch-label" style="color:var(--indigo)">Chapter IV · §4.1–§4.170</div>
+      <div class="ch-title">세무조사·MAP·APA</div>
+      <div class="ch-desc">행정적 접근 · 6개 모듈</div>
+    </a>
+    <a href="#ch5-section" class="chapter-btn active-ch5">
+      <div class="ch-label" style="color:var(--teal)">Chapter V · §5.1–§5.42</div>
+      <div class="ch-title">이전가격 문서화</div>
+      <div class="ch-desc">Master file · Local file · CbCR · 4개 모듈</div>
+    </a>
+    <a href="#ch6-section" class="chapter-btn active-ch6">
+      <div class="ch-label" style="color:var(--violet)">Chapter VI · §6.1–§6.214</div>
+      <div class="ch-title">무형자산</div>
+      <div class="ch-desc">DEMPE · HTVI · 정상가격 · 8개 모듈</div>
+    </a>
+    <a href="#ch7-section" class="chapter-btn active-ch7">
+      <div class="ch-label" style="color:var(--rose)">Chapter VII · §7.1–§7.63</div>
+      <div class="ch-title">그룹내 서비스</div>
+      <div class="ch-desc">LVA · 정상가격 대가 · 4개 모듈</div>
+    </a>
+  </div>
+
+  <!-- 요약 카드 -->
+  <div class="summary-row">
+    <div class="summary-card">
+      <div class="s-num ch4" id="ch4-done-num">0</div>
+      <div class="s-label">Ch.IV 완료</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-num ch5" id="ch5-done-num">0</div>
+      <div class="s-label">Ch.V 완료</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-num ch6" id="ch6-done-num">0</div>
+      <div class="s-label">Ch.VI 완료</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-num ch7" id="ch7-done-num">0</div>
+      <div class="s-label">Ch.VII 완료</div>
+    </div>
+    <div class="summary-card">
+      <div class="s-num" id="total-done-num" style="color:#333">0</div>
+      <div class="s-label">전체 완료 / 22</div>
+    </div>
+  </div>
+
+  <!-- 팁 박스 -->
+  <div class="tips-box">
+    <h4>💡 학습 가이드</h4>
+    <ul>
+      <li>각 모듈은 독립적으로 학습 가능하지만 Chapter IV → V → VI → VII 순서를 권장합니다.</li>
+      <li>모듈 내 퀴즈와 체크리스트를 완료하면 진도가 자동 저장됩니다.</li>
+      <li>기초과정(Ch.I~III)을 먼저 이수하신 분께 최적화되어 있습니다.</li>
+    </ul>
+  </div>
+
+  <!-- ===== CHAPTER IV ===== -->
+  <div id="ch4-section">
+    <div class="ch-section-header ch4">📙 Chapter IV — 세무조사·MAP·APA <span style="font-size:.78rem;font-weight:400;color:var(--text2);margin-left:.3rem">§4.1~§4.170 · 6개 모듈</span></div>
+
+    <div class="overall-progress">
+      <h3>📊 Chapter IV 학습 진도</h3>
+      <div class="prog-outer"><div class="prog-inner ch4" id="ch4-bar" style="width:0%"></div></div>
+      <div class="prog-label"><span id="ch4-text">0 / 6 모듈 완료</span><span id="ch4-pct">0%</span></div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card ch4" id="card-M4-1">
+        <span class="status-tag tag-pending" id="tag-M4-1">미완료</span>
+        <div class="num">MODULE 4-1</div>
+        <h3>Introduction &amp; 세무조사 관행</h3>
+        <p>이전가격 세무조사의 국제적 현황, 조사 유형, 납세자 권리 및 모범 관행</p>
+        <span class="para-range">§4.1~§4.28</span>
+        <a href="M4-1_Introduction_세무조사.html" class="btn-mod" id="btn-M4-1">학습 시작</a>
+      </div>
+      <div class="module-card ch4" id="card-M4-2">
+        <span class="status-tag tag-pending" id="tag-M4-2">미완료</span>
+        <div class="num">MODULE 4-2</div>
+        <h3>입증책임 &amp; 가산세</h3>
+        <p>입증책임의 배분 원칙, 가산세 부과 기준, 합리적 노력 항변 및 각국 비교</p>
+        <span class="para-range">§4.11~§4.37</span>
+        <a href="M4-2_입증책임_가산세.html" class="btn-mod" id="btn-M4-2">학습 시작</a>
+      </div>
+      <div class="module-card ch4" id="card-M4-3">
+        <span class="status-tag tag-pending" id="tag-M4-3">미완료</span>
+        <div class="num">MODULE 4-3</div>
+        <h3>대응조정 &amp; MAP 절차</h3>
+        <p>이중과세 해소를 위한 대응조정의 원리와 상호합의절차(MAP) 운용 메커니즘</p>
+        <span class="para-range">§4.32~§4.75</span>
+        <a href="M4-3_대응조정_MAP절차.html" class="btn-mod" id="btn-M4-3">학습 시작</a>
+      </div>
+      <div class="module-card ch4" id="card-M4-4">
+        <span class="status-tag tag-pending" id="tag-M4-4">미완료</span>
+        <div class="num">MODULE 4-4</div>
+        <h3>MAP 운영 &amp; 2차 처분</h3>
+        <p>MAP 실무 절차, 기한 설정, 2차 조정(Secondary Adjustments) 처리 방안</p>
+        <span class="para-range">§4.76~§4.107</span>
+        <a href="M4-4_MAP운영_2차처분.html" class="btn-mod" id="btn-M4-4">학습 시작</a>
+      </div>
+      <div class="module-card ch4" id="card-M4-5">
+        <span class="status-tag tag-pending" id="tag-M4-5">미완료</span>
+        <div class="num">MODULE 4-5</div>
+        <h3>동시세무조사 &amp; Safe Harbours</h3>
+        <p>다국간 동시조사 협력 체계와 안전항 규정의 설계·적용 원칙</p>
+        <span class="para-range">§4.82~§4.131</span>
+        <a href="M4-5_동시조사_SafeHarbours.html" class="btn-mod" id="btn-M4-5">학습 시작</a>
+      </div>
+      <div class="module-card ch4" id="card-M4-6">
+        <span class="status-tag tag-pending" id="tag-M4-6">미완료</span>
+        <div class="num">MODULE 4-6</div>
+        <h3>APA &amp; 중재</h3>
+        <p>사전가격합의(APA) 절차·효과, 조세조약상 중재 조항 및 분쟁해결 최신 동향</p>
+        <span class="para-range">§4.123~§4.170</span>
+        <a href="M4-6_APA_중재.html" class="btn-mod" id="btn-M4-6">학습 시작</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CHAPTER V ===== -->
+  <div id="ch5-section">
+    <div class="ch-section-header ch5">📋 Chapter V — 이전가격 문서화 <span style="font-size:.78rem;font-weight:400;color:var(--text2);margin-left:.3rem">§5.1~§5.42 · 4개 모듈</span></div>
+
+    <div class="overall-progress">
+      <h3>📊 Chapter V 학습 진도</h3>
+      <div class="prog-outer"><div class="prog-inner ch5" id="ch5-bar" style="width:0%"></div></div>
+      <div class="prog-label"><span id="ch5-text">0 / 4 모듈 완료</span><span id="ch5-pct">0%</span></div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card ch5" id="card-M5-1">
+        <span class="status-tag tag-pending" id="tag-M5-1">미완료</span>
+        <div class="num">MODULE 5-1</div>
+        <h3>Documentation 개요 &amp; 목적</h3>
+        <p>이전가격 문서화 의무의 목적, 국가별 규정 현황, 비례성 원칙과 납세자 부담</p>
+        <span class="para-range">§5.1~§5.12</span>
+        <a href="M5-1_문서화_개요_목적.html" class="btn-mod" id="btn-M5-1">학습 시작</a>
+      </div>
+      <div class="module-card ch5" id="card-M5-2">
+        <span class="status-tag tag-pending" id="tag-M5-2">미완료</span>
+        <div class="num">MODULE 5-2</div>
+        <h3>3계층 접근 — Master file · Local file · CbCR</h3>
+        <p>BEPS Action 13 3-tier 구조: 그룹 마스터파일, 로컬파일, 국가별보고서 각 요건</p>
+        <span class="para-range">§5.18~§5.35</span>
+        <a href="M5-2_Master_Local_CbCR.html" class="btn-mod" id="btn-M5-2">학습 시작</a>
+      </div>
+      <div class="module-card ch5" id="card-M5-3">
+        <span class="status-tag tag-pending" id="tag-M5-3">미완료</span>
+        <div class="num">MODULE 5-3</div>
+        <h3>Compliance Issues &amp; 비밀유지</h3>
+        <p>문서화 제출 시한, 언어 요건, 과세당국간 정보 비밀유지 의무와 한계</p>
+        <span class="para-range">§5.13~§5.17</span>
+        <a href="M5-3_Compliance_비밀.html" class="btn-mod" id="btn-M5-3">학습 시작</a>
+      </div>
+      <div class="module-card ch5" id="card-M5-4">
+        <span class="status-tag tag-pending" id="tag-M5-4">미완료</span>
+        <div class="num">MODULE 5-4</div>
+        <h3>Implementation (Chapter V 완주)</h3>
+        <p>각국 이행 현황, 실무 체크리스트, Chapter V 종합 정리 및 실무 적용 사례</p>
+        <span class="para-range">§5.36~§5.42</span>
+        <a href="M5-4_Implementation.html" class="btn-mod" id="btn-M5-4">학습 시작</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CHAPTER VI ===== -->
+  <div id="ch6-section">
+    <div class="ch-section-header ch6">💎 Chapter VI — 무형자산 <span style="font-size:.78rem;font-weight:400;color:var(--text2);margin-left:.3rem">§6.1~§6.214 · 8개 모듈</span></div>
+
+    <div class="overall-progress">
+      <h3>📊 Chapter VI 학습 진도</h3>
+      <div class="prog-outer"><div class="prog-inner ch6" id="ch6-bar" style="width:0%"></div></div>
+      <div class="prog-label"><span id="ch6-text">0 / 8 모듈 완료</span><span id="ch6-pct">0%</span></div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card ch6" id="card-M6-1">
+        <span class="status-tag tag-pending" id="tag-M6-1">미완료</span>
+        <div class="num">MODULE 6-1</div>
+        <h3>무형자산의 정의</h3>
+        <p>이전가격 목적의 무형자산 정의, 상업적 무형자산과 회계상 무형자산의 차이</p>
+        <span class="para-range">§6.1~§6.30</span>
+        <a href="M6-1_무형자산_정의.html" class="btn-mod" id="btn-M6-1">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-2">
+        <span class="status-tag tag-pending" id="tag-M6-2">미완료</span>
+        <div class="num">MODULE 6-2</div>
+        <h3>무형자산의 분류 &amp; 예시</h3>
+        <p>특허·노하우·영업권·계약상 권리 등 주요 무형자산 유형별 이전가격 처리 방법</p>
+        <span class="para-range">§6.17~§6.31</span>
+        <a href="M6-2_무형자산_분류_예시.html" class="btn-mod" id="btn-M6-2">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-3">
+        <span class="status-tag tag-pending" id="tag-M6-3">미완료</span>
+        <div class="num">MODULE 6-3</div>
+        <h3>무형자산 소유권 &amp; DEMPE 개관</h3>
+        <p>법적 소유권과 경제적 소유권의 구분, DEMPE 기능 개념 소개 및 이익 귀속 원칙</p>
+        <span class="para-range">§6.32~§6.57</span>
+        <a href="M6-3_소유권_DEMPE개관.html" class="btn-mod" id="btn-M6-3">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-4">
+        <span class="status-tag tag-pending" id="tag-M6-4">미완료</span>
+        <div class="num">MODULE 6-4</div>
+        <h3>기능·자산·위험 분석 (FAR Analysis)</h3>
+        <p>무형자산 거래에서의 FAR 분석 심화: 위험 인수 능력, 자산 보유, 핵심 인력 배치</p>
+        <span class="para-range">§6.58~§6.98</span>
+        <a href="M6-4_기능_자산_위험분석.html" class="btn-mod" id="btn-M6-4">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-5">
+        <span class="status-tag tag-pending" id="tag-M6-5">미완료</span>
+        <div class="num">MODULE 6-5</div>
+        <h3>DEMPE 원칙의 사례 적용</h3>
+        <p>DEMPE 기여도에 따른 이익 배분 사례: IP Box 구조, R&amp;D 계약 배분 실무 예시</p>
+        <span class="para-range">§6.56~§6.73</span>
+        <a href="M6-5_DEMPE_사례적용.html" class="btn-mod" id="btn-M6-5">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-6">
+        <span class="status-tag tag-pending" id="tag-M6-6">미완료</span>
+        <div class="num">MODULE 6-6</div>
+        <h3>무형자산 거래 유형과 보완 지침 개관</h3>
+        <p>양도·사용허락·원가분담약정 등 무형자산 거래 유형별 개요 및 OECD 보완 지침</p>
+        <span class="para-range">§6.74~§6.103</span>
+        <a href="M6-6_거래유형.html" class="btn-mod" id="btn-M6-6">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-7">
+        <span class="status-tag tag-pending" id="tag-M6-7">미완료</span>
+        <div class="num">MODULE 6-7</div>
+        <h3>무형자산 양도·비교가능성·방법론 (D.2)</h3>
+        <p>무형자산 양도 거래의 비교가능성 분석, 가치평가 기법, 정상가격 산출 방법 선택</p>
+        <span class="para-range">§6.104~§6.163</span>
+        <a href="M6-7_양도_비교가능성_방법론.html" class="btn-mod" id="btn-M6-7">학습 시작</a>
+      </div>
+      <div class="module-card ch6" id="card-M6-8">
+        <span class="status-tag tag-pending" id="tag-M6-8">미완료</span>
+        <div class="num">MODULE 6-8</div>
+        <h3>HTVI &amp; 상품·서비스 연계 사용거래 (D.3~D.5)</h3>
+        <p>가치평가 어려운 무형자산(HTVI) 특칙, 상품·서비스와 결합된 무형자산 거래 처리</p>
+        <span class="para-range">§6.164~§6.214</span>
+        <a href="M6-8_HTVI_사용거래.html" class="btn-mod" id="btn-M6-8">학습 시작</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CHAPTER VII ===== -->
+  <div id="ch7-section">
+    <div class="ch-section-header ch7">🔧 Chapter VII — 그룹내 서비스 <span style="font-size:.78rem;font-weight:400;color:var(--text2);margin-left:.3rem">§7.1~§7.63 · 4개 모듈</span></div>
+
+    <div class="overall-progress">
+      <h3>📊 Chapter VII 학습 진도</h3>
+      <div class="prog-outer"><div class="prog-inner ch7" id="ch7-bar" style="width:0%"></div></div>
+      <div class="prog-label"><span id="ch7-text">0 / 4 모듈 완료</span><span id="ch7-pct">0%</span></div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card ch7" id="card-M7-1">
+        <span class="status-tag tag-pending" id="tag-M7-1">미완료</span>
+        <div class="num">MODULE 7-1</div>
+        <h3>그룹내 서비스 식별 &amp; 주주활동</h3>
+        <p>그룹내 서비스와 주주활동의 구분 기준, 부수적 이익 테스트 및 서비스 인정 여부 판단</p>
+        <span class="para-range">§7.1~§7.26</span>
+        <a href="M7-1_서비스_식별_주주활동.html" class="btn-mod" id="btn-M7-1">학습 시작</a>
+      </div>
+      <div class="module-card ch7" id="card-M7-2">
+        <span class="status-tag tag-pending" id="tag-M7-2">미완료</span>
+        <div class="num">MODULE 7-2</div>
+        <h3>정상가격 대가 결정 — 청구방법</h3>
+        <p>직접청구법·간접청구법의 선택 기준, 배분키(Allocation Key) 설계 및 적용 실무</p>
+        <span class="para-range">§7.27~§7.48</span>
+        <a href="M7-2_정상가격_대가결정_청구방법.html" class="btn-mod" id="btn-M7-2">학습 시작</a>
+      </div>
+      <div class="module-card ch7" id="card-M7-3">
+        <span class="status-tag tag-pending" id="tag-M7-3">미완료</span>
+        <div class="num">MODULE 7-3</div>
+        <h3>마진 적용 &amp; 사례</h3>
+        <p>그룹내 서비스 마크업(markup) 결정 원칙, 원가 범위 획정, 실무 사례 분석</p>
+        <span class="para-range">§7.36~§7.52</span>
+        <a href="M7-3_마진적용_사례.html" class="btn-mod" id="btn-M7-3">학습 시작</a>
+      </div>
+      <div class="module-card ch7" id="card-M7-4">
+        <span class="status-tag tag-pending" id="tag-M7-4">미완료</span>
+        <div class="num">MODULE 7-4</div>
+        <h3>저부가가치 그룹내 서비스 (LVA)</h3>
+        <p>저부가가치 서비스(LVA) 간소화 접근법, 5% 마크업 적용 요건, 서비스 카테고리</p>
+        <span class="para-range">§7.45~§7.63</span>
+        <a href="M7-4_저부가가치서비스.html" class="btn-mod" id="btn-M7-4">학습 시작</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// 모듈 진도 반영
+const CH_MODS = {
+  ch4: ['M4-1','M4-2','M4-3','M4-4','M4-5','M4-6'],
+  ch5: ['M5-1','M5-2','M5-3','M5-4'],
+  ch6: ['M6-1','M6-2','M6-3','M6-4','M6-5','M6-6','M6-7','M6-8'],
+  ch7: ['M7-1','M7-2','M7-3','M7-4']
+};
+
+function updateUI(data) {
+  let totalDone = 0;
+  Object.entries(CH_MODS).forEach(([ch, mods]) => {
+    let done = 0;
+    mods.forEach(mod => {
+      const completed = data && data[mod] && data[mod].completed;
+      const tag = document.getElementById('tag-' + mod);
+      const card = document.getElementById('card-' + mod);
+      const btn  = document.getElementById('btn-' + mod);
+      if (completed) {
+        done++;
+        if (tag)  { tag.textContent = '완료'; tag.className = 'status-tag tag-done'; }
+        if (card) { card.classList.add('done'); }
+        if (btn)  { btn.className = 'btn-mod btn-mod-done'; btn.textContent = '다시 보기'; }
+      }
+    });
+    const total = mods.length;
+    const pct   = total ? Math.round(done / total * 100) : 0;
+    const bar   = document.getElementById(ch + '-bar');
+    const txt   = document.getElementById(ch + '-text');
+    const pctEl = document.getElementById(ch + '-pct');
+    const numEl = document.getElementById(ch + '-done-num');
+    if (bar)  bar.style.width  = pct + '%';
+    if (txt)  txt.textContent  = done + ' / ' + total + ' 모듈 완료';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (numEl) numEl.textContent = done + '/' + total;
+    totalDone += done;
+  });
+  const totalEl = document.getElementById('total-done-num');
+  if (totalEl) totalEl.textContent = totalDone;
+}
+
+tpOnReady(function(uid, data) {
+  // 로딩 화면 숨기기
+  const loading = document.getElementById('tpLoading');
+  if (loading) loading.style.display = 'none';
+
+  // 사용자 이름 표시
+  const user = firebase.auth().currentUser;
+  const nameEl = document.getElementById('topUserName');
+  if (nameEl && user) {
+    nameEl.textContent = (user.displayName || user.email || '');
+  }
+
+  updateUI(data);
+});
+</script>
+</body>
+</html>
