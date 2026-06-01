@@ -151,6 +151,10 @@ a{color:var(--purple);text-decoration:none}
   <h1>M5-4. Implementation (시행) — Chapter V</h1>
   <div class="sub">E. Implementation — BEPS Action 13 시행, CbCR 자동교환(MCAA), 한국 도입 + Chapter V 4개 모듈 종합 정리 &nbsp;|&nbsp; ¶5.48 – ¶5.62 &nbsp;|&nbsp; 예상 학습시간: 50분</div>
   <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+  <div style="display:flex;justify-content:flex-end;align-items:center;gap:.7rem;margin-top:.5rem;font-size:.82rem">
+    <span id="topUserName" style="color:rgba(255,255,255,.85)"></span>
+    <button onclick="tpSignOut()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:3px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:inherit">로그아웃</button>
+  </div>
 </header>
 
 <div class="layout">
@@ -898,6 +902,31 @@ function gradeQuiz(){
   document.getElementById('submitBtn').disabled=true;
   box.scrollIntoView({behavior:'smooth'});
 }
+
+/* ─── Firebase 진도 자동 저장/복원 ─────────────────────────────── */
+var MODKEY = 'ch5_m4';
+
+var _origRefreshProgressUI = refreshProgressUI;
+refreshProgressUI = function(){
+  _origRefreshProgressUI.apply(this, arguments);
+  var pct = calcProgress();
+  if(typeof tpSet === 'function'){
+    tpSet(MODKEY + '_pct', pct);
+    if(pct >= 100) tpSet(MODKEY + '_completed', true);
+  }
+};
+
+tpOnReady(function(user){
+  var nameEl=document.getElementById('topUserName');
+  if(nameEl&&user)nameEl.textContent=user.displayName||user.email;
+  var pct = parseInt(typeof tpGet==='function' ? (tpGet(MODKEY+'_pct')||'0') : '0');
+  if(pct > 0){
+    var bar = document.getElementById('topBar');
+    var disp = document.getElementById('pctDisp');
+    if(bar) bar.style.width = pct + '%';
+    if(disp) disp.textContent = pct + '%';
+  }
+});
 </script>
 </body>
 </html>

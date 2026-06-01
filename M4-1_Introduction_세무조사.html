@@ -130,6 +130,10 @@ a{color:var(--purple);text-decoration:none}
   <h1>M4-1. Introduction & 세무조사 관행 (Examination Practices)</h1>
   <div class="sub">A. Introduction & B.1. Examination Practices — Chapter IV 개관, 이중과세 방지, 과세관청의 의무, 세무조사 원칙 &nbsp;|&nbsp; ¶4.1 – ¶4.10 &nbsp;|&nbsp; 예상 학습시간: 40분</div>
   <div class="prog-strip"><div class="prog-strip-inner" id="topBar" style="width:0%"></div></div>
+  <div style="display:flex;justify-content:flex-end;align-items:center;gap:.7rem;margin-top:.5rem;font-size:.82rem">
+    <span id="topUserName" style="color:rgba(255,255,255,.85)"></span>
+    <button onclick="tpSignOut()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:3px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:inherit">로그아웃</button>
+  </div>
 </header>
 
 <div class="layout">
@@ -730,6 +734,31 @@ function gradeQuiz(){
   document.getElementById('submitBtn').disabled=true;
   box.scrollIntoView({behavior:'smooth'});
 }
+
+/* ─── Firebase 진도 자동 저장/복원 ─────────────────────────────── */
+var MODKEY = 'ch4_m1';
+
+var _origRefreshProgressUI = refreshProgressUI;
+refreshProgressUI = function(){
+  _origRefreshProgressUI.apply(this, arguments);
+  var pct = calcProgress();
+  if(typeof tpSet === 'function'){
+    tpSet(MODKEY + '_pct', pct);
+    if(pct >= 100) tpSet(MODKEY + '_completed', true);
+  }
+};
+
+tpOnReady(function(user){
+  var nameEl=document.getElementById('topUserName');
+  if(nameEl&&user)nameEl.textContent=user.displayName||user.email;
+  var pct = parseInt(typeof tpGet==='function' ? (tpGet(MODKEY+'_pct')||'0') : '0');
+  if(pct > 0){
+    var bar = document.getElementById('topBar');
+    var disp = document.getElementById('pctDisp');
+    if(bar) bar.style.width = pct + '%';
+    if(disp) disp.textContent = pct + '%';
+  }
+});
 </script>
 </body>
 </html>
