@@ -571,6 +571,27 @@ function refreshProgressUI(){
   document.getElementById('quizDone').textContent = quizCorrect;
 }
 
+function saveProgress(){
+  localStorage.setItem('m4_1_accOpened', JSON.stringify([...accOpened]));
+  localStorage.setItem('m4_1_quizCorrect', quizCorrect);
+  localStorage.setItem('m4_1_quizSubmitted', quizSubmitted);
+  if(quizSubmitted){
+    const sel={};
+    Object.keys(answers).forEach(q=>{
+      const r=document.querySelector(`input[name="${q}"]:checked`);
+      if(r) sel[q]=r.value;
+    });
+    localStorage.setItem('m4_1_quizAnswers', JSON.stringify(sel));
+  }
+}
+
+function loadProgress(){
+  const savedAcc=localStorage.getItem('m4_1_accOpened');
+  if(savedAcc) JSON.parse(savedAcc).forEach(id=>accOpened.add(id));
+  quizCorrect=parseInt(localStorage.getItem('m4_1_quizCorrect')||'0');
+  quizSubmitted=localStorage.getItem('m4_1_quizSubmitted')==='true';
+}
+
 /* ── 사이드바 활성 항목(스크롤 위치) ── */
 function updateSidebar(){
   const secs = ['obj','s1','s2','s3','s4','s5','quiz','check'];
@@ -604,6 +625,7 @@ function toggleAcc(btn){
     const accId = btn.dataset.accid;
     accOpened.add(accId);
     refreshProgressUI();
+    saveProgress();
   }
 }
 
@@ -612,6 +634,36 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const headers = document.querySelectorAll('.acc-header');
   headers.forEach((h,i)=>{ h.dataset.accid = 'acc_'+i; });
   totalAcc = headers.length;
+
+  loadProgress();
+
+  // 아코디언 viewed 상태 복원
+  headers.forEach(h=>{
+    if(accOpened.has(h.dataset.accid)) h.classList.add('viewed');
+  });
+
+  // 퀴즈 제출 상태 복원
+  if(quizSubmitted){
+    const savedAns=JSON.parse(localStorage.getItem('m4_1_quizAnswers')||'{}');
+    Object.keys(savedAns).forEach(q=>{
+      const r=document.querySelector(`input[name="${q}"][value="${savedAns[q]}"]`);
+      if(r){
+        r.checked=true;
+        const fbEl=document.getElementById('fb'+q.slice(1));
+        const ok=savedAns[q]===answers[q];
+        fbEl.textContent=feedbacks[q][savedAns[q]];
+        fbEl.className='q-feedback '+(ok?'correct':'wrong');
+        fbEl.style.display='block';
+      }
+    });
+    const score=quizCorrect*20;
+    const box=document.getElementById('scoreBox');
+    document.getElementById('scoreNum').textContent=score+'점';
+    document.getElementById('scoreMsg').textContent=score>=80?'🎉 통과! M4-1을 완료하셨습니다. 다음은 M4-2 입증책임·가산세입니다.':'📚 '+score+'점 — 80점 이상이어야 통과입니다. 해설을 참고하여 다시 시도하세요.';
+    box.style.display='block';
+    document.getElementById('submitBtn').disabled=true;
+  }
+
   refreshProgressUI();
   updateSidebar();
 });
@@ -669,6 +721,7 @@ function gradeQuiz(){
   quizCorrect = correct;
   quizSubmitted = true;
   refreshProgressUI();
+  saveProgress();
 
   const box=document.getElementById('scoreBox');
   document.getElementById('scoreNum').textContent=score+'점';
