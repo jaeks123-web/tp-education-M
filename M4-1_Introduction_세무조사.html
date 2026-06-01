@@ -522,6 +522,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreNum"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -544,9 +545,9 @@ a{color:var(--purple);text-decoration:none}
 
     <!-- 하단 네비게이션 -->
     <div class="nav-bottom">
-      <a class="btn-nav secondary" href="https://jaeks123-web.github.io/tp-education-M/index.html" onclick="alert('M4-1은 Chapter IV의 첫 모듈입니다. (이전 모듈 없음)');return false;">← 이전 모듈</a>
-      <a class="btn-nav secondary" href="https://jaeks123-web.github.io/tp-education-M/index.html">📋 목차로</a>
-      <a class="btn-nav" href="https://jaeks123-web.github.io/tp-education-M/M4-2_입증책임_가산세.html" onclick="alert('M4-2는 다음 단계에서 작성됩니다.');return false;">M4-2 입증책임·가산세 →</a>
+      <a class="btn-nav secondary" href="index.html">← 이전 모듈</a>
+      <a class="btn-nav secondary" href="index.html">📋 목차로</a>
+      <a class="btn-nav" href="M4-2_입증책임_가산세.html">M4-2 입증책임·가산세 →</a>
     </div>
 
   </main>
@@ -706,6 +707,23 @@ const feedbacks={
     d:'❌ 본사 손익만 기준으로 평가하는 것은 개별 거래의 정상가격원칙 적용과 거리가 있습니다.'
   }
 };
+
+function resetQuiz(){
+  // 라디오 초기화
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  // 피드백 숨기기
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  // scoreBox 숨기기
+  document.getElementById('scoreBox').style.display='none';
+  // 채점 버튼 재활성화
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=false;
+  btn.style.opacity='1';
+  // 변수 초기화
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
 
 function gradeQuiz(){
   let score=0, correct=0;

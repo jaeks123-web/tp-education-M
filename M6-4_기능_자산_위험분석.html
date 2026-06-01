@@ -818,6 +818,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreVal"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -872,7 +873,7 @@ a{color:var(--purple);text-decoration:none}
     <!-- 하단 네비게이션 -->
     <div class="nav-bottom">
       <a href="M6-3_소유권_DEMPE개관.html" class="btn-nav">← M6-3 소유권 &amp; DEMPE 개관</a>
-      <a href="#" class="btn-nav secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">📋 목차로</a>
+      <a href="index.html" class="btn-nav secondary">📋 목차로</a>
       <a href="M6-5_DEMPE_사례적용.html" class="btn-nav">M6-5 DEMPE 사례 적용 →</a>
     </div>
 
@@ -951,6 +952,17 @@ const feedbacks={
     d:'❌ HTVI에도 동일한 대칭성 원칙이 적용됩니다. 이익·손실의 귀속은 실질적 기능·위험 부담자를 기준으로 결정됩니다.'
   }
 };
+
+function resetQuiz(){
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  document.getElementById('scoreBox').style.display='none';
+  var btn=document.getElementById('qBtn');
+  if(btn){ btn.disabled=false; btn.style.opacity='1'; }
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
 
 function gradeQuiz(){
   let correct=0;

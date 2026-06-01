@@ -714,6 +714,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreNum"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -737,8 +738,8 @@ a{color:var(--purple);text-decoration:none}
     <!-- 하단 네비 -->
     <div class="nav-bottom">
       <a class="btn-nav secondary" href="M7-1_서비스_식별_주주활동.html">← M7-1. 서비스 식별 &amp; 주주활동</a>
-      <a class="btn-nav secondary" href="#">📋 목차로</a>
-      <a class="btn-nav" href="M7-3_마진_적용_사례.html">M7-3. 마진 적용 &amp; 사례 →</a>
+      <a class="btn-nav secondary" href="index.html">📋 목차로</a>
+      <a class="btn-nav" href="M7-3_마진적용_사례.html">M7-3. 마진 적용 &amp; 사례 →</a>
     </div>
 
   </main>
@@ -782,6 +783,23 @@ const feedbacks={
   q4:{a:'f4a',b:'f4b',c:'f4c',d:'f4d'},
   q5:{a:'f5a',b:'f5b',c:'f5c',d:'f5d'}
 };
+function resetQuiz(){
+  // 라디오 초기화
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  // 피드백 숨기기
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  // scoreBox 숨기기
+  document.getElementById('scoreBox').style.display='none';
+  // 채점 버튼 재활성화
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=false;
+  btn.style.opacity='1';
+  // 변수 초기화
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
+
 function gradeQuiz(){
   let score=0;
   document.querySelectorAll('.q-feedback').forEach(f=>f.style.display='none');

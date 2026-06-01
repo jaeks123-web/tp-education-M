@@ -816,6 +816,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreNum"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -839,8 +840,8 @@ a{color:var(--purple);text-decoration:none}
     <!-- 하단 네비게이션 -->
     <div class="nav-bottom">
       <a class="btn-nav secondary" href="M5-1_문서화_개요_목적.html">← M5-1 문서화 개요·목적</a>
-      <button class="btn-nav secondary" onclick="alert('Chapter V 목차 페이지로 이동합니다.')">📋 목차로</button>
-      <a class="btn-nav" href="#" onclick="alert('M5-3는 다음 단계에서 작성됩니다.');return false;">M5-3 Compliance & 비밀 →</a>
+      <a class="btn-nav secondary" href="index.html">📋 목차로</a>
+      <a class="btn-nav" href="M5-3_Compliance_비밀.html">M5-3 Compliance & 비밀 →</a>
     </div>
 
   </main>
@@ -944,6 +945,23 @@ const feedbacks={
     d:'✅ 정답! "자동적으로 본세 면제"는 자료 간 모순의 결과가 아닙니다. 오히려 자료 간 일관성 결여는 모든 측면에서 납세자에게 불리한 결과를 초래합니다. 본세 면제와는 무관합니다.'
   }
 };
+
+function resetQuiz(){
+  // 라디오 초기화
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  // 피드백 숨기기
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  // scoreBox 숨기기
+  document.getElementById('scoreBox').style.display='none';
+  // 채점 버튼 재활성화
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=false;
+  btn.style.opacity='1';
+  // 변수 초기화
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
 
 function gradeQuiz(){
   let score=0, correct=0;

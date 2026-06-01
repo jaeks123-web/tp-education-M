@@ -841,6 +841,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreNum"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -864,7 +865,7 @@ a{color:var(--purple);text-decoration:none}
     <!-- 하단 네비게이션 -->
     <div class="nav-bottom">
       <a class="btn-nav secondary" href="M4-5_동시조사_SafeHarbours.html">← M4-5 동시조사·Safe Harbours</a>
-      <button class="btn-nav secondary" onclick="alert('Chapter IV 목차 페이지로 이동합니다.')">📋 목차로</button>
+      <a class="btn-nav secondary" href="index.html">📋 목차로</a>
       <button class="btn-nav success" onclick="alert('🎉 Chapter IV 분쟁 회피·해결 행정적 접근을 완주하셨습니다! M4-1 ~ M4-6 6개 모듈 (¶4.1–¶4.179) 전체 완료. 다음은 Chapter V Documentation입니다.')">🎉 Chapter IV 완료!</button>
     </div>
 
@@ -969,6 +970,23 @@ const feedbacks={
     d:'❌ 중재는 납세자(신청인)의 요청에 따라 개시됩니다. 과세관청만의 권한이 아닙니다.'
   }
 };
+
+function resetQuiz(){
+  // 라디오 초기화
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  // 피드백 숨기기
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  // scoreBox 숨기기
+  document.getElementById('scoreBox').style.display='none';
+  // 채점 버튼 재활성화
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=false;
+  btn.style.opacity='1';
+  // 변수 초기화
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
 
 function gradeQuiz(){
   let score=0, correct=0;

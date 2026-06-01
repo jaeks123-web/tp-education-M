@@ -799,6 +799,7 @@ a{color:var(--purple);text-decoration:none}
       <div class="score-box" id="scoreBox">
         <div class="big" id="scoreVal"></div>
         <p id="scoreMsg"></p>
+        <button class="quiz-btn" id="retryBtn" onclick="resetQuiz()" style="margin-top:1rem;background:#555;">🔄 다시 응시하기</button>
       </div>
     </section>
 
@@ -853,7 +854,7 @@ a{color:var(--purple);text-decoration:none}
     <!-- 하단 네비게이션 -->
     <div class="nav-bottom">
       <a href="M6-4_기능_자산_위험분석.html" class="btn-nav">← M6-4 기능·자산·위험 분석</a>
-      <a href="#" class="btn-nav secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">📋 목차로</a>
+      <a href="index.html" class="btn-nav secondary">📋 목차로</a>
       <a href="M6-6_거래유형.html" class="btn-nav">M6-6 거래 유형 →</a>
     </div>
 
@@ -931,6 +932,17 @@ const feedbacks={
     d:'❌ 그룹명 사용 자체가 마케팅 무형자산 창출로 연결되지 않습니다. 실질적 마케팅 활동의 수행 여부가 기준입니다.'
   }
 };
+
+function resetQuiz(){
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked=false; });
+  document.querySelectorAll('.q-feedback').forEach(function(el){ el.style.display='none'; el.textContent=''; el.className='q-feedback'; });
+  document.getElementById('scoreBox').style.display='none';
+  var btn=document.getElementById('qBtn');
+  if(btn){ btn.disabled=false; btn.style.opacity='1'; }
+  quizCorrect=0;
+  quizSubmitted=false;
+  refreshProgressUI();
+}
 
 function gradeQuiz(){
   let correct=0;
