@@ -132,7 +132,7 @@ a{color:var(--purple);text-decoration:none}
 /* ── Chapter 완료 배너 ── */
 .chapter-done{background:linear-gradient(135deg,#78350f 0%,#b45309 60%,#d97706 100%);color:#fff;border-radius:12px;padding:1.4rem 1.8rem;margin:1.5rem 0;text-align:center}
 .chapter-done .cd-icon{font-size:2rem;margin-bottom:.4rem}
-.chapter-done h3{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
+.chapter-done h3{font-size:1.15rem;font-weight:700;margin-bottom:.3rem;color:#FEF08A}
 .chapter-done p{font-size:.9rem;opacity:.88;margin:0}
 /* ── 종합 요약 ── */
 .summary-box{background:#fff;border:2px solid var(--purple);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
@@ -653,7 +653,7 @@ a{color:var(--purple);text-decoration:none}
       </div>
 
       <!-- Chapter VI 완료 배너 -->
-      <div class="chapter-done">
+      <div class="chapter-done" id="chapterDoneBanner" style="display:none">
         <div class="cd-icon">🏆</div>
         <h3>Chapter VI Intangibles 완주!</h3>
         <p>¶6.1–¶6.212 전체 8개 모듈 학습 완료 — 무형자산 이전가격의 핵심인 DEMPE, 비교가능성 7요소, HTVI, D.5 사용거래까지 모두 이해하셨습니다.</p>
@@ -878,13 +878,27 @@ window.addEventListener('scroll',()=>{
 /* ─── Firebase 진도 자동 저장/복원 ─────────────────────────────── */
 var MODKEY = 'ch6_m8';
 
+function checkCh6AllPassed(){
+  for(var i=1;i<=8;i++){
+    if(tpGet('ch6_m'+i+'_completed')!=='true') return false;
+  }
+  return true;
+}
+
+function showCh6BannerIfDone(){
+  if(typeof tpGet==='function' && checkCh6AllPassed()){
+    var b=document.getElementById('chapterDoneBanner');
+    if(b) b.style.display='';
+  }
+}
+
 var _origRefreshProgressUI = refreshProgressUI;
 refreshProgressUI = function(){
   _origRefreshProgressUI.apply(this, arguments);
   var pct = calcProgress();
   if(typeof tpSet === 'function'){
     tpSet(MODKEY + '_pct', pct);
-    if(pct >= 100) tpSet(MODKEY + '_completed', true);
+    if(pct >= 100){ tpSet(MODKEY + '_completed', true); showCh6BannerIfDone(); }
   }
 };
 
@@ -898,6 +912,7 @@ tpOnReady(function(user){
     if(bar) bar.style.width = pct + '%';
     if(disp) disp.textContent = pct + '%';
   }
+  showCh6BannerIfDone();
 });
 </script>
 </body>
