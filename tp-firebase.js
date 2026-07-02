@@ -1,5 +1,5 @@
 /**
- * tp-firebase.js — 대주 이전가격 교육 플랫폼
+ * tp-firebase.js — 이전가격 교육 플랫폼
  * Firebase Authentication + Firestore 공유 유틸리티
  * 모든 HTML 페이지에서 로드됩니다.
  */
